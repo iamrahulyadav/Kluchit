@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Kluchit</string>
+    <string name="draweropem">open</string>
+    <string name="drawerclose">close</string>
+    <string name="send">Send Answers</string>
+    <string name="app_id">725595514262968</string>
+    <string name="inshouse">In House </string>
+    <string name="outhouse">Out House</string>
+
+    <string-array name="category_array">
+        <item>Select Category</item>
+        <item>Photographer</item>
+        <item>Videographer</item>
+        <item>Content Writer</item>
+        <item>Hair Stylist</item>
+        <item>Editor</item>
+    </string-array>
+</resources>

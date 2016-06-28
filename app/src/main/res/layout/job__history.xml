@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cybussolutions.kluchit.Activities.Job_History">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/app_bar"
+        android:background="#ffffff" />
+
+
+</RelativeLayout>
+
+
+<fragment
+android:id="@+id/fragment_navdrawer"
+android:name="com.cybussolutions.kluchit.Fragments.DrawerFragment"
+android:layout_width="280dp"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+app:layout="@layout/fragment_drawer"
+tools:layout="@layout/fragment_drawer">
+
+</fragment>
+    </android.support.v4.widget.DrawerLayout>
