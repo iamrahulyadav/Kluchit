@@ -87,6 +87,7 @@ public class Job_discription extends AppCompatActivity {
 
         discription.setText(discript);
         specialization.setText(spcl);
+        head.setText(heading);
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,14 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.cybussolutions.kluchit.Activities.Job_detail">
+    tools:context="com.cybussolutions.kluchit.Activities.Job_detail"
+    android:background="#ffffff">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar">
         </include>
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text1"
+        android:text="Job Deatails"
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        android:textColor="#623487"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:padding="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Even Disription : "
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"
+        android:id="@+id/textView5"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/heading"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/textView14">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#f3f0f0">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/discription"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/edit_profile_btn"
+        >
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:background="#fff"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TitleView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job Title           : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/SetTitleHere"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Title Here"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:background="#fff"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/FnameView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job start date : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/SetFnameHere"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="D-O-B"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:background="#fff"
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/DOBView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job end date   : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/DOBSethERE"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="D-O-B"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:background="#fff"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/AddressView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Venue                :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/SetAddressHere"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Venue Here"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="#fff"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/EmailView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Staus                  :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#000000" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScrollView">
+                <TextView
+                    android:id="@+id/setEmailHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:text="Status here"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="normal"
+                    android:layout_marginTop="6dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="end"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
+                    />
+            </HorizontalScrollView>
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close Job"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:textColor="#ffffff"
+        android:background="@drawable/selector_button"
+        android:layout_marginTop="10dp" />
+
+
+</LinearLayout>

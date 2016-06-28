@@ -178,8 +178,6 @@ public class Job_detail extends AppCompatActivity {
                 String end_date = Information.getString("job_end_date");
                 String job_status = Information.getString("job_status");
 
-
-
                 Job_details_pojo data = new Job_details_pojo();
 
                 data.setDiscription(discription);
