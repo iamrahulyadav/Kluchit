@@ -178,7 +178,7 @@ public class FBregistration extends AppCompatActivity {
                              }
                             else {
                                  new AlertDialog.Builder(FBregistration.this)
-                                         .setTitle("Signup Confirmation Dialog")
+                                         .setTitle("Signup Confirmation Dialog:")
                                          .setMessage("You have successfully registered with (Email: " + ((EditText)findViewById(R.id.emialfb)).getText().toString() + ") . Use your set username and password to Log In. Thank You!")
                                          .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                              @Override
