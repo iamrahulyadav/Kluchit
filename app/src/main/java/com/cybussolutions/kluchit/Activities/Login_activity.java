@@ -64,7 +64,7 @@ import java.util.Map;
 
 public class Login_activity extends AppCompatActivity implements SurfaceHolder.Callback{
 
-
+    private int cou=0;
     Tracker t;
     private static final int MY_SOCKET_TIMEOUT_MS = 10000 ;
     private String email;
@@ -141,6 +141,10 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             public void onSuccess(LoginResult loginResult) {
 
+                ringProgressDialog = ProgressDialog.show(Login_activity.this, "Please wait ...",	"Checking Credentials ...", true);
+                ringProgressDialog.setCancelable(true);
+                ringProgressDialog.show();
+
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
@@ -159,7 +163,10 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
                                     intent.putExtra("image",response);
                                     intent.putExtra("bool","1");
                                     LoginManager.getInstance().logOut();
+
+                                    ringProgressDialog.dismiss();
                                     startActivity(intent);
+
                                 }
                             },0, 0, null,  new Response.ErrorListener() {
                                 @Override
@@ -170,6 +177,9 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
                                     //intent.putExtra("image",R.drawable.person);
                                     intent.putExtra("bool","00");
                                     LoginManager.getInstance().logOut();
+
+
+                                    ringProgressDialog.dismiss();
                                     startActivity(intent);
                                 }
                             });
@@ -181,6 +191,8 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
                         } catch (JSONException e) {
 
+                            ringProgressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Error retreiving user details, Try Again!",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -192,13 +204,14 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
             @Override
             public void onCancel() {
+                Toast.makeText(getApplicationContext(),"No Internet Connection!",Toast.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onError(FacebookException e) {
-                e.printStackTrace();
 
+                Toast.makeText(getApplicationContext(),"Some other error occured check your facebook app and try again!",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -553,7 +566,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
             {
 
                 ringProgressDialog.dismiss();
-                Toast.makeText(getApplication(),error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"No Internet Connection!", Toast.LENGTH_SHORT).show();
             }
         })
         {
@@ -608,37 +621,41 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
-    void play(){
+    void play() {
 
-        try {
-            AssetFileDescriptor afd;
-            afd = getResources().openRawResourceFd(R.raw.bkt);
-            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
-            mp.setLooping(true);
-            mp.setVolume(0,0);
+        if (cou == 0) {
+            try {
+                AssetFileDescriptor afd;
+                afd = getResources().openRawResourceFd(R.raw.bkt);
+                mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+                mp.setLooping(true);
+                mp.setVolume(0, 0);
 
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        mp.prepareAsync();
-        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                // Do something. For example: playButton.setEnabled(true);
-                mp.start();
-
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
 
+
+            mp.prepareAsync();
+            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    // Do something. For example: playButton.setEnabled(true);
+                    mp.start();
+                    cou++;
+                }
+            });
+
+        }
+        else
+        {
+            mp.start();
+        }
     }
-
-
 }
 
 
