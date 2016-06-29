@@ -89,13 +89,16 @@ public class Select_category extends AppCompatActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
 
             count=0;
+            String ids="";
             for (int i=0;i<listView.getCount();i++)
             {
                 if (category_adapter.values.containsKey(i)) {
                     if (count>0)
                     {
                         s_category+=",";
+                        ids+=",";
                     }
+                    ids+=category_adapter.get_obj_id(i);
                     s_category += category_adapter.values.get(i);
                     count++;
                 }
@@ -103,6 +106,7 @@ public class Select_category extends AppCompatActivity {
            // Toast.makeText(getBaseContext(),s_category,Toast.LENGTH_LONG).show();
             Intent intent = this.getIntent();
             intent.putExtra("chosen",s_category);
+            intent.putExtra("ids",ids);
             if (count>0) {
                 this.setResult(RESULT_OK, intent);
             }

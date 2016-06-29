@@ -61,7 +61,10 @@ public class Category_adapter extends ArrayAdapter<Category_Job> {
             }
         });
 
-
         return rowView;
+    }
+    public String get_obj_id(int postion)
+    {
+       return title[postion].get_id();
     }
 }
