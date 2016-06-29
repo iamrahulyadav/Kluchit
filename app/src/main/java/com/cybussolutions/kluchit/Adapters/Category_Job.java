@@ -16,4 +16,8 @@ public class Category_Job
         checkBox.setChecked(false);
         this.id=id;
     }
+    String get_id()
+    {
+        return id;
+    }
 }

@@ -60,6 +60,7 @@ public class FBregistration extends AppCompatActivity {
     private boolean result;
     RadioGroup rgroup;
     ProgressDialog ringProgressDialog;
+    String ids;
 
 
     String user, pass, email, category, jobtype,user_na,registered_user;
@@ -444,6 +445,8 @@ public class FBregistration extends AppCompatActivity {
         String arr = data.getStringExtra("chosen");
         TextView txt = (TextView) findViewById(R.id.editText);
         txt.setText(arr);
+
+        ids = data.getStringExtra("ids");//got ids here
 
         if (!((EditText) findViewById(R.id.editText)).equals("")) {
             ((EditText) findViewById(R.id.editText)).setError(null);
