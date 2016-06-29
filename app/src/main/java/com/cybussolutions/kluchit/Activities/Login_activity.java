@@ -599,6 +599,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
         super.onResume();
         start_animations();
         t.send(new HitBuilders.ScreenViewBuilder().build());
+        //onStart();
     }
 
 
@@ -639,8 +640,6 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
                 e.printStackTrace();
             }
 
-
-            mp.prepareAsync();
             mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -649,6 +648,8 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
                     cou++;
                 }
             });
+            mp.prepareAsync();
+
 
         }
         else

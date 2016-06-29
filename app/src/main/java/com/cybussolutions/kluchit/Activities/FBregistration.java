@@ -1,11 +1,14 @@
 package com.cybussolutions.kluchit.Activities;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -54,10 +57,12 @@ public class FBregistration extends AppCompatActivity {
     TextInputLayout user_emial, Password;
     EditText userEmail, userPassword, usercat;
     Button submit;
-
+    private boolean result;
     RadioGroup rgroup;
+    ProgressDialog ringProgressDialog;
 
-    String user, pass, email, category, jobtype,user_na;
+
+    String user, pass, email, category, jobtype,user_na,registered_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,7 @@ public class FBregistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fbregistration);
 
+        result=false;
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Kluchit");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -163,13 +169,100 @@ public class FBregistration extends AppCompatActivity {
                     }
                 } else {
 
+
+                    String postuser = EndPoints.BASE_URL + "/common_controller/saveNewUserBySocial";
+
+                    final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                             if (response.toString().contains("Already")) {
+                                 ringProgressDialog.dismiss();
+                                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                                 finish();
+                             }
+                            else {
+                                 new AlertDialog.Builder(FBregistration.this)
+                                         .setTitle("Signup Confirmation Dialog:")
+                                         .setMessage("You have successfully registered with (Email: " + ((EditText)findViewById(R.id.emialfb)).getText().toString() + ") . Use your set username and password to Log In. Thank You!")
+                                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                             @Override
+                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                 finish();
+                                             }
+                                         })
+                                         .create().show();
+                                 ringProgressDialog.dismiss();
+                             }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            ringProgressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            String user_e, pass_, categories_, username_;
+                            username_ = ((EditText) findViewById(R.id.userid)).getText().toString();
+                            user_e = ((EditText) findViewById(R.id.emialfb)).getText().toString();
+                            pass_ = ((EditText) findViewById(R.id.passwordfb)).getText().toString();
+                            categories_ = ((EditText) findViewById(R.id.editText)).getText().toString();
+                            params.put("username", username_.toLowerCase());//done
+                            params.put("password", pass_);//done
+                            params.put("is_active", "1");//done
+                            params.put("email", user_e.toLowerCase());//done
+
+                            String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
+                            params.put("date_added", timeStamp);//done
+                            params.put("filename", user_e.toLowerCase() + ".jpeg");//done
+
+
+                            String first = "", last = "";
+                            StringTokenizer st = new StringTokenizer(user_na);
+                            int i = 0, count = 0;
+                            while (st.hasMoreTokens()) {
+                                if (i == 0)
+                                    first = st.nextToken();
+                                else {
+                                    if (count > 0)
+                                        last += " ";
+                                    last += st.nextToken();
+                                    count++;
+                                }
+                                i++;
+                            }
+
+                            params.put("first_name", first);//done
+                            params.put("last_name", last);//done
+
+
+                            if (((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() == ((RadioButton) findViewById(R.id.in_house)).getId()) {
+                                params.put("employed_from", "in_house");
+                            } else {
+                                params.put("employed_from", "out_house");
+                            }
+                            params.put("categories", categories_.toLowerCase());//done
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/x-www-form-urlencoded");
+                            return params;
+                        }
+                    };//post user
+
                     // Toast.makeText(FBregistration.this, "Send Json ", Toast.LENGTH_SHORT).show();
 
                     String upload = EndPoints.BASE_URL + "upload_profile.php";
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-                    Bundle bundle = getIntent().getExtras();
+                    final Bundle bundle = getIntent().getExtras();
 
                     if (bundle.getString("bool").contains("1")) {
                         ((Bitmap) intent.getParcelableExtra("image")).compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -181,9 +274,9 @@ public class FBregistration extends AppCompatActivity {
                                 new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String s) {
-                                        //Disimissing the progress dialog
-                                        //Showing toast message of the response
-                                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                        if (s.contains("Uploaded"))
+                                            Volley.newRequestQueue(getApplicationContext()).add(sr);
+
                                     }
                                 },
                                 new Response.ErrorListener() {
@@ -192,7 +285,9 @@ public class FBregistration extends AppCompatActivity {
                                         //Dismissing the progress dialog
 
                                         //Showing toast
-                                        Toast.makeText(getApplicationContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
+                                        //result+=volleyError.toString();
+                                        ringProgressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
                                     }
                                 }) {
                             @Override
@@ -213,6 +308,9 @@ public class FBregistration extends AppCompatActivity {
                         };
 
 
+                        ringProgressDialog = ProgressDialog.show(FBregistration.this, "Please wait ...",	"Checking Credentials ...", true);
+                        ringProgressDialog.setCancelable(true);
+                        ringProgressDialog.show();
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
 
@@ -225,7 +323,10 @@ public class FBregistration extends AppCompatActivity {
                                     public void onResponse(String s) {
                                         //Disimissing the progress dialog
                                         //Showing toast message of the response
-                                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                        //result+=s;
+                                        //Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                        if (s.contains("Uploaded"))
+                                            Volley.newRequestQueue(getApplicationContext()).add(sr);
                                     }
                                 },
                                 new Response.ErrorListener() {
@@ -234,8 +335,9 @@ public class FBregistration extends AppCompatActivity {
                                         //Dismissing the progress dialog
 
                                         //Showing toast
-                                        Toast.makeText(getApplicationContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
-                                    }
+                                       // result+=volleyError.toString();
+                                        ringProgressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();                                    }
                                 }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
@@ -268,6 +370,9 @@ public class FBregistration extends AppCompatActivity {
                         };
 
                         // new comment
+                        ringProgressDialog = ProgressDialog.show(FBregistration.this, "Please wait ...",	"Checking Credentials ...", true);
+                        ringProgressDialog.setCancelable(true);
+                        ringProgressDialog.show();
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
                     }
@@ -276,82 +381,14 @@ public class FBregistration extends AppCompatActivity {
 //holla
 
 
-                    String postuser=EndPoints.BASE_URL+"/common_controller/saveNewUserBySocial";
-
-                    StringRequest sr = new StringRequest(Request.Method.POST,postuser, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // if (!response.toString().contains("not"))
-                            Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
-                            //else
-                            //  Toast.makeText(getApplicationContext(),"Not Registered",Toast.LENGTH_LONG).show();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
-                        }
-                    }){
-                        @Override
-                        protected Map<String,String> getParams(){
-                            Map<String,String> params = new HashMap<String, String>();
-                            String user_e,pass_,categories_,username_;
-                            username_=((EditText)findViewById(R.id.userid)).getText().toString();
-                            user_e=((EditText)findViewById(R.id.emialfb)).getText().toString();
-                            pass_=((EditText)findViewById(R.id.passwordfb)).getText().toString();
-                            categories_=((EditText)findViewById(R.id.editText)).getText().toString();
-                            params.put("username",username_.toLowerCase());//done
-                            params.put("password",pass_);//done
-                            params.put("is_active","1");//done
-                            params.put("email",user_e.toLowerCase());//done
-
-                            String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
-                            params.put("date_added",timeStamp);//done
-                            params.put("filename",user_e.toLowerCase()+".jpeg");//done
 
 
-                            String first="",last="";
-                            StringTokenizer st = new StringTokenizer(user_na);
-                            int i=0,count=0;
-                            while (st.hasMoreTokens()) {
-                                if (i==0)
-                                    first=st.nextToken();
-                                else {
-                                    if (count>0)
-                                        last+=" ";
-                                    last += st.nextToken();
-                                    count++;
-                                }
-                                i++;
-                            }
+                       // Volley.newRequestQueue(getApplicationContext()).add(sr);
 
-                            params.put("first_name",first);//done
-                            params.put("last_name",last);//done
-
-
-
-                            if (((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId()==((RadioButton) findViewById(R.id.in_house)).getId()) {
-                                params.put("employed_from","in_house");
-                            }
-                            else
-                            {
-                                params.put("employed_from","out_house");
-                            }
-                            params.put("categories",categories_.toLowerCase());//done
-
-                            return params;
-                        }
-
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String,String> params = new HashMap<String, String>();
-                            params.put("Content-Type","application/x-www-form-urlencoded");
-                            return params;
-                        }
-                    };
-                    Volley.newRequestQueue(getApplicationContext()).add(sr);
-
-
+                    /*else
+                    {
+                        Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+                    }*/
                 }
             }
         });
