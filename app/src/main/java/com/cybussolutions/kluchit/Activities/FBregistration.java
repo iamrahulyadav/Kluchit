@@ -245,7 +245,7 @@ public class FBregistration extends AppCompatActivity {
                                 params.put("employed_from", "out_house");
                             }
                             params.put("categories", categories_.toLowerCase());//done
-
+                            params.put("c_ids",ids);
                             return params;
                         }
 
