@@ -131,6 +131,7 @@ public class FBregistration extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 // getdata();
 
                 Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);

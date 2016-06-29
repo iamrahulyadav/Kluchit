@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -196,7 +197,12 @@ public class Select_category extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                ringProgressDialog.dismiss();
+                if(error instanceof NoConnectionError) {
+                    ringProgressDialog.dismiss();
+                    Intent intent = new Intent(Select_category.this,NoInternet.class);
+                    startActivity(intent);
+                }
+
                 // Error handling
                 System.out.println("Something went wrong!");
                 error.printStackTrace();
