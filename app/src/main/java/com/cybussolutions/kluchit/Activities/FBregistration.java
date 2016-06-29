@@ -176,6 +176,7 @@ public class FBregistration extends AppCompatActivity {
                     final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Toast.makeText(FBregistration.this,response,Toast.LENGTH_LONG).show();
                              if (response.toString().contains("Already")) {
                                  ringProgressDialog.dismiss();
                                  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
@@ -188,7 +189,7 @@ public class FBregistration extends AppCompatActivity {
                                          .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                              @Override
                                              public void onClick(DialogInterface dialogInterface, int i) {
-                                                 finish();
+                                                 //finish();
                                              }
                                          })
                                          .create().show();
