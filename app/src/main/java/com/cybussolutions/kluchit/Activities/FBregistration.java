@@ -1,5 +1,6 @@
 package com.cybussolutions.kluchit.Activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,6 +59,8 @@ public class FBregistration extends AppCompatActivity {
     Button submit;
     private boolean result;
     RadioGroup rgroup;
+    ProgressDialog ringProgressDialog;
+
 
     String user, pass, email, category, jobtype,user_na,registered_user;
 
@@ -173,6 +176,7 @@ public class FBregistration extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                              if (response.toString().contains("Already")) {
+                                 ringProgressDialog.dismiss();
                                  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                                  finish();
                              }
@@ -187,12 +191,13 @@ public class FBregistration extends AppCompatActivity {
                                              }
                                          })
                                          .create().show();
-
+                                 ringProgressDialog.dismiss();
                              }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            ringProgressDialog.dismiss();
                             Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
                         }
                     }) {
@@ -281,6 +286,7 @@ public class FBregistration extends AppCompatActivity {
 
                                         //Showing toast
                                         //result+=volleyError.toString();
+                                        ringProgressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
                                     }
                                 }) {
@@ -302,6 +308,9 @@ public class FBregistration extends AppCompatActivity {
                         };
 
 
+                        ringProgressDialog = ProgressDialog.show(FBregistration.this, "Please wait ...",	"Checking Credentials ...", true);
+                        ringProgressDialog.setCancelable(true);
+                        ringProgressDialog.show();
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
 
@@ -327,6 +336,7 @@ public class FBregistration extends AppCompatActivity {
 
                                         //Showing toast
                                        // result+=volleyError.toString();
+                                        ringProgressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();                                    }
                                 }) {
                             @Override
@@ -360,6 +370,9 @@ public class FBregistration extends AppCompatActivity {
                         };
 
                         // new comment
+                        ringProgressDialog = ProgressDialog.show(FBregistration.this, "Please wait ...",	"Checking Credentials ...", true);
+                        ringProgressDialog.setCancelable(true);
+                        ringProgressDialog.show();
                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                         requestQueue.add(stringRequest);
                     }
