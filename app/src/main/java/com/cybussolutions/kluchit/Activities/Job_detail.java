@@ -153,6 +153,7 @@ public class Job_detail extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("job_id",job_id );
                 params.put("user_id",userId);
+                // 1 for open 0 for close
                 params.put("is_open","1");
                 return params;
 
@@ -170,6 +171,7 @@ public class Job_detail extends AppCompatActivity {
 
 
     }
+
     public void Jsonrecieve() {
 
 
@@ -182,7 +184,7 @@ public class Job_detail extends AppCompatActivity {
 
                         parseJSONResponce(response);
 
-                      //  listView.setAdapter(addapter);
+
 
                     }
                 },
@@ -226,6 +228,7 @@ public class Job_detail extends AppCompatActivity {
 
     }
 
+    // parsing josn responce
     private void parseJSONResponce(String responce) {
 
 
@@ -280,10 +283,7 @@ public class Job_detail extends AppCompatActivity {
 
                 }
 
-
-
                 listJobs.add(data);
-
 
             }
 
