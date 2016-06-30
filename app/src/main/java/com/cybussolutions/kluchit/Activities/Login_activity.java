@@ -109,6 +109,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceHolder holder;
 
 
+    AssetFileDescriptor afd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +129,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
             Intent intent= new Intent(Login_activity.this, MainActivity.class);
             startActivity(intent);
             finish();
+            //mp.start();
         }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -194,6 +196,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
                                     ringProgressDialog.dismiss();
                                     startActivity(intent);
+
 
                                 }
                             },0, 0, null,  new Response.ErrorListener() {
@@ -291,6 +294,8 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.userid1);
         textView.setAdapter(adapter);
 
+
+        afd = getResources().openRawResourceFd(R.raw.bkt);
         getWindow().setFormat(PixelFormat.UNKNOWN);
         mPreview = (SurfaceView)findViewById(R.id.surface);
         holder = mPreview.getHolder();
@@ -299,7 +304,6 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         mp = new MediaPlayer();
-
     }
 
     public boolean saveArray(String[] array, String arrayName, Context mContext) {
@@ -627,6 +631,14 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
         super.onResume();
         start_animations();
         t.send(new HitBuilders.ScreenViewBuilder().build());
+
+
+
+        //mp.stop();
+        //mp=
+        //mp.setDisplay(holder);
+        //mp.start();
+        //cou=0;
         //onStart();
     }
 
@@ -637,10 +649,23 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        mp.setDisplay(holder);
+
+        //int x=0;
         try {
-            AssetFileDescriptor afd;
-            afd = getResources().openRawResourceFd(R.raw.bkt);
+            if (mp.isPlaying()) {
+                mp.stop();
+                mp.release();
+                mp = new MediaPlayer();
+            }
+        }
+            catch (Exception e)
+            {
+                Toast.makeText(getApplicationContext(),"abc",Toast.LENGTH_LONG).show();
+            }
+
+
+        try {
+            mp.setDisplay(holder);
             mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
             mp.setLooping(true);
             mp.setVolume(0, 0);
@@ -672,7 +697,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        //Toast.makeText(getApplicationContext(),"Destroyed",Toast.LENGTH_LONG).show();
     }
 
 }
