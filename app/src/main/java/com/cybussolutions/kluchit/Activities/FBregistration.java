@@ -98,8 +98,6 @@ public class FBregistration extends AppCompatActivity {
 
 
 
-        userEmail.setFocusable(false);
-
         final Intent intent = getIntent();
         user = intent.getStringExtra("name");
 
