@@ -98,6 +98,7 @@ public class FBregistration extends AppCompatActivity {
 
 
 
+
         final Intent intent = getIntent();
         user = intent.getStringExtra("name");
 
@@ -395,14 +396,12 @@ public class FBregistration extends AppCompatActivity {
         });
 
         t = Analytics.getInstance(this).getDefaultTracker();
-        if (intent.getStringExtra("email").equals(""))
-        {
-            userEmail.setFocusable(true);
-        }
-        else
+        if (!intent.getStringExtra("email").isEmpty())
         {
             userEmail.setText(intent.getStringExtra("email"));
+            userEmail.setFocusable(false);
         }
+
 
 
 
