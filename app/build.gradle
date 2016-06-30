@@ -6,6 +6,11 @@ android {
 
     repositories {
         mavenCentral()
+
+        dexOptions {
+            incremental true
+            javaMaxHeapSize "12g"
+        }
     }
 
     defaultConfig {

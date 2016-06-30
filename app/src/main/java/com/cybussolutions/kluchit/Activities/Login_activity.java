@@ -610,8 +610,32 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mp.setDisplay(holder);
-        play();
-    }
+        try {
+            AssetFileDescriptor afd;
+            afd = getResources().openRawResourceFd(R.raw.bkt);
+            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+            mp.setLooping(true);
+            mp.setVolume(0, 0);
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                // Do something. For example: playButton.setEnabled(true);
+                mp.start();
+                cou++;
+            }
+        });
+        mp.prepareAsync();
+
+}
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -622,41 +646,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
-    void play() {
 
-        if (cou == 0) {
-            try {
-                AssetFileDescriptor afd;
-                afd = getResources().openRawResourceFd(R.raw.bkt);
-                mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
-                mp.setLooping(true);
-                mp.setVolume(0, 0);
-
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    // Do something. For example: playButton.setEnabled(true);
-                    mp.start();
-                    cou++;
-                }
-            });
-            mp.prepareAsync();
-
-
-        }
-        else
-        {
-            mp.start();
-        }
-    }
 }
 
 

@@ -219,7 +219,7 @@ public class FBregistration extends AppCompatActivity {
 
                             String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
                             params.put("date_added", timeStamp);//done
-                            params.put("filename", user_e.toLowerCase() + ".jpeg");//done
+                            params.put("filename", "http://demo.cybussolutions.com/kluchitrm/uploads/"+user_e.toLowerCase() + ".jpeg");//done
 
 
                             String first = "", last = "";
