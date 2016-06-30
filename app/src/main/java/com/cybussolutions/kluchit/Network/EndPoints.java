@@ -15,8 +15,4 @@ public class EndPoints
     public static final String GET_JOB_DETAILS = BASE_URL+"common_controller/getUserJobDataById";
     public static final String CLOSE_JOB = BASE_URL+"common_controller/closeJob";
 
-
-
-
-
 }

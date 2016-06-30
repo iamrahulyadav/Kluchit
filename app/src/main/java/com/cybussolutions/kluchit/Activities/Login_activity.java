@@ -62,6 +62,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.sql.Types.NULL;
+
 public class Login_activity extends AppCompatActivity implements SurfaceHolder.Callback{
 
     private int cou=0;
@@ -149,9 +151,35 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            final String email = object.getString("email");
-                            final String name = object.getString("name");
-                            String id= object.getString("id");
+                            final String email ;
+                            if (object.has("email"))
+                            {
+                                email = object.getString("email");
+                            }
+                            else
+                            {
+                                email="";
+                            }
+
+                            final String name ;
+                            if (object.has("name"))
+                            {
+                                name = object.getString("name");
+                            }
+                            else
+                            {
+                                name="";
+                            }
+                            String id;
+                            if (object.has("id"))
+                            {
+                                id = object.getString("id");
+                            }
+                            else
+                            {
+                                id="";
+                            }
+
                             Toast.makeText(getApplicationContext(),email+" Facebook Login Successful",Toast.LENGTH_LONG).show();
                             ImageRequest ir = new ImageRequest("http://graph.facebook.com/"+id+"/picture?type=large", new Response.Listener<Bitmap>() {
 

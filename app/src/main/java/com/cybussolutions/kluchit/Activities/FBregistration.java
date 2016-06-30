@@ -397,7 +397,15 @@ public class FBregistration extends AppCompatActivity {
         });
 
         t = Analytics.getInstance(this).getDefaultTracker();
-        userEmail.setText(intent.getStringExtra("email"));
+        if (intent.getStringExtra("email").equals(""))
+        {
+            userEmail.setFocusable(true);
+        }
+        else
+        {
+            userEmail.setText(intent.getStringExtra("email"));
+        }
+
 
 
         Bundle bundle = getIntent().getExtras();
