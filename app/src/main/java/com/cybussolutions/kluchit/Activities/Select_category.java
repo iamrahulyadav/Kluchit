@@ -203,8 +203,13 @@ public class Select_category extends AppCompatActivity {
 
                 if(error instanceof NoConnectionError) {
                     ringProgressDialog.dismiss();
-                    Intent intent = new Intent(Select_category.this,NoInternet.class);
+                    Intent intent = new Intent(Select_category.this,No_Internet_Category.class);
                     startActivity(intent);
+
+                    intent = Select_category.this.getIntent();
+                    Select_category.this.setResult(RESULT_CANCELED, intent);
+                    finish();
+                    //Select_category.this.finish();
                 }
 
                 // Error handling

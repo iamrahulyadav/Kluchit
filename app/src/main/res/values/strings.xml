@@ -15,4 +15,8 @@
         <item>Hair Stylist</item>
         <item>Editor</item>
     </string-array>
+
+    <string name="title_activity_no_internet_signup">No_internet_signup</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

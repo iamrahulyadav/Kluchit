@@ -97,6 +97,10 @@
 
         <activity android:name=".Activities.Job_detail" >
         </activity>
+
+
+        <activity android:name=".Activities.No_Internet_Category" >
+        </activity>
     </application>
 
 </manifest>

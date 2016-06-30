@@ -183,17 +183,18 @@ public class FBregistration extends AppCompatActivity {
                                  finish();
                              }
                             else {
+                                 ringProgressDialog.dismiss();
                                  new AlertDialog.Builder(FBregistration.this)
                                          .setTitle("Signup Confirmation Dialog:")
                                          .setMessage("You have successfully registered with (Email: " + ((EditText)findViewById(R.id.emialfb)).getText().toString() + ") . Use your set username and password to Log In. Thank You!")
                                          .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                              @Override
                                              public void onClick(DialogInterface dialogInterface, int i) {
-                                                 //finish();
+                                                 finish();
                                              }
-                                         })
+                                         }).setCancelable(false)
                                          .create().show();
-                                 ringProgressDialog.dismiss();
+
                              }
                         }
                     }, new Response.ErrorListener() {
@@ -443,12 +444,15 @@ public class FBregistration extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String arr = data.getStringExtra("chosen");
-        TextView txt = (TextView) findViewById(R.id.editText);
-        txt.setText(arr);
 
-        ids = data.getStringExtra("ids");//got ids here
 
+
+        if (resultCode!=RESULT_CANCELED) {
+            String arr = data.getStringExtra("chosen");
+            TextView txt = (TextView) findViewById(R.id.editText);
+            txt.setText(arr);
+            ids = data.getStringExtra("ids");//got ids here
+        }
         if (!((EditText) findViewById(R.id.editText)).equals("")) {
             ((EditText) findViewById(R.id.editText)).setError(null);
         }
