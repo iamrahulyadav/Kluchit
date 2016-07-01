@@ -103,21 +103,32 @@ public class InstaActivity extends Activity {
 
 
 
-                Drawable myDrawable = imgPreview.getDrawable();
-                Bitmap anImage      = ((BitmapDrawable) myDrawable).getBitmap();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // downsizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
+
+                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                        options);
+                Matrix matrix = new Matrix();
+
+                matrix.postRotate(90);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),true);
+
+                Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
 
 
-                // Create the URI from the media
-                File media = new File(getOutputMediaFileUri(MEDIA_TYPE_IMAGE).getPath());
 
+                String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), rotatedBitmap,"title", null);
+                Uri bmpUri = Uri.parse(pathofBmp);
+                final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                emailIntent1.setType("image/png");
+                startActivity(Intent.createChooser(emailIntent1, "Share to"));
 
-                Uri uri = Uri.fromFile(media);
-
-                // Add the URI to the Intent.
-                Intent share=new Intent(Intent.ACTION_SEND);
-                share.putExtra(Intent.EXTRA_STREAM, uri);
-                // Broadcast the Intent.
-                startActivity(Intent.createChooser(share, "Share to"));
 
             }
         });
