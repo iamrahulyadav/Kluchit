@@ -62,7 +62,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -86,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     Tracker t;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,14 +168,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dispatchTakePictureIntent();
+                Intent intent=new Intent(MainActivity.this,InstaActivity.class);
+                startActivity(intent);
+
 
             }
         });
 
     }
 
-    private void dispatchTakePictureIntent()
+  /*  private void dispatchTakePictureIntent()
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+*/
 
     @Override
     public void onBackPressed() {
