@@ -20,9 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 
 import com.cybussolutions.kluchit.R;
 
@@ -42,7 +44,7 @@ public class InstaActivity extends Activity {
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-
+    static int t=0;
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
 
@@ -57,8 +59,8 @@ public class InstaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instagram);
 
-        imgPreview = (ImageView) findViewById(R.id.imgPreview);
-        videoPreview = (VideoView) findViewById(R.id.videoPreview);
+        imgPreview = (ImageView) findViewById(R.id.img);
+        videoPreview = (VideoView) findViewById(R.id.vid);
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button) findViewById(R.id.btnRecordVideo);
 
@@ -101,37 +103,52 @@ public class InstaActivity extends Activity {
             public void onClick(View view) {
 
 
+                if (t == MEDIA_TYPE_IMAGE) {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+
+                    // downsizing image as it throws OutOfMemory Exception for larger
+                    // images
+                    options.inSampleSize = 8;
+
+                    final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                            options);
+                    Matrix matrix = new Matrix();
+
+                    matrix.postRotate(90);
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
 
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-
-                // downsizing image as it throws OutOfMemory Exception for larger
-                // images
-                options.inSampleSize = 8;
-
-                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                        options);
-                Matrix matrix = new Matrix();
-
-                matrix.postRotate(90);
-
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),true);
-
-                Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
+                    String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), rotatedBitmap, "title", null);
+                    Uri bmpUri = Uri.parse(pathofBmp);
+                    final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
+                    emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                    emailIntent1.setType("image/png");
+                    startActivity(Intent.createChooser(emailIntent1, "Share Image to"));
 
 
+                } else if (t == MEDIA_TYPE_VIDEO) {
+                    videoPreview.pause();
+                    String path = fileUri.getPath();
+                    Uri vuri = Uri.parse(path);
+                    final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
+                    emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    emailIntent1.putExtra(Intent.EXTRA_STREAM, vuri);
+                    emailIntent1.setType("video/*");
+                    startActivity(Intent.createChooser(emailIntent1, "Share Video to"));
 
-                String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), rotatedBitmap,"title", null);
-                Uri bmpUri = Uri.parse(pathofBmp);
-                final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
-                emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                emailIntent1.setType("image/png");
-                startActivity(Intent.createChooser(emailIntent1, "Share to"));
+                } else {
+                    Toast.makeText(InstaActivity.this, "Please Capture an image or video to share", Toast.LENGTH_LONG).show();
+                }
 
 
             }
         });
+
+        share.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -206,38 +223,51 @@ public class InstaActivity extends Activity {
      * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Button btn=(Button)findViewById(R.id.share);
         // if the result is capturing Image
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
                 // display it in image view
                 previewCapturedImage();
+                btn.setVisibility(View.VISIBLE);
+
             } else if (resultCode == RESULT_CANCELED) {
+                btn.setVisibility(View.INVISIBLE);
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
                         .show();
+
             } else {
+                btn.setVisibility(View.INVISIBLE);
                 // failed to capture image
                 Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                         .show();
+
             }
         } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // video successfully recorded
                 // preview the recorded video
+                btn.setVisibility(View.VISIBLE);
                 previewVideo();
+
             } else if (resultCode == RESULT_CANCELED) {
+                btn.setVisibility(View.INVISIBLE);
                 // user cancelled recording
                 Toast.makeText(getApplicationContext(),
                         "User cancelled video recording", Toast.LENGTH_SHORT)
                         .show();
+
             } else {
+                btn.setVisibility(View.INVISIBLE);
                 // failed to record video
                 Toast.makeText(getApplicationContext(),
                         "Sorry! Failed to record video", Toast.LENGTH_SHORT)
                         .show();
+
             }
         }
     }
@@ -329,12 +359,15 @@ public class InstaActivity extends Activity {
                 Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
+            t=MEDIA_TYPE_IMAGE;
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "IMG_" + timeStamp + ".jpg");
         } else if (type == MEDIA_TYPE_VIDEO) {
+            t=MEDIA_TYPE_VIDEO;
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "VID_" + timeStamp + ".mp4");
         } else {
+            t=0;
             return null;
         }
 
