@@ -1,6 +1,7 @@
 package com.cybussolutions.kluchit.Activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,13 +28,26 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Aaybee on 7/1/2016.
@@ -53,6 +68,8 @@ public class InstaActivity extends Activity {
     private ImageView imgPreview;
     private VideoView videoPreview;
     private Button btnCapturePicture, btnRecordVideo;
+    ProgressDialog ringProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,30 +121,20 @@ public class InstaActivity extends Activity {
 
 
                 if (t == MEDIA_TYPE_IMAGE) {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
 
                     // downsizing image as it throws OutOfMemory Exception for larger
                     // images
-                    options.inSampleSize = 8;
 
-                    final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                            options);
-                    Matrix matrix = new Matrix();
-
-                    matrix.postRotate(90);
-
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-
-
-                    String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), rotatedBitmap, "title", null);
+                    String pathofBmp = fileUri.getPath();
                     Uri bmpUri = Uri.parse(pathofBmp);
                     final Intent emailIntent1 = new Intent(android.content.Intent.ACTION_SEND);
                     emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
                     emailIntent1.setType("image/png");
                     startActivity(Intent.createChooser(emailIntent1, "Share Image to"));
+
+
+
 
 
                 } else if (t == MEDIA_TYPE_VIDEO) {
@@ -289,7 +296,7 @@ public class InstaActivity extends Activity {
             // images
             options.inSampleSize = 8;
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+            Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
             Matrix matrix = new Matrix();
 
@@ -373,4 +380,5 @@ public class InstaActivity extends Activity {
 
         return mediaFile;
     }
+
 }
