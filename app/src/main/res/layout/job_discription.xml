@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cybussolutions.kluchit.Activities.Job_Activity"
-    android:background="#f5f5f5">
+    tools:context="com.cybussolutions.kluchit.Activities.Job_discription"
+    android:background="@drawable/background">
 
 
     <include
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:text="ACCEPT"
         android:id="@+id/reply"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginLeft="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"

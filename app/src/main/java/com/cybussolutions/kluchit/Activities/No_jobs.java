@@ -23,6 +23,7 @@ public class No_jobs extends AppCompatActivity {
     private Toolbar toolbar;
     DrawerFragment drawerFragment = new DrawerFragment();
     TextView title;
+    String message;
     Tracker t;
 
 
@@ -45,13 +46,14 @@ public class No_jobs extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.jobs_title);
 
-
+        final Intent intent = getIntent();
+        message = intent.getStringExtra("message");
 
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
         t= Analytics.getInstance(this).getDefaultTracker();
 
-
+            title.setText(message);
     }
 
     @Override

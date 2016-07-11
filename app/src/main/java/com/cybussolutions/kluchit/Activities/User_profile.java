@@ -246,7 +246,9 @@ public class User_profile extends AppCompatActivity {
 
             if (catagory == "false") {
 
-                Toast.makeText(User_profile.this, "You have no current jobs at this moment", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(User_profile.this,No_jobs.class);
+                intent.putExtra("message","NO CURRENTY HAVE NO JOBS AVAILABLE");
+                startActivity(intent);
             }
 
             JSONArray Array = new JSONArray(catagory);

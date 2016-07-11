@@ -2,16 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="280dp"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Activities.MainActivity"
-    android:background="#ffffff">
+   >
 
 
     <ImageView
         android:layout_width="320dp"
         android:layout_height="200dp"
         android:id="@+id/imageView"
+        android:background="@drawable/background"
         android:layout_alignParentTop="true"
-        android:background="@color/background_material_light" />
+        />
 
     <ListView
         android:layout_width="wrap_content"

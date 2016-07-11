@@ -61,7 +61,7 @@ public class Job_detail extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         job_id = intent.getStringExtra("job_id");
 
         Jsonrecieve();
@@ -86,7 +86,9 @@ public class Job_detail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Closejob();
+               Closejob();
+
+
                 finish();
 
             }
@@ -273,7 +275,7 @@ public class Job_detail extends AppCompatActivity {
                 start.setText(start_date);
                 end.setText(end_date);
                 venuejob.setText(venue);
-                if(job_status.equals("0"))
+                if(job_status.equals("1"))
                 {
                     isopen.setText("open");
 

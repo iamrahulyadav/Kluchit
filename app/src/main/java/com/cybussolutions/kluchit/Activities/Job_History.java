@@ -210,7 +210,9 @@ public class Job_History extends AppCompatActivity {
 
             if (catagory == "false") {
 
-                Toast.makeText(Job_History.this, "You have not done any jobs for kluchit", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Job_History.this,No_jobs.class);
+                intent.putExtra("message","YOU HAVE NOT DONE ANY JOB WITH KLUCHIT");
+                startActivity(intent);
             }
 
             JSONArray Array = new JSONArray(catagory);

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.cybussolutions.kluchit.Activities.Job_detail"
-    android:background="#ffffff">
+    android:background="@drawable/background">
 
     <include
         android:id="@+id/app_bar"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Even Disription : "
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:textColor="#000000"
         android:id="@+id/textView5"
         android:layout_marginLeft="10dp"
@@ -43,14 +43,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_below="@id/textView5">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#f3f0f0">
+            android:layout_height="120dp"
+            android:background="@drawable/background">
 
 
             <TextView
@@ -59,7 +59,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Small Text"
                 android:id="@+id/discription"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="#000000"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
@@ -72,10 +72,11 @@
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_margin="5dp"
+        android:background="@drawable/background"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_below="@+id/edit_profile_btn"
         >
 
@@ -275,9 +276,10 @@
         android:padding="20dp"
         android:textStyle="bold"
         android:typeface="serif"
+        android:layout_marginTop="20dp"
         android:textColor="#ffffff"
         android:background="@drawable/selector_button"
-        android:layout_marginTop="10dp" />
+      />
 
 
 </LinearLayout>

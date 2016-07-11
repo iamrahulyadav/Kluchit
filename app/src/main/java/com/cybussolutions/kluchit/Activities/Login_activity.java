@@ -64,7 +64,7 @@ import java.util.Map;
 
 import static java.sql.Types.NULL;
 
-public class Login_activity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class Login_activity extends AppCompatActivity{
 
     private int cou=0;
     Tracker t;
@@ -105,8 +105,8 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
 
     private MediaPlayer mp;
-    private SurfaceView mPreview;
-    private SurfaceHolder holder;
+  //  private SurfaceView mPreview;
+  //  private SurfaceHolder holder;
 
 
     AssetFileDescriptor afd;
@@ -297,13 +297,13 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
 
         afd = getResources().openRawResourceFd(R.raw.bkt);
         getWindow().setFormat(PixelFormat.UNKNOWN);
-        mPreview = (SurfaceView)findViewById(R.id.surface);
-        holder = mPreview.getHolder();
-        holder.setFixedSize(800, 480);
+       // mPreview = (SurfaceView)findViewById(R.id.surface);
+       // holder = mPreview.getHolder();
+        //holder.setFixedSize(800, 480);
 
-        holder.addCallback(this);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        mp = new MediaPlayer();
+       // holder.addCallback(this);
+       // holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+       // mp = new MediaPlayer();
     }
 
     public boolean saveArray(String[] array, String arrayName, Context mContext) {
@@ -647,7 +647,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
         super.onPause();
        // mp.release();
     }
-    @Override
+   /* @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
         //int x=0;
@@ -699,7 +699,7 @@ public class Login_activity extends AppCompatActivity implements SurfaceHolder.C
     public void surfaceDestroyed(SurfaceHolder holder) {
         //Toast.makeText(getApplicationContext(),"Destroyed",Toast.LENGTH_LONG).show();
     }
-
+*/
 }
 
 
