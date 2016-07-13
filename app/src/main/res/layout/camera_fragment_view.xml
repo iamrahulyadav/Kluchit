@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frameLayout"
+    android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:background="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Capture picture button -->
+
+    <!-- Record video button -->
+
+    <Button
+        android:id="@+id/btnRecordVideo"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="left|bottom"
+        android:background="@drawable/vidbutton"/>
+
+    <Button
+        android:id="@+id/btnCapturePicture"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/cambutton"/>
+
+    <Button
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/share"
+        android:layout_gravity="right|bottom"
+        android:background="@drawable/shareone"
+        />
+</FrameLayout>

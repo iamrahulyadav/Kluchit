@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frameLayout2"
+    android:background="@color/button_material_dark"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- To display picture taken -->
+
+    <!-- To preview video recorded -->
+
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/vid"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/img"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nopic"
+        android:layout_gravity="center"
+        android:text="No picture taken"
+        android:textSize="40dp"
+        android:background="@color/common_action_bar_splitter"
+        android:textAlignment="center"
+        android:gravity="center"
+        />
+
+</FrameLayout>

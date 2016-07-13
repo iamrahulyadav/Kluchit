@@ -33,12 +33,13 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:id="@+id/button"
-        android:visibility="gone"
-        android:background="@drawable/instagram"
+        android:background="@drawable/cambutton"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"/>
+
+
 
     <ImageView
         android:layout_width="wrap_content"
