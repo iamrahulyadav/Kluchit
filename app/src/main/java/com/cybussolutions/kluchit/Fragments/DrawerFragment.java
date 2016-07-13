@@ -32,7 +32,7 @@ public class DrawerFragment extends Fragment {
     Drawer_Addapter drawer_addapter = null;
 
     String[] nameArray = new String[] {"Home","Profile","Work History","Logout"};
-    int[] images =  new int[] {R.drawable.house,R.drawable.profile,R.drawable.history,R.drawable.logout};
+    int[] images =  new int[] {R.drawable.arowblue,R.drawable.arowgreen,R.drawable.arowyellowe,R.drawable.arowred};
     ListView listView;
 
     public DrawerFragment() {

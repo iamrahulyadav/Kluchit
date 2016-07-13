@@ -14,6 +14,6 @@ public class EndPoints
     public static final String SEND_ANSWERS = BASE_URL+"user/getUserQuestionAnswers";
     public static final String GET_JOB_DETAILS = BASE_URL+"common_controller/getUserJobDataById";
     public static final String CLOSE_JOB = BASE_URL+"common_controller/closeJob";
-    public static final String GET_POST_QUESTIONS = BASE_URL+"user/getPostQuestions";
+    public static final String GET_POST_QUESTIONS = BASE_URL+"user/getUserPostQuestions";
 
 }

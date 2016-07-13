@@ -42,7 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Questions_Activity  extends AppCompatActivity{
+public class Questions_Activity  extends AppCompatActivity
+{
 
 
     ListView listView;
@@ -66,18 +67,22 @@ public class Questions_Activity  extends AppCompatActivity{
 
     ProgressDialog ringProgressDialog;
 
+    String screen;
+
 
 
     Tracker t;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.questions_);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Kluchit");
+
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,13 +94,25 @@ public class Questions_Activity  extends AppCompatActivity{
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userid = pref.getString("user_id", null);
 
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...","Loading", true);
+        ringProgressDialog.setCancelable(true);
+        ringProgressDialog.show();
+
         final Intent intent = getIntent();
         catagory = intent.getStringExtra("user_catagory");
         is_Accept = intent.getStringExtra("is_accept");
         q_Type = intent.getStringExtra("ques_type");
         job_id = intent.getStringExtra("job_id");
+        screen = intent.getStringExtra("screen");
 
-        Jsonsend(is_Accept);
+        if (screen.equals("1"))
+        {
+            jsonSendPre(is_Accept);
+        }
+        else
+        {
+            jsonSendPost();
+        }
 
         sendReply = (Button) findViewById(R.id.send);
         listView = (ListView) findViewById(R.id.question_list);
@@ -111,7 +128,7 @@ public class Questions_Activity  extends AppCompatActivity{
                 if (list_Questions.size() == value.size()) {
                     jsonSendAnswers();
 
-                    Toast.makeText(Questions_Activity.this, value.toString(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(Questions_Activity.this, value.toString(), Toast.LENGTH_SHORT).show();
                     finish();
 
                     Intent intent1 = new Intent(Questions_Activity.this, MainActivity.class);
@@ -153,11 +170,11 @@ public class Questions_Activity  extends AppCompatActivity{
         startActivity(intent);
     }
 
-    public void Jsonsend(final String resutl)
+
+    // for pre questions
+    public void jsonSendPre(final String resutl)
     {
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...","Loading", true);
-        ringProgressDialog.setCancelable(true);
-        ringProgressDialog.show();
+
         final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.SEND_RESPONCE,
                 new Response.Listener<String>()
                 {
@@ -168,6 +185,7 @@ public class Questions_Activity  extends AppCompatActivity{
                         list_Questions = parseJSONResponce(response);
                         listView.setAdapter(addapter);
                         ringProgressDialog.dismiss();
+
 
 
                     }
@@ -212,6 +230,68 @@ public class Questions_Activity  extends AppCompatActivity{
     }
 
 
+    // for post questions
+
+    public void jsonSendPost()
+    {
+
+        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_POST_QUESTIONS,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+
+
+                        list_Questions = parseJSONResponce(response);
+                        listView.setAdapter(addapter);
+                        ringProgressDialog.dismiss();
+
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+                if(error instanceof NoConnectionError) {
+                    ringProgressDialog.dismiss();
+                    Intent intent = new Intent(Questions_Activity.this,NoInternet.class);
+                    startActivity(intent);
+                }
+
+                else
+                {
+                    Toast.makeText(getApplication(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    ringProgressDialog.dismiss();
+                }
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError
+            {
+
+                Map<String,String> params = new HashMap<>();
+                params.put("ques_type","1");
+                return params;
+
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
+
+    }
+
+
+
     private ArrayList<Questions> parseJSONResponce(String responce)  {
 
         JSONObject object;
@@ -229,7 +309,7 @@ public class Questions_Activity  extends AppCompatActivity{
             {
 
                 JSONObject Information=Array.getJSONObject(i);
-                String q_id = Information.getString("q_id");
+                String q_id = Information.getString("id");
                 String q_txt =Information.getString("qs_text");
                 String cat_type =Information.getString("qs_category");
 

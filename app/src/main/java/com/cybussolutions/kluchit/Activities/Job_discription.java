@@ -168,6 +168,7 @@ public class Job_discription extends AppCompatActivity {
                             intent.putExtra("is_accept", result);
                             intent.putExtra("ques_type", "0");
                             intent.putExtra("job_id", job_id);
+                            intent.putExtra("screen","1");
 
                             startActivity(intent);
                             finish();

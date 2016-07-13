@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.kluchit.Adapters.Addapter;
 import com.cybussolutions.kluchit.Adapters.Main_addapter;
 import com.cybussolutions.kluchit.DataModels.Main_screen_pojo;
 import com.cybussolutions.kluchit.Fragments.DrawerFragment;
@@ -51,7 +52,7 @@ public class User_profile extends AppCompatActivity {
     private Toolbar toolbar;
     TextView Email,name;
     ListView listView;
-    private Main_addapter addapter;
+    private Addapter addapter;
     private ArrayList<Main_screen_pojo> listJobs = new ArrayList<>();
     ProgressDialog ringProgressDialog;
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
@@ -108,7 +109,7 @@ public class User_profile extends AppCompatActivity {
         Email.setText(useremail);
         name.setText(username);
 
-        addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
+        addapter = new Addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
 
         t= Analytics.getInstance(this).getDefaultTracker();
 

@@ -1,9 +1,11 @@
 package com.cybussolutions.kluchit.Activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
 import com.cybussolutions.kluchit.DataModels.Main_screen_pojo;
+import com.cybussolutions.kluchit.DataModels.Questions;
 import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.R;
 
@@ -86,10 +89,24 @@ public class Job_detail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               Closejob();
+
+                new AlertDialog.Builder(Job_detail.this)
+                        .setTitle("Close Job?")
+                        .setMessage("Are you sure you want to Close this Job? ")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Closejob();
+                                Intent intent1 = new Intent(Job_detail.this, Questions_Activity.class);
+                                intent1.putExtra("screen","Post");
+                                intent1.putExtra("job_id",job_id);
+                                startActivity(intent1);
+                                finish();
+                            }
+                        }).create().show();
 
 
-                finish();
 
             }
         });
