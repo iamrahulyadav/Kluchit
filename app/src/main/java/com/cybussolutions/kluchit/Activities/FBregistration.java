@@ -181,6 +181,12 @@ public class FBregistration extends AppCompatActivity {
                                  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                                  finish();
                              }
+                             else if (response.toString().contains("Taken"))
+                             {
+                                 ringProgressDialog.dismiss();
+                                 Toast.makeText(getApplicationContext(), "Fill out correct details and try again!", Toast.LENGTH_LONG).show();
+                                 ((TextInputLayout)findViewById(R.id.user_namefb)).setError(response+" Please choose another username!");
+                             }
                             else {
                                  ringProgressDialog.dismiss();
                                  new AlertDialog.Builder(FBregistration.this)
@@ -218,7 +224,7 @@ public class FBregistration extends AppCompatActivity {
 
                             String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
                             params.put("date_added", timeStamp);//done
-                            params.put("filename", "http://demo.cybussolutions.com/kluchitrm/uploads/"+user_e.toLowerCase() + ".jpeg");//done
+                            params.put("filename", user_e.toLowerCase() + ".jpeg");//done
 
 
                             String first = "", last = "";

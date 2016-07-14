@@ -15,5 +15,5 @@ public class EndPoints
     public static final String GET_JOB_DETAILS = BASE_URL+"common_controller/getUserJobDataById";
     public static final String CLOSE_JOB = BASE_URL+"common_controller/closeJob";
     public static final String GET_POST_QUESTIONS = BASE_URL+"user/getUserPostQuestions";
-
+    public static final String FB_PROFILE_PIC_PATH= "http://demo.cybussolutions.com/kluchitrm/uploads/";
 }
