@@ -48,11 +48,12 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:hint="   User Name"
-                    android:textColorHint="#9E9E9E"
+                    android:textColorHint="#FFB300"
                     android:layout_marginTop="200dp"
                     android:layout_below="@+id/userid"
                     android:layout_alignParentLeft="true"
                     android:typeface="serif"
+                    android:textColor="#FFB300"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -70,12 +71,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="   User Password"
-                    android:textColorHint="#9E9E9E"
                     android:layout_marginTop="200dp"
                     android:layout_alignParentLeft="true"
                     android:typeface="serif"
                     android:password="true"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textColor="#FFB300"
+                    android:textColorHint="#FFB300"
+
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -86,14 +90,15 @@
                 android:text="Keep Me Logged In"
                 android:id="@+id/checkBox"
                 android:checked="false"
-                android:textColor="#FFFFFF"
+                android:textColor="#FFB300"
                 android:layout_below="@+id/userpass"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                />
 
             <Button
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:id="@+id/login"
                 android:layout_centerVertical="true"
                 android:layout_centerInParent="true"
@@ -101,8 +106,8 @@
                 android:layout_below="@+id/checkBox"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/loginscreen" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/log" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,7 +119,8 @@
                 android:layout_below="@+id/login_button"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="80dp"
-                android:layout_marginTop="80dp"/>
+                android:layout_marginTop="80dp"
+                android:textColor="#FFB300"/>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
@@ -123,7 +129,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:layout_below="@+id/login"
-                android:layout_alignParentStart="true" />
+                android:layout_alignStart="@+id/login"
+                android:layout_alignEnd="@+id/login" />
 
 
         </RelativeLayout>
