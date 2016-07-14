@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,8 +27,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
-import com.cybussolutions.kluchit.DataModels.Main_screen_pojo;
-import com.cybussolutions.kluchit.DataModels.Questions;
 import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.R;
 
@@ -111,6 +109,18 @@ public class Job_detail extends AppCompatActivity {
             }
         });
 
+
+        Button btn=(Button)findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent=new Intent(Job_detail.this,SocialSharing.class);
+                startActivity(intent);
+
+
+            }
+        });
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

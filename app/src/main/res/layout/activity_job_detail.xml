@@ -10,9 +10,7 @@
 
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/textView5">
+        layout="@layout/app_bar">
 
 
 
@@ -22,7 +20,7 @@
     <Button
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:id="@+id/button"
+        android:id="@+id/btn"
         android:background="@drawable/cambutton"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -34,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text1"
-        android:text="Job Deatails"
+        android:text="Job Details"
         android:textSize="25dp"
         android:layout_gravity="center"
         android:textColor="#FFFF"
@@ -224,7 +222,7 @@
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="2dp"
-                android:text="Staus                  :"
+                android:text="Status                  :"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
@@ -273,16 +271,6 @@
         android:layout_centerHorizontal="true" />
 
 
-    <Button
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:id="@+id/button"
-        android:background="@drawable/cambutton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="6dp"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -296,7 +284,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Even Disription : "
+            android:text="Even Description : "
             android:textColor="#FFFF"
             android:id="@+id/textView5"
 
@@ -304,7 +292,8 @@
             android:textStyle="bold"
             android:typeface="serif"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"/>
 
     </RelativeLayout>
 
