@@ -181,18 +181,11 @@ public class SocialSharing extends FragmentActivity {
 
                 } else if (t == MEDIA_TYPE_VIDEO) {
 
-                    videoPreview.pause();
-                    videoPreview.stopPlayback();
                     videoPreview.suspend();
 
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
                             String path = fileUri.getPath();
                             createInstagramIntent("video/*",path);
-                        }
-                    }, 500);
 
 
                 } else {
