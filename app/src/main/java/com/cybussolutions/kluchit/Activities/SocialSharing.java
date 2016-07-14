@@ -87,6 +87,25 @@ public class SocialSharing extends FragmentActivity {
     private static final String TAG = SocialSharing.class.getSimpleName();
 
 
+    private void createInstagramIntent(String type, String mediaPath){
+
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // Set the MIME type
+        share.setType(type);
+
+        // Create the URI from the media
+        File media = new File(mediaPath);
+        Uri uri = Uri.fromFile(media);
+
+        // Add the URI to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // Broadcast the Intent.
+        startActivity(Intent.createChooser(share, "Share to"));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,15 +166,14 @@ public class SocialSharing extends FragmentActivity {
 
                 if (t == MEDIA_TYPE_IMAGE) {
 
-                    //For sharing pictures on social media
                     String pathofBmp = fileUri.getPath();
-                    Uri bmpUri = Uri.parse(pathofBmp);
+                    createInstagramIntent("image/*",pathofBmp);
+               /*   Uri bmpUri = Uri.parse(pathofBmp);
                     final Intent emailIntent1 = new Intent(Intent.ACTION_SEND);
                     emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    emailIntent1.setType("image/png");
-                    startActivity(Intent.createChooser(emailIntent1, "Share Image to"));
-
+                    emailIntent1.setType("image/jpg");
+                    startActivity(Intent.createChooser(emailIntent1, "Share Image to"));*/
                     //upload_insta();
 
 
@@ -167,18 +185,9 @@ public class SocialSharing extends FragmentActivity {
 
                 } else if (t == MEDIA_TYPE_VIDEO) {
 
-                    videoPreview.stopPlayback();
-
-                    //For sharing video on social media
+                    videoPreview.pause();
                     String path = fileUri.getPath();
-                    Uri vuri = Uri.parse(path);
-                    final Intent emailIntent1 = new Intent(Intent.ACTION_SEND);
-                    emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    emailIntent1.putExtra(Intent.EXTRA_STREAM, vuri);
-                    emailIntent1.setType("video/*");
-                    startActivity(Intent.createChooser(emailIntent1, "Share Video to"));
-
-                    //upload_photo_video(false);
+                    createInstagramIntent("video/*",path);
 
 
                 } else {
