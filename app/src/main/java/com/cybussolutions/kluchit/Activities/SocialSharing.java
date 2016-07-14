@@ -69,6 +69,7 @@ public class SocialSharing extends FragmentActivity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     static int t=0;
+    int pos;
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
 
@@ -103,7 +104,7 @@ public class SocialSharing extends FragmentActivity {
         share.putExtra(Intent.EXTRA_STREAM, uri);
 
         // Broadcast the Intent.
-        startActivity(Intent.createChooser(share, "Share to"));
+        startActivityForResult(Intent.createChooser(share, "Share to"),pos);
     }
 
 
@@ -168,28 +169,30 @@ public class SocialSharing extends FragmentActivity {
 
                     String pathofBmp = fileUri.getPath();
                     createInstagramIntent("image/*",pathofBmp);
-               /*   Uri bmpUri = Uri.parse(pathofBmp);
-                    final Intent emailIntent1 = new Intent(Intent.ACTION_SEND);
-                    emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    emailIntent1.setType("image/jpg");
-                    startActivity(Intent.createChooser(emailIntent1, "Share Image to"));*/
+               /* Uri bmpUri = Uri.parse(pathofBmp);
+                  final Intent emailIntent1 = new Intent(Intent.ACTION_SEND);
+                  emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  emailIntent1.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                  emailIntent1.setType("image/jpg");
+                  startActivity(Intent.createChooser(emailIntent1, "Share Image to"));*/
                     //upload_insta();
-
-
                     // upload_photo_video(true);
-
-
-
 
 
                 } else if (t == MEDIA_TYPE_VIDEO) {
 
-                    //videoPreview.stopPlayback();
-                    String path = fileUri.getPath();
-                    createInstagramIntent("video/*",path);
+                    videoPreview.pause();
+                    videoPreview.stopPlayback();
+                    videoPreview.suspend();
 
 
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String path = fileUri.getPath();
+                            createInstagramIntent("video/*",path);
+                        }
+                    }, 500);
 
 
                 } else {
@@ -433,6 +436,10 @@ public class SocialSharing extends FragmentActivity {
                         .show();
 
             }
+        }
+        else if (requestCode == pos)
+        {
+            previewVideo();
         }
     }
 
