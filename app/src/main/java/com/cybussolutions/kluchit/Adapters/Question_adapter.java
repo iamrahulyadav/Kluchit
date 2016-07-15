@@ -127,14 +127,13 @@ public class Question_adapter extends ArrayAdapter<Questions> {
         LayoutInflater inflater = activity.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.customdialog, null);
         dialogBuilder.setView(dialogView);
-        dialogBuilder.setTitle("Reason");
-
         dialogBuilder.setCancelable(false);
         final EditText reason = (EditText) dialogView.findViewById(R.id.reason);
         Button  submit  = (Button) dialogView.findViewById(R.id.submit_reason);
 
         final AlertDialog b = dialogBuilder.create();
         b.show();
+
 
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override

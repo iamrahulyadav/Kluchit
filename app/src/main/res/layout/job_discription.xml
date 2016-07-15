@@ -83,7 +83,7 @@
         android:textColor="#ffffff"
         android:layout_below="@+id/scrollView3"
         android:layout_toEndOf="@+id/reject"
-        android:layout_marginStart="18dp" />
+         />
 
     <RelativeLayout
         android:layout_width="match_parent"
