@@ -88,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
         Jsonsend();
 
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);

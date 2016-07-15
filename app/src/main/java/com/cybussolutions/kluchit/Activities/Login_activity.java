@@ -145,8 +145,9 @@ public class Login_activity extends AppCompatActivity{
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                ringProgressDialog = ProgressDialog.show(Login_activity.this, "Please wait ...",	"Checking Credentials ...", true);
-                ringProgressDialog.setCancelable(true);
+
+                ringProgressDialog = ProgressDialog.show(Login_activity.this,"", "Loading ...", true);
+                ringProgressDialog.setCancelable(false);
                 ringProgressDialog.show();
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -289,6 +290,8 @@ public class Login_activity extends AppCompatActivity{
         arr=loadArray("arr",this);
 
 
+
+        // For auto complete text
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arr);
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.userid1);

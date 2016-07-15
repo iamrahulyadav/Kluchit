@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,8 +71,9 @@ public class Job_History extends AppCompatActivity {
 
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -84,7 +84,7 @@ public class Job_History extends AppCompatActivity {
 
         Jsonrecieve();
 
-        Email = (TextView) findViewById(R.id.category);
+        Email = (TextView) findViewById(R.id.total);
         name = (TextView) findViewById(R.id.userid);
         listView = (ListView) findViewById(R.id.listView2);
 

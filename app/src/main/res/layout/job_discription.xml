@@ -120,7 +120,8 @@
         android:textColor="#ffffff"
         android:layout_marginTop="29dp"
         android:layout_below="@+id/scrollView3"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="15dp" />
 
 
 </RelativeLayout>

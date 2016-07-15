@@ -49,7 +49,7 @@ public class User_profile extends AppCompatActivity {
 
     Tracker t;
     private Toolbar toolbar;
-    TextView Email,name;
+    TextView total,name,current;
     ListView listView;
     private Main_addapter addapter;
     private ArrayList<Main_screen_pojo> listJobs = new ArrayList<>();
@@ -71,8 +71,8 @@ public class User_profile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Profile");
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
@@ -90,8 +90,9 @@ public class User_profile extends AppCompatActivity {
 
         Jsonrecieve();
 
-        Email = (TextView) findViewById(R.id.category);
+        total = (TextView) findViewById(R.id.total);
         name = (TextView) findViewById(R.id.userid);
+        current = (TextView) findViewById(R.id.current);
         listView = (ListView) findViewById(R.id.list_profile);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,14 +100,16 @@ public class User_profile extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
-                Intent intent= new Intent(User_profile.this,Job_detail.class);
-                intent.putExtra("job_id",job_id);
+                Intent intent = new Intent(User_profile.this, Job_detail.class);
+                intent.putExtra("job_id", job_id);
                 startActivity(intent);
             }
         });
 
-        Email.setText(useremail);
+
+
         name.setText(username);
+
 
         addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
 
@@ -276,6 +279,9 @@ public class User_profile extends AppCompatActivity {
 
 
             }
+
+
+
 
         }catch(JSONException e){
             e.printStackTrace();

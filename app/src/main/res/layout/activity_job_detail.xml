@@ -272,7 +272,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@drawable/background"
         android:id="@+id/relativeLayout2"
         android:layout_below="@+id/text1"
         android:layout_alignParentStart="true">

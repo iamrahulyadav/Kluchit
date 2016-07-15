@@ -59,8 +59,9 @@ public class Job_detail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
 
-        ringProgressDialog = ProgressDialog.show(Job_detail.this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
