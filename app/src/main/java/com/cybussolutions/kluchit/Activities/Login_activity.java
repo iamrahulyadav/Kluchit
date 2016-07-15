@@ -291,6 +291,8 @@ public class Login_activity extends AppCompatActivity{
 
 
 
+        // For auto complete text
+
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arr);
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.userid1);
         textView.setAdapter(adapter);

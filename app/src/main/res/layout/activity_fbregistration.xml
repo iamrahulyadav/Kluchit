@@ -26,7 +26,7 @@
     android:textSize="20sp"
     android:textStyle="bold"
     android:typeface="serif"
-    android:textColor="#FFB300"
+    android:textColor="#FFFF"
     android:textColorHint="#FFB300"
     android:layout_below="@+id/app_bar"
     android:layout_centerHorizontal="true" />
@@ -57,8 +57,8 @@
             android:layout_below="@+id/imageView5"
             android:layout_alignStart="@+id/editText"
             android:layout_alignEnd="@+id/radio_Group"
-            android:textColor="#FFB300"
-            android:textColorHint="#FFB300"/>
+            android:textColor="#FFFF"
+            android:textColorHint="#FFFF"/>
 
 
     </android.support.design.widget.TextInputLayout>
@@ -79,8 +79,8 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email-Adress"
-            android:textColor="#FFB300"
-            android:textColorHint="#FFB300"
+            android:textColor="#FFFF"
+            android:textColorHint="#FFFF"
             android:typeface="serif"
             android:layout_below="@+id/userid"
             android:layout_alignStart="@+id/userid"
@@ -107,8 +107,8 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Password"
-            android:textColor="#FFB300"
-            android:textColorHint="#FFB300"
+            android:textColor="#FFFF"
+            android:textColorHint="#FFFF"
             android:typeface="serif"
             android:layout_below="@+id/emialfb"
             android:layout_alignStart="@+id/emialfb"
@@ -127,8 +127,8 @@
         android:layout_marginRight="16dp"
         android:layout_below="@+id/user_passwordfb"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFB300"
-        android:textColorHint="#FFB300"/>
+        android:textColor="#FFFF"
+        android:textColorHint="#FFFF"/>
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -146,8 +146,8 @@
             android:text="@string/outhouse"
             android:id="@+id/Out_House"
             android:checked="false"
-            android:textColor="#FFB300"
-            android:textColorHint="#FFB300"/>
+            android:textColor="#FFFF"
+            android:textColorHint="#FFFF"/>
 
         <RadioButton
             android:layout_width="match_parent"
@@ -157,24 +157,23 @@
             android:checked="false"
             android:layout_alignTop="@+id/editText"
             android:layout_alignEnd="@+id/editText"
-            android:textColor="#FFB300"
-            android:textColorHint="#FFB300"/>
+            android:textColor="#FFFF"
+            android:textColorHint="#FFFF"/>
 
     </RadioGroup>
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="SUBMIT"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:id="@+id/submit"
-        android:background="@drawable/selector_button"
+        android:background="@drawable/fablogin"
         android:textStyle="bold"
         android:typeface="serif"
         android:padding="5dp"
         android:textColor="#ffffff"
         android:layout_below="@+id/radio_Group"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginBottom="20dp"/>
 
 
     <TextView
@@ -183,8 +182,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Employed From"
         android:id="@+id/textView6"
-        android:textColor="#FFB300"
-        android:textColorHint="#FFB300"
+        android:textColor="#FFFF"
+        android:textColorHint="#FFFF"
         android:layout_alignTop="@+id/radio_Group"
         android:layout_alignStart="@+id/editText"
         android:layout_marginTop="20dp"

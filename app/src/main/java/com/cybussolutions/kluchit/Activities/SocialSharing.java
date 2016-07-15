@@ -72,7 +72,7 @@ public class SocialSharing extends FragmentActivity {
     static int t=0;
     int pos;
     // directory name to store captured images and videos
-    private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
+    private static final String IMAGE_DIRECTORY_NAME = "Kluchit Camera";
 
     private Uri fileUri; // file url to store image/video
 
