@@ -12,8 +12,6 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar">
 
-
-
         </include>
 
 
@@ -287,7 +285,6 @@
             android:text="Even Description : "
             android:textColor="#FFFF"
             android:id="@+id/textView5"
-
             android:layout_marginRight="10dp"
             android:textStyle="bold"
             android:typeface="serif"

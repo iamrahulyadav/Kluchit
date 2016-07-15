@@ -43,17 +43,15 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/userid1"
-
+                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:hint="   User Name"
-                    android:textColorHint="#FFB300"
                     android:layout_marginTop="200dp"
                     android:layout_below="@+id/userid"
                     android:layout_alignParentLeft="true"
                     android:typeface="serif"
-                    android:textColor="#FFB300"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -67,7 +65,7 @@
 
                 <EditText
                     android:id="@+id/userpass1"
-
+                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="   User Password"
@@ -76,8 +74,7 @@
                     android:typeface="serif"
                     android:password="true"
                     android:inputType="textPassword"
-                    android:textColor="#FFB300"
-                    android:textColorHint="#FFB300"
+
 
                     />
 
