@@ -21,8 +21,10 @@
         android:id="@+id/listView1"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageView"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
         android:divider="#000000"
-        android:dividerHeight="2px"/>
+        android:dividerHeight="0px"/>
 
     <ImageView
         android:layout_width="220dp"
