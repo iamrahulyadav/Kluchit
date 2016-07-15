@@ -36,8 +36,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.Adapters.AndroidMultiPartEntity;
+import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.R;
+import com.google.android.gms.analytics.HitBuilders;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -87,6 +89,7 @@ public class SocialSharing extends FragmentActivity {
     long totalSize = 0;
     private String filePath = null;
     private static final String TAG = SocialSharing.class.getSimpleName();
+    com.google.android.gms.analytics.Tracker tr;
 
 
     private void createInstagramIntent(String type, String mediaPath){
@@ -108,11 +111,22 @@ public class SocialSharing extends FragmentActivity {
         startActivity(Intent.createChooser(share, "Share to"));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        tr.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tr.send(new HitBuilders.ScreenViewBuilder().build());
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_sharing);
+        tr = Analytics.getInstance(this).getDefaultTracker();
 
         imgPreview = (ImageView) findViewById(R.id.img);
         videoPreview = (VideoView) findViewById(R.id.vid);
@@ -250,6 +264,15 @@ public class SocialSharing extends FragmentActivity {
             }
 
         });
+
+
+
+        /*.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                // Whatever
+            }
+        });*/
 
     }
 
@@ -774,8 +797,14 @@ public class SocialSharing extends FragmentActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                progressBar.setProgress(0);
+                txtPercentage.setText("Press button to start uploading...");
+
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two));
+                ft.commit();
+
             }
         }, 500);
 

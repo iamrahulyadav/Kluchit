@@ -10,7 +10,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background">
+        android:background="@color/black">
 
         <RelativeLayout
             android:id="@+id/home_container1"
@@ -38,12 +38,13 @@
                 android:id="@+id/userid"
                 android:layout_below="@id/imageView"
                 android:layout_marginTop="70dp"
-                android:textAlignment="center">
+                android:textAlignment="center"
+                >
 
 
                 <AutoCompleteTextView
                     android:id="@+id/userid1"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#FFB300"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -52,6 +53,7 @@
                     android:layout_below="@+id/userid"
                     android:layout_alignParentLeft="true"
                     android:typeface="serif"
+                    android:textColorHint="#FFB300"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -65,7 +67,7 @@
 
                 <EditText
                     android:id="@+id/userpass1"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#FFB300"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="   User Password"
@@ -74,7 +76,7 @@
                     android:typeface="serif"
                     android:password="true"
                     android:inputType="textPassword"
-
+                    android:textColorHint="#FFB300"
 
                     />
 

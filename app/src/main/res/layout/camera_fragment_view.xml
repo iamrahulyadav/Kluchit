@@ -31,6 +31,6 @@
         android:layout_height="75dp"
         android:id="@+id/share"
         android:layout_gravity="right|bottom"
-        android:background="@drawable/shareone"
+        android:background="@drawable/share"
         />
 </FrameLayout>

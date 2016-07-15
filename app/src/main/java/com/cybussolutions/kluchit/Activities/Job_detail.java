@@ -27,8 +27,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
+import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.R;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +43,7 @@ import java.util.Map;
 
 public class Job_detail extends AppCompatActivity {
 
+    Tracker t;
     ProgressDialog ringProgressDialog;
     String userId,job_id;
     private Toolbar toolbar;
@@ -123,10 +127,21 @@ public class Job_detail extends AppCompatActivity {
         });
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        t = Analytics.getInstance(this).getDefaultTracker();
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

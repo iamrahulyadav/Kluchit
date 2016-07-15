@@ -52,7 +52,6 @@ import java.util.regex.Pattern;
 public class FBregistration extends AppCompatActivity {
 
     Tracker t;
-    private Analytics myApp;
     private Toolbar toolbar;
     TextInputLayout user_emial, Password;
     EditText userEmail, userPassword, usercat;
@@ -477,11 +476,12 @@ public class FBregistration extends AppCompatActivity {
 
         t.send(new HitBuilders.ScreenViewBuilder().build());
     }
-
+    @Override
     protected void onResume() {
         super.onResume();
         t.send(new HitBuilders.ScreenViewBuilder().build());
     }
+
 
 
     // user.equals("")||pass.equals("")||email.equals("")||category.equals("Select Catefory")||jobtype.equals("")

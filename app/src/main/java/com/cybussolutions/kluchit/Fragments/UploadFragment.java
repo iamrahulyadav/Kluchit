@@ -19,4 +19,5 @@ public class UploadFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.upload_fragment_view, container, false);
     }
+
 }
