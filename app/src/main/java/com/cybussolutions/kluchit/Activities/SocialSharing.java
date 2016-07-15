@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -104,7 +105,7 @@ public class SocialSharing extends FragmentActivity {
         share.putExtra(Intent.EXTRA_STREAM, uri);
 
         // Broadcast the Intent.
-        startActivityForResult(Intent.createChooser(share, "Share to"),pos);
+        startActivity(Intent.createChooser(share, "Share to"));
     }
 
 
@@ -181,11 +182,9 @@ public class SocialSharing extends FragmentActivity {
 
                 } else if (t == MEDIA_TYPE_VIDEO) {
 
-                    videoPreview.suspend();
-
-
-                            String path = fileUri.getPath();
-                            createInstagramIntent("video/*",path);
+                    //videoPreview.suspend();
+                    String path = fileUri.getPath();
+                    createInstagramIntent("video/*",path);
 
 
                 } else {
@@ -222,9 +221,42 @@ public class SocialSharing extends FragmentActivity {
         ft.commit();
 
 
+        pos=0;
+
        // textview.setVisibility(View.VISIBLE);
+        videoPreview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            public void onPrepared(MediaPlayer mediaPlayer) {
+
+                // close the progress bar and play the video
+
+
+                //if we have a position on savedInstanceState, the video playback should start from here
+
+                videoPreview.seekTo(pos);
+
+                if (pos == 0) {
+
+                    videoPreview.start();
+
+                } else {
+
+                    //if we come from a resumed activity, video playback will be paused
+
+                    videoPreview.pause();
+
+                }
+
+            }
+
+        });
 
     }
+
+
+
+
+
 
     /**
      * Checking device has camera hardware or not
@@ -265,6 +297,11 @@ public class SocialSharing extends FragmentActivity {
         // save file url in bundle as it will be null on scren orientation
         // changes
         outState.putParcelable("file_uri", fileUri);
+
+
+        outState.putInt("Position", videoPreview.getCurrentPosition());
+
+        videoPreview.pause();
     }
 
     @Override
@@ -273,6 +310,10 @@ public class SocialSharing extends FragmentActivity {
 
         // get the file url
         fileUri = savedInstanceState.getParcelable("file_uri");
+
+        pos = savedInstanceState.getInt("Position");
+
+        videoPreview.seekTo(pos);
     }
 
     /**
@@ -429,10 +470,6 @@ public class SocialSharing extends FragmentActivity {
                         .show();
 
             }
-        }
-        else if (requestCode == pos)
-        {
-            previewVideo();
         }
     }
 
