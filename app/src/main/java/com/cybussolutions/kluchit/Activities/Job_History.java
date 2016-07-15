@@ -71,8 +71,9 @@ public class Job_History extends AppCompatActivity {
 
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);

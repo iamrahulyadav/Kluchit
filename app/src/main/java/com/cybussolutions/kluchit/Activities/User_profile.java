@@ -71,8 +71,8 @@ public class User_profile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Profile");
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));

@@ -60,8 +60,8 @@ public class Select_category extends AppCompatActivity {
          //   final Category_Job[] nameArray ={new Category_Job("Photographer",this), new Category_Job("Videographer",this), new Category_Job("Content Writery",this),new Category_Job( "Hair Stylist",this)};
 
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Loading ...", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
 

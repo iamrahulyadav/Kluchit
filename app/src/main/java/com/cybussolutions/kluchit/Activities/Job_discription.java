@@ -151,10 +151,10 @@ public class Job_discription extends AppCompatActivity {
 
     public void Jsonsend(final String result) {
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...",	"Loading  ...", true);
-        ringProgressDialog.setCancelable(true);
-        ringProgressDialog.show();
 
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
 
 
         final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.SEND_RESPONCE,

@@ -94,8 +94,9 @@ public class Questions_Activity  extends AppCompatActivity
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userid = pref.getString("user_id", null);
 
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...","Loading", true);
-        ringProgressDialog.setCancelable(true);
+
+        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
         final Intent intent = getIntent();

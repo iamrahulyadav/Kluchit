@@ -145,8 +145,9 @@ public class Login_activity extends AppCompatActivity{
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                ringProgressDialog = ProgressDialog.show(Login_activity.this, "Please wait ...",	"Checking Credentials ...", true);
-                ringProgressDialog.setCancelable(true);
+
+                ringProgressDialog = ProgressDialog.show(Login_activity.this,"", "Loading ...", true);
+                ringProgressDialog.setCancelable(false);
                 ringProgressDialog.show();
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
