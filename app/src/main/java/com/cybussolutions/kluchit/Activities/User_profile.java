@@ -110,6 +110,7 @@ public class User_profile extends AppCompatActivity {
 
         name.setText(username);
 
+
         addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
 
         t= Analytics.getInstance(this).getDefaultTracker();
