@@ -1,8 +1,5 @@
 package com.cybussolutions.kluchit.Network;
 
-/**
- * Created by Hamza Android on 5/16/2016.
- */
 public class EndPoints
 {
     public static final String BASE_URL = "http://demo.cybussolutions.com/kluchitrm/";
