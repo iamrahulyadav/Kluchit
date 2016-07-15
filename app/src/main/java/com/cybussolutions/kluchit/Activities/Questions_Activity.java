@@ -345,7 +345,7 @@ public class Questions_Activity  extends AppCompatActivity
                    @Override
                     public void onResponse(String response)
                     {
-                        Toast.makeText(Questions_Activity.this,response, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Questions_Activity.this,response, Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -357,7 +357,7 @@ public class Questions_Activity  extends AppCompatActivity
                     startActivity(intent);
 
                 }
-                Toast.makeText(Questions_Activity.this,error.toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(Questions_Activity.this,error.toString(), Toast.LENGTH_SHORT).show();
             }
         })
         {
