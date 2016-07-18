@@ -1,5 +1,6 @@
 package com.cybussolutions.kluchit.Activities;
 
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +21,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +78,115 @@ public class MainActivity extends AppCompatActivity {
 
     Tracker t;
 
+    String ids,jobtype;
+
+    String postuser=EndPoints.BASE_URL+"common_controller/saveUserCategory";
+
+    final StringRequest category_request = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+           // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+            if (response.toString().contains("not")) {
+                ringProgressDialog.dismiss();
+                Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+            }
+            else {
+                ringProgressDialog.dismiss();
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Signup Confirmation Dialog:")
+                        .setMessage("You have successfully registered with categories. Proceed Thank You!")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).setCancelable(false)
+                        .create().show();
+
+                userId=response;
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.gettingStarted)).commit();
+
+                        ringProgressDialog = ProgressDialog.show(MainActivity.this,"", "Loading ...", true);
+                        ringProgressDialog.setCancelable(false);
+                        ringProgressDialog.show();
+                        Jsonsend();
+                    }
+                }, 3000);
+
+            }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            ringProgressDialog.dismiss();
+            Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+        }
+    }) {
+        @Override
+        protected Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<String, String>();
+
+            params.put("userid", userId);//done
+            params.put("categories", ids);//done
+
+            return params;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+            return params;
+        }
+    };//post user
+
+
+    String checkuser=EndPoints.BASE_URL+"common_controller/checkUserCategory";
+    final StringRequest category_exist_request = new StringRequest(Request.Method.POST, checkuser, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            if (response.contains("not"))
+            {
+                prepare_fragment();
+            }
+            else {
+                ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...",	"Checking Credentials ...", true);
+                ringProgressDialog.setCancelable(true);
+                ringProgressDialog.show();
+                userId = response;
+                Jsonsend();
+            }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            ringProgressDialog.dismiss();
+            Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+        }
+    }) {
+        @Override
+        protected Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<String, String>();
+
+            params.put("userid", userId);//done
+
+            return params;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+            return params;
+        }
+    };//post user
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,25 +196,6 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-        Intent intent=getIntent();
-        if (intent.hasExtra("check"))
-        {
-            String fb_userid=intent.getStringExtra("fb_userid");
-        }
-
-
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        userId = pref.getString("user_id", null);
-
-
-        Jsonsend();
-
-
-
-        ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
-        ringProgressDialog.setCancelable(false);
-        ringProgressDialog.show();
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Kluchit");
@@ -159,6 +254,132 @@ public class MainActivity extends AppCompatActivity {
 
 
         t= Analytics.getInstance(this).getDefaultTracker();
+
+
+
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        userId = pref.getString("user_id", null);
+
+
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.hide(getFragmentManager().findFragmentById(R.id.gettingStarted));
+        ft.commit();
+
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(category_exist_request);
+
+
+
+    }
+
+    void prepare_fragment()
+    {
+        jobtype="";
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.gettingStarted)).commit();
+            }
+        }, 500);
+
+
+        View v=getFragmentManager().findFragmentById(R.id.gettingStarted).getView();
+        v.findViewById(R.id.cross).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.gettingStarted)).commit();
+                    }
+                }, 500);
+            }
+        });
+
+        v.findViewById(R.id.category_chooser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(MainActivity.this, Select_category.class);
+                startActivityForResult(intent1, 0);
+
+            }
+        });
+
+        RadioGroup rgroup = (RadioGroup) findViewById(R.id.radio_Group);
+        rgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                if (checkedId == R.id.in_house) {
+                    jobtype = "inhouse";
+
+                } else if (checkedId == R.id.Out_House) {
+                    jobtype = "outhouse";
+                }
+
+                ((RadioButton) findViewById(R.id.in_house)).setError(null);
+            }
+        });
+
+        v.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submit_get_started();
+            }
+        });
+
+    }
+
+
+    void submit_get_started()
+    {
+        if ( ((EditText) findViewById(R.id.category_chooser)).getText().toString().equals("")  || (((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.in_house)).getId() && ((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.Out_House)).getId())) {
+
+            if (((EditText) findViewById(R.id.category_chooser)).getText().toString().equals("")) {
+                ((EditText) findViewById(R.id.category_chooser)).setError("Please Select At least one Category!");
+
+            }
+            if ((((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.in_house)).getId() && ((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.Out_House)).getId())) {
+                ((RadioButton) findViewById(R.id.in_house)).setError("Please select a category!");
+            }
+        }
+        else
+        {
+
+            ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+            ringProgressDialog.setCancelable(false);
+            ringProgressDialog.show();
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(category_request);
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+
+        if (resultCode!=RESULT_CANCELED) {
+            String arr = data.getStringExtra("chosen");
+            TextView txt = (TextView) findViewById(R.id.category_chooser);
+            txt.setText(arr);
+            ids = data.getStringExtra("ids");//got ids here
+            ((EditText) findViewById(R.id.category_chooser)).setError(null);
+
+        }
+        else
+        {
+            ((EditText) findViewById(R.id.category_chooser)).setError("Please Select a category!");
+        }
+
 
 
     }
@@ -266,6 +487,10 @@ public class MainActivity extends AppCompatActivity {
                 new IntentFilter(GCMRegistrationIntentService.REGISTRATION_ERROR));
 
         t.send(new HitBuilders.ScreenViewBuilder().build());
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(category_exist_request);
     }
 
 

@@ -156,6 +156,9 @@ public class Login_activity extends AppCompatActivity{
                             }
                         }).setCancelable(false)
                         .create().show();
+
+                Intent intent=new Intent(Login_activity.this,MainActivity.class);
+                startActivity(intent);
             }
         }
     }, new Response.ErrorListener() {

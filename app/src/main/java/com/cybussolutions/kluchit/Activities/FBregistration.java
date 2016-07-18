@@ -86,7 +86,7 @@ public class FBregistration extends AppCompatActivity {
         user_emial = (TextInputLayout) findViewById(R.id.user_emailfb);
         Password = (TextInputLayout) findViewById(R.id.user_passwordfb);
         userEmail = (EditText) findViewById(R.id.emialfb);
-        usercat = (EditText) findViewById(R.id.editText);
+        usercat = (EditText) findViewById(R.id.category_chooser);
         userPassword = (EditText) findViewById(R.id.passwordfb);
         submit = (Button) findViewById(R.id.submit);
 
@@ -140,7 +140,7 @@ public class FBregistration extends AppCompatActivity {
 
 
 
-                if (b || ((EditText) findViewById(R.id.userid)).getText().toString().contains(" ") || ((EditText) findViewById(R.id.emialfb)).getText().toString().equals("") || ((EditText) (findViewById(R.id.passwordfb))).getText().toString().equals("") || ((EditText) findViewById(R.id.userid)).getText().toString().equals("") || ((EditText) findViewById(R.id.editText)).getText().toString().equals("")  || (((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.in_house)).getId() && ((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.Out_House)).getId())) {
+                if (b || ((EditText) findViewById(R.id.userid)).getText().toString().contains(" ") || ((EditText) findViewById(R.id.emialfb)).getText().toString().equals("") || ((EditText) (findViewById(R.id.passwordfb))).getText().toString().equals("") || ((EditText) findViewById(R.id.userid)).getText().toString().equals("") || ((EditText) findViewById(R.id.category_chooser)).getText().toString().equals("")  || (((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.in_house)).getId() && ((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.Out_House)).getId())) {
                     if (((EditText) findViewById(R.id.emialfb)).getText().toString().equals("")) {
                         ((EditText) findViewById(R.id.emialfb)).setError("Please Write Your Email");
                     }
@@ -150,8 +150,8 @@ public class FBregistration extends AppCompatActivity {
                     if (((EditText) findViewById(R.id.userid)).getText().toString().equals("")) {
                         ((EditText) findViewById(R.id.userid)).setError("Please Set Your Name");
                     }
-                    if (((EditText) findViewById(R.id.editText)).getText().toString().equals("")) {
-                        ((EditText) findViewById(R.id.editText)).setError("Please Select At least one Category!");
+                    if (((EditText) findViewById(R.id.category_chooser)).getText().toString().equals("")) {
+                        ((EditText) findViewById(R.id.category_chooser)).setError("Please Select At least one Category!");
 
                     }
                     if ((((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.in_house)).getId() && ((RadioGroup) findViewById(R.id.radio_Group)).getCheckedRadioButtonId() != ((RadioButton) findViewById(R.id.Out_House)).getId())) {
@@ -210,7 +210,7 @@ public class FBregistration extends AppCompatActivity {
                             username_ = ((EditText) findViewById(R.id.userid)).getText().toString();
                             user_e = ((EditText) findViewById(R.id.emialfb)).getText().toString();
                             pass_ = ((EditText) findViewById(R.id.passwordfb)).getText().toString();
-                            categories_ = ((EditText) findViewById(R.id.editText)).getText().toString();
+                            categories_ = ((EditText) findViewById(R.id.category_chooser)).getText().toString();
                             params.put("username", username_.toLowerCase());//done
                             params.put("password", pass_);//done
                             params.put("is_active", "1");//done
@@ -454,12 +454,12 @@ public class FBregistration extends AppCompatActivity {
 
         if (resultCode!=RESULT_CANCELED) {
             String arr = data.getStringExtra("chosen");
-            TextView txt = (TextView) findViewById(R.id.editText);
+            TextView txt = (TextView) findViewById(R.id.category_chooser);
             txt.setText(arr);
             ids = data.getStringExtra("ids");//got ids here
         }
-        if (!((EditText) findViewById(R.id.editText)).equals("")) {
-            ((EditText) findViewById(R.id.editText)).setError(null);
+        if (!((EditText) findViewById(R.id.category_chooser)).equals("")) {
+            ((EditText) findViewById(R.id.category_chooser)).setError(null);
         }
 
 

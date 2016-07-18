@@ -55,7 +55,7 @@
             android:hint="Username"
             android:typeface="serif"
             android:layout_below="@+id/imageView5"
-            android:layout_alignStart="@+id/editText"
+            android:layout_alignStart="@+id/category_chooser"
             android:layout_alignEnd="@+id/radio_Group"
             android:textColor="#FFFF"
             android:textColorHint="#FFFF"/>
@@ -119,7 +119,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/category_chooser"
         android:hint="Selecet Category"
         android:inputType="none"
         android:textIsSelectable="true"
@@ -136,8 +136,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:id="@+id/radio_Group"
-        android:layout_below="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
+        android:layout_below="@+id/category_chooser"
+        android:layout_alignEnd="@+id/category_chooser"
         android:layout_marginTop="20dp">
 
         <RadioButton
@@ -155,8 +155,8 @@
             android:text="@string/inshouse"
             android:id="@+id/in_house"
             android:checked="false"
-            android:layout_alignTop="@+id/editText"
-            android:layout_alignEnd="@+id/editText"
+            android:layout_alignTop="@+id/category_chooser"
+            android:layout_alignEnd="@+id/category_chooser"
             android:textColor="#FFFF"
             android:textColorHint="#FFFF"/>
 
@@ -185,7 +185,7 @@
         android:textColor="#FFFF"
         android:textColorHint="#FFFF"
         android:layout_alignTop="@+id/radio_Group"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignStart="@+id/category_chooser"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="5dp"/>
 

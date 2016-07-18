@@ -11,5 +11,6 @@
         android:layout_margin="10dp"
         android:checked="false"
         android:padding="15dp"
-        android:clickable="false" />
+        android:clickable="false"
+        android:textColor="@color/white"/>
 </LinearLayout>

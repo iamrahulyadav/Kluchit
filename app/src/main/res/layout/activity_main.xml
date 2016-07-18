@@ -42,6 +42,16 @@
         android:layout_marginStart="51dp"
         android:layout_marginBottom="186dp" />
 
+    <fragment android:name="com.cybussolutions.kluchit.Fragments.GettingStarted"
+        android:id="@+id/gettingStarted"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
 </RelativeLayout>
 
     <fragment
@@ -54,4 +64,6 @@
         tools:layout="@layout/fragment_drawer">
 
     </fragment>
+
+
 </android.support.v4.widget.DrawerLayout>
