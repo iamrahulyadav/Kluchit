@@ -71,11 +71,6 @@ public class FBregistration extends AppCompatActivity {
         String fb_registraion = pref.getString("activity_fbregistration", null);
 
 
-        if (fb_registraion != null) {
-            Intent intent = new Intent(FBregistration.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
 
         super.onCreate(savedInstanceState);

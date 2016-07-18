@@ -2,6 +2,7 @@ package com.cybussolutions.kluchit.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -12,10 +13,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -57,12 +57,12 @@ import com.google.android.gms.analytics.Tracker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.sql.Types.NULL;
+import java.util.StringTokenizer;
 
 public class Login_activity extends AppCompatActivity{
 
@@ -110,6 +110,105 @@ public class Login_activity extends AppCompatActivity{
 
 
     AssetFileDescriptor afd;
+
+    String fb_email,fb_name,fb_userid;
+    Bitmap fb_image;
+
+
+    String postuser = EndPoints.BASE_URL + "/common_controller/saveNewUserBySocial";
+
+    final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
+            if (response.toString().contains("Already")) {
+                ringProgressDialog.dismiss();
+                LoginManager.getInstance().logOut();
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("user_id", fb_userid);// Saving string
+                editor.commit();
+
+                Intent intent=new Intent(Login_activity.this,MainActivity.class);
+                startActivity(intent);
+
+                //call intent for already registered
+            }
+            else if (response.toString().contains("Taken"))
+            {
+                ringProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Fill out correct details and try again!", Toast.LENGTH_LONG).show();
+                //call intent for username taken (which would not be in our case)
+                //((TextInputLayout)findViewById(R.id.user_namefb)).setError(response+" Please choose another username!");
+            }
+            else {
+                ringProgressDialog.dismiss();
+                LoginManager.getInstance().logOut();
+                new AlertDialog.Builder(Login_activity.this)
+                        .setTitle("Signup Confirmation Dialog:")
+                        .setMessage("You have successfully registered with (Email: " + fb_email + "). Thank You!")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //getting started page
+                            }
+                        }).setCancelable(false)
+                        .create().show();
+            }
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            ringProgressDialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+        }
+    }) {
+        @Override
+        protected Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<String, String>();
+
+
+            params.put("username", fb_userid);//done
+            params.put("password", "facebook");//done
+            params.put("is_active", "1");//done
+            params.put("email", fb_email.toLowerCase());//done
+
+            String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
+            params.put("date_added", timeStamp);//done
+            params.put("filename", fb_email.toLowerCase() + ".jpeg");//done
+
+
+            String first = "", last = "";
+            StringTokenizer st = new StringTokenizer(fb_name);
+            int i = 0, count = 0;
+            while (st.hasMoreTokens()) {
+                if (i == 0)
+                    first = st.nextToken();
+                else {
+                    if (count > 0)
+                        last += " ";
+                    last += st.nextToken();
+                    count++;
+                }
+                i++;
+            }
+
+            params.put("first_name", first);//done
+            params.put("last_name", last);//done
+
+            return params;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+            return params;
+        }
+    };//post user
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +272,7 @@ public class Login_activity extends AppCompatActivity{
                             {
                                 name="";
                             }
-                            String id;
+                            final String id;
                             if (object.has("id"))
                             {
                                 id = object.getString("id");
@@ -188,7 +287,20 @@ public class Login_activity extends AppCompatActivity{
 
                                 @Override
                                 public void onResponse(Bitmap response) {
-                                    Intent intent = new Intent(Login_activity.this, FBregistration.class);
+
+                                    int abc=0;
+//                                    String fb_email,fb_name,fb_image,fb_userid;
+                                    fb_email=email;
+                                    fb_name=name;
+                                    fb_userid=id;
+                                    fb_image=response;
+
+
+
+                                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                                    requestQueue.add(sr);
+
+                                    /*Intent intent = new Intent(Login_activity.this, FBregistration.class);
                                     intent.putExtra("email",email);
                                     intent.putExtra("name",name);
                                     intent.putExtra("image",response);
@@ -197,6 +309,8 @@ public class Login_activity extends AppCompatActivity{
 
                                     ringProgressDialog.dismiss();
                                     startActivity(intent);
+                                    */
+
 
 
                                 }

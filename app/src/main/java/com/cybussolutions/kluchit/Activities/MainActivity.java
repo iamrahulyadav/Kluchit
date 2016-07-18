@@ -81,6 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
+        Intent intent=getIntent();
+        if (intent.hasExtra("check"))
+        {
+            String fb_userid=intent.getStringExtra("fb_userid");
+        }
+
+
+
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
 
