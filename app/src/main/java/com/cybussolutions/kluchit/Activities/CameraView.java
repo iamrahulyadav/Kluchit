@@ -17,6 +17,8 @@ import java.io.IOException;
 
 
 
+
+
     public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
 
     private SurfaceHolder mHolder;
