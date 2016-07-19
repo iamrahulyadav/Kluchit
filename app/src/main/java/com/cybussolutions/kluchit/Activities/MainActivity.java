@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     final StringRequest category_request = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+
            // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
             if (response.toString().contains("not")) {
                 ringProgressDialog.dismiss();
@@ -159,8 +160,14 @@ public class MainActivity extends AppCompatActivity {
                 ringProgressDialog.setCancelable(true);
                 ringProgressDialog.show();
                 userId = response;
+
                 Jsonsend();
             }
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("user_id", response);// Saving string
+            editor.commit();
         }
     }, new Response.ErrorListener() {
         @Override
@@ -258,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
 
 

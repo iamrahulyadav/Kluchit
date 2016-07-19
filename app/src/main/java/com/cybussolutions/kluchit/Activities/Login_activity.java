@@ -126,7 +126,7 @@ public class Login_activity extends AppCompatActivity{
                 LoginManager.getInstance().logOut();
 
 
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("user_id", fb_userid);// Saving string
                 editor.commit();
