@@ -43,6 +43,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Activities.MainActivityTwo">
+
+        </activity>
+
 
         <activity android:name=".Activities.MainActivity">
 

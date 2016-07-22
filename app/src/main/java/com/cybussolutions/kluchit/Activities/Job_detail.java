@@ -120,7 +120,7 @@ public class Job_detail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(Job_detail.this,SocialSharing.class);
+                Intent intent=new Intent(Job_detail.this,MainActivityTwo.class);
                 startActivity(intent);
 
 
