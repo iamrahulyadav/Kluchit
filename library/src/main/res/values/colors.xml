@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorAccent">#e4960e</color>
+
+    <color name="btn_bg">#277bec</color>
+
+
+
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+
+    <color name="black">#000000</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="view_background">#e8ecfa</color>
+    <color name="white_">#ffffff</color>
+    <color name="txt_font">#4e5572</color>
+    <color name="act">#1f2649</color>
+</resources>

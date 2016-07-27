@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MaterialCamera.CaptureActivity" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/md_divider_white</item>
+        <item name="android:windowBackground">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/md_divider_white</item>
+    </style>
+
+</resources>
