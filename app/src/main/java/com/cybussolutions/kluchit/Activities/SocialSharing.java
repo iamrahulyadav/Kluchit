@@ -801,10 +801,6 @@ public class SocialSharing extends FragmentActivity {
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press button to start uploading...");
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two));
-                ft.commit();
-
             }
         }, 500);
 
