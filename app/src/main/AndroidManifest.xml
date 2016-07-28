@@ -34,7 +34,7 @@
             android:value="@string/app_id" />
 
 
-        <activity android:name=".Activities.Splash_Activity">
+        <activity android:name=".Activities.MainActivityTwo">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,9 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.MainActivityTwo">
-
-        </activity>
+        <activity android:name=".Activities.Splash_Activity" />
 
 
         <activity android:name=".Activities.MainActivity">
@@ -83,7 +81,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.User_profile" />
+
         <activity android:name=".Activities.Job_discription" />
         <activity
             android:name=".Activities.Questions_Activity"
