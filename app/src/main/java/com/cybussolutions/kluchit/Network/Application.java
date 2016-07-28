@@ -1,5 +1,6 @@
 package com.cybussolutions.kluchit.Network;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -16,11 +17,13 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Application extends android.app.Application {
 
+    private  static Application myapplication;
     @Override
     public void onCreate() {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
         printKeyHash();
+        myapplication=this;
     }
 
     /**
@@ -39,5 +42,16 @@ public class Application extends android.app.Application {
         } catch (NoSuchAlgorithmException e) {
 
         }
+    }
+
+    public static Application getInstance()
+    {
+        return myapplication;
+    }
+
+    public static Context getContext()
+    {
+        return myapplication.getApplicationContext();
+
     }
 }

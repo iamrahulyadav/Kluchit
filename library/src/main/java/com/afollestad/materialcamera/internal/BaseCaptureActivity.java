@@ -143,8 +143,8 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     protected final void onPause() {
         super.onPause();
-        if (!isFinishing() && !isChangingConfigurations() && !mRequestingPermission)
-            finish();
+       /* if (!isFinishing() && !isChangingConfigurations() && !mRequestingPermission)
+            finish();*/
     }
 
     @Override
@@ -353,7 +353,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                     .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RECORDED)
                     .setDataAndType(Uri.parse(uri), "video/mp4"));
         }
-        finish();
+       // finish();//finishing video capture
     }
 
     @Override

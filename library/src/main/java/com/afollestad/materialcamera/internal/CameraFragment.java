@@ -5,7 +5,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.RectF;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -123,7 +126,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    public static Bitmap mark (Bitmap src, String watermark, int alpha, int size, boolean underline) {
+    /*public static Bitmap mark (Bitmap src, String watermark, int alpha, int size, boolean underline) {
         int w = src.getWidth();
         int h = src.getHeight();
         Bitmap result = Bitmap.createBitmap(w, h, src.getConfig());
@@ -140,6 +143,51 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         canvas.drawText(watermark, w-(w/2), h-(h/2), paint);
 
         return result;
+    }*/
+
+
+    public static Bitmap addWatermark(Resources res, Bitmap source) {
+        int w, h;
+        Canvas c;
+        Paint paint;
+        Bitmap bmp, watermark;
+
+        Matrix matrix;
+        float scale;
+        RectF r;
+
+        w = source.getWidth();
+        h = source.getHeight();
+
+        // Create the new bitmap
+        bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG | Paint.FILTER_BITMAP_FLAG);
+
+        // Copy the original bitmap into the new one
+        c = new Canvas(bmp);
+        c.drawBitmap(source, 0, 0, paint);
+
+        // Load the watermark
+        watermark = BitmapFactory.decodeResource(res, R.drawable.logoone);
+        // Scale the watermark to be approximately 10% of the source image height
+        scale = (float) (((float) h * 0.05) / (float) watermark.getHeight());
+
+        // Create the matrix
+        matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        // Determine the post-scaled size of the watermark
+        r = new RectF(0, 0, watermark.getWidth(), watermark.getHeight());
+        matrix.mapRect(r);
+        // Move the watermark to the bottom right corner
+        matrix.postTranslate(w - r.width(), h - r.height());
+
+        // Draw the watermark
+        c.drawBitmap(watermark, matrix, paint);
+        // Free up the bitmap memory
+        watermark.recycle();
+
+        return bmp;
     }
 
 
@@ -170,7 +218,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
 
                 Bitmap bmap2=RotateBitmap(bitmap,orientation);
-                bmap2=mark(bmap2,"Kluchit",100,100,true);
+                Resources res = getActivity().getResources();
+                bmap2=addWatermark(res,bmap2);
 
 
                 ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
@@ -263,6 +312,25 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         i++;
     }
 
+    private void createInstagramIntent(String type, String mediaPath){
+
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // Set the MIME type
+        share.setType(type);
+
+        // Create the URI from the media
+        File media = new File(mediaPath);
+        Uri uri = Uri.fromFile(media);
+
+        // Add the URI to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // Broadcast the Intent.
+        startActivity(Intent.createChooser(share, "Share to"));
+    }
+
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
@@ -322,7 +390,18 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                             mCamera.startPreview();
                             //mCamera.startPreview();
                         }
-                    }, 1000);
+                    }, 2000);
+                }
+                else
+                {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mCamera.startPreview();
+                            //mCamera.startPreview();
+                        }
+                    }, 2000);
                 }
                     //view.findViewById(R.id.flash).callOnClick();
                 mPreviewFrame.findViewById(R.id.two).setVisibility(View.VISIBLE);
@@ -338,7 +417,17 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             public void onClick(View view) {
 
                 new UploadFileToServer().execute();
-                createPreview();
+               // createPreview();
+
+            }
+        });
+
+
+        mPreviewFrame.findViewById(R.id.two).findViewById(R.id.cross).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
 
             }
         });
@@ -355,6 +444,22 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         veuw.findViewById(R.id.flash).setBackgroundResource(R.drawable.flash_off);
         else
             veuw.findViewById(R.id.flash).setBackgroundResource(R.drawable.flash_on);
+
+
+
+        mPreviewFrame.findViewById(R.id.two).findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String path = filepath;
+                createInstagramIntent("image/*",path);
+
+
+
+
+            }
+        });
+
     }
 
     @Override

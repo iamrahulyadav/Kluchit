@@ -10,11 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.Adapters.Main_addapter;
@@ -33,6 +36,7 @@ import com.cybussolutions.kluchit.DataModels.Main_screen_pojo;
 import com.cybussolutions.kluchit.Fragments.DrawerFragment;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
+import com.cybussolutions.kluchit.Network.Volley_singelton;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -57,6 +61,10 @@ public class User_profile extends AppCompatActivity {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     String userId, user_cat,username,useremail;
     DrawerFragment drawerFragment = new DrawerFragment();
+    private Volley_singelton volley_singelton;
+    private ImageLoader imageLoader;
+    ImageView pp;
+    String profile;
 
         // test comment
 
@@ -75,6 +83,10 @@ public class User_profile extends AppCompatActivity {
         ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();
 
+
+        volley_singelton=Volley_singelton.getInstance();
+        imageLoader=volley_singelton.getLoader();
+
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
 
@@ -85,6 +97,8 @@ public class User_profile extends AppCompatActivity {
         user_cat=pref.getString("user_cat",null);
         username = pref.getString("user_name",null);
         useremail = pref.getString("user_email",null);
+        profile = pref.getString("user_image",null);
+
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -94,6 +108,7 @@ public class User_profile extends AppCompatActivity {
         name = (TextView) findViewById(R.id.userid);
         current = (TextView) findViewById(R.id.current);
         listView = (ListView) findViewById(R.id.list_profile);
+        pp = (ImageView) findViewById(R.id.profile);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -103,6 +118,24 @@ public class User_profile extends AppCompatActivity {
                 Intent intent = new Intent(User_profile.this, Job_detail.class);
                 intent.putExtra("job_id", job_id);
                 startActivity(intent);
+            }
+        });
+
+        String url = EndPoints.FB_PROFILE_PIC_PATH+profile;
+        imageLoader.get(url, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+               pp.setImageBitmap(response.getBitmap());
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("IMAGE ERROR","LOADING IMAGE ERROR");
+
+
+
             }
         });
 

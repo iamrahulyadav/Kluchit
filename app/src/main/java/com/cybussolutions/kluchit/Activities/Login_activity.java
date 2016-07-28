@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -57,10 +59,12 @@ import com.google.android.gms.analytics.Tracker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -80,7 +84,7 @@ public class Login_activity extends AppCompatActivity{
 
     Button login;
 
-    String user,pass,username,useremail;
+    String user,pass,username,useremail,userimage;
 
     CheckBox checkBox;
 
@@ -117,19 +121,80 @@ public class Login_activity extends AppCompatActivity{
 
     String postuser = EndPoints.BASE_URL + "/common_controller/saveNewUserBySocial";
 
+    String upload = EndPoints.BASE_URL + "upload_profile.php";
+
+
+    StringRequest upload_image_request = new StringRequest(Request.Method.POST, upload,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String s) {
+                    if (s.contains("Uploaded"))
+                    {
+                        ringProgressDialog.dismiss();
+                        Intent intent=new Intent(Login_activity.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    //Dismissing the progress dialog
+
+                    //Showing toast
+                    //result+=volleyError.toString();
+                    ringProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
+            }) {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            //Converting Bitmap to String
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            fb_image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            final String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+            String image = encodedImage;
+
+            //Creating parameters
+            Map<String, String> params = new Hashtable<String, String>();
+
+            //Adding parameters
+            params.put("userImage", image);
+            params.put("filename",fb_email);
+
+            //returning parameters
+            return params;
+        }
+    };
+
+
+
     final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
             Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
             if (response.toString().contains("Already")) {
-                ringProgressDialog.dismiss();
+
                 LoginManager.getInstance().logOut();
 
 
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("user_id", fb_userid);// Saving string
+                editor.putString("user_id", fb_userid);
+                // Saving string
                 editor.commit();
+
+
+
+                //Dont update profile pic
+                ringProgressDialog.dismiss();
+                //RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                //requestQueue.add(upload_image_request);
+
+
 
                 Intent intent=new Intent(Login_activity.this,MainActivity.class);
                 startActivity(intent);
@@ -140,11 +205,13 @@ public class Login_activity extends AppCompatActivity{
             {
                 ringProgressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Fill out correct details and try again!", Toast.LENGTH_LONG).show();
+                LoginManager.getInstance().logOut();
+
                 //call intent for username taken (which would not be in our case)
                 //((TextInputLayout)findViewById(R.id.user_namefb)).setError(response+" Please choose another username!");
             }
             else {
-                ringProgressDialog.dismiss();
+                //ringProgressDialog.dismiss();
                 LoginManager.getInstance().logOut();
                 new AlertDialog.Builder(Login_activity.this)
                         .setTitle("Signup Confirmation Dialog:")
@@ -157,14 +224,18 @@ public class Login_activity extends AppCompatActivity{
                         }).setCancelable(false)
                         .create().show();
 
-                Intent intent=new Intent(Login_activity.this,MainActivity.class);
-                startActivity(intent);
+
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                requestQueue.add(upload_image_request);                //Intent intent=new Intent(Login_activity.this,MainActivity.class);
+                //startActivity(intent);
             }
         }
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
             ringProgressDialog.dismiss();
+            LoginManager.getInstance().logOut();
             Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
         }
     }) {
@@ -296,7 +367,20 @@ public class Login_activity extends AppCompatActivity{
                                     fb_email=email;
                                     fb_name=name;
                                     fb_userid=id;
-                                    fb_image=response;
+                                    if (response==null)
+                                        fb_image=BitmapFactory.decodeResource(getResources(),R.drawable.logomain);
+                                    else
+                                        fb_image=response;
+
+
+
+                                    SharedPreferences pref1 = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor1 = pref.edit();
+                                    editor1.putString("user_name", fb_name);
+                                    editor1.putString("user_image",fb_email+".jpeg");
+                                    editor1.putString("fb_login","1");
+                                    // Saving string
+                                    editor1.commit();
 
 
 
@@ -680,14 +764,19 @@ public class Login_activity extends AppCompatActivity{
                                 userid = object.getString("id");
                                 username = object.getString("first_name");
                                 useremail = object.getString("email");
+                                userimage = object.getString("user_image");
 
 
                                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pref.edit();
+
                                 editor.putString("user_id", userid);// Saving string
 
                                 editor.putString("user_name",username);
                                 editor.putString("user_email",useremail);
+                                editor.putString("user_image", userimage);
+                                editor.putString("fb_login","0");
+
 
                                 if(checkBox.isChecked())
 

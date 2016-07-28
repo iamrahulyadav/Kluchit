@@ -38,7 +38,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Hamza khan"
         android:id="@+id/userid"
-        android:layout_below="@+id/imageView3"
+        android:layout_below="@+id/profile"
         android:layout_centerVertical="true"
         android:textColor="#FFFFFF"
         android:layout_marginLeft="20dp"
@@ -54,7 +54,7 @@
         android:textStyle="bold"
         android:typeface="serif"
 
-        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignTop="@+id/profile"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
 
@@ -76,7 +76,7 @@
             android:layout_height="80dp"
             android:src="@drawable/logomain"
             app:siBorderWidth="0dp"
-            android:id="@+id/imageView3"
+            android:id="@+id/profile"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"

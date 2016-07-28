@@ -1,11 +1,17 @@
 package com.cybussolutions.kluchit.Activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialcamera.MaterialCamera;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
@@ -37,11 +44,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Job_detail extends AppCompatActivity {
+public class Job_detail extends AppCompatActivity implements View.OnClickListener {
 
     Tracker t;
     ProgressDialog ringProgressDialog;
@@ -51,7 +60,8 @@ public class Job_detail extends AppCompatActivity {
     private ArrayList<Job_details_pojo> listJobs = new ArrayList<>();
     TextView title,jobdescription,start,end,venuejob,isopen;
     Button closejob;
-
+    private final static int CAMERA_RQ = 6969;
+    private final static int PERMISSION_RQ = 84;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,19 +126,17 @@ public class Job_detail extends AppCompatActivity {
 
 
         Button btn=(Button)findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent=new Intent(Job_detail.this,MainActivityTwo.class);
-                startActivity(intent);
-
-
-            }
-        });
+        btn.setOnClickListener(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         t = Analytics.getInstance(this).getDefaultTracker();
+
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Request permission to save videos in external storage
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_RQ);
+        }
 
     }
 
@@ -337,5 +345,66 @@ public class Job_detail extends AppCompatActivity {
         }
 
 
+    }
+
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Override
+    public void onClick(View view) {
+        File saveDir = null;
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // Only use external storage directory if permission is granted, otherwise cache directory is used by default
+            saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit/videos");
+            saveDir.mkdirs();
+        }
+
+        new MaterialCamera(this)
+                .saveDir(saveDir)
+                .showPortraitWarning(true)
+                .allowRetry(true)
+                .defaultToFrontFacing(true)
+                .start(CAMERA_RQ);
+    }
+
+    private String readableFileSize(long size) {
+        if (size <= 0) return size + " B";
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.##").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    private String fileSize(File file) {
+        return readableFileSize(file.length());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Received recording or error from MaterialCamera
+        if (requestCode == CAMERA_RQ) {
+            if (resultCode == RESULT_OK) {
+                final File file = new File(data.getData().getPath());
+                Toast.makeText(this, String.format("Saved to: %s, size: %s",
+                        file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
+            } else if (data != null) {
+                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
+                if (e != null) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            // Sample was denied WRITE_EXTERNAL_STORAGE permission
+            Toast.makeText(this, "Videos will be saved in a cache directory instead of an external storage directory since permission was denied.", Toast.LENGTH_LONG).show();
+        }
     }
 }

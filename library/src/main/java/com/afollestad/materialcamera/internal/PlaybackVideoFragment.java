@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
@@ -109,6 +110,26 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
         return inflater.inflate(R.layout.mcam_fragment_videoplayback, container, false);
     }
 
+    private void createInstagramIntent(String type, String mediaPath){
+
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // Set the MIME type
+        share.setType(type);
+
+        // Create the URI from the media
+        File media = new File(mediaPath);
+        Uri uri = Uri.fromFile(media);
+
+        // Add the URI to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // Broadcast the Intent.
+        startActivity(Intent.createChooser(share, "Share to"));
+    }
+
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -147,6 +168,31 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
                 new UploadFileToServer().execute();
             }
         });
+
+
+        view.findViewById(R.id.two).findViewById(R.id.cross).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getView().findViewById(R.id.two).setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
+        view.findViewById(R.id.two).findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    //videoPreview.suspend();
+                    String path = mOutputUri.substring(5,mOutputUri.length());
+                    createInstagramIntent("video/*",path);
+
+
+
+
+            }
+        });
+
 
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 

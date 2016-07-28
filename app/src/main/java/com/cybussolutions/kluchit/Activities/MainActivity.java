@@ -146,6 +146,46 @@ public class MainActivity extends AppCompatActivity {
         }
     };//post user
 
+    String img=EndPoints.BASE_URL+"common_controller/checkUserPicture";
+    final StringRequest img_request = new StringRequest(Request.Method.POST, img, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("user_image", response);// Saving string
+            editor.commit();
+
+            Jsonsend();
+
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            ringProgressDialog.dismiss();
+            Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+        }
+    }) {
+        @Override
+        protected Map<String, String> getParams() {
+            Map<String, String> params = new HashMap<String, String>();
+
+            params.put("userid", userId);//done
+
+            return params;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("Content-Type", "application/x-www-form-urlencoded");
+            return params;
+        }
+    };//post user
+
+
+
+
 
     String checkuser=EndPoints.BASE_URL+"common_controller/checkUserCategory";
     final StringRequest category_exist_request = new StringRequest(Request.Method.POST, checkuser, new Response.Listener<String>() {
@@ -161,7 +201,12 @@ public class MainActivity extends AppCompatActivity {
                 ringProgressDialog.show();
                 userId = response;
 
+               // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+               // requestQueue.add(img_request);
+
                 Jsonsend();
+
+
             }
 
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -169,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("user_id", response);// Saving string
             editor.commit();
         }
+
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -264,9 +310,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
-        userId = pref.getString("user_id", null);
+        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String flag=decision_pref.getString("fb_login",null);
 
 
 
@@ -276,10 +321,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(category_exist_request);
+
+        if (flag.equals("1"))
+        {
+            //ABdullah Method
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
 
 
+              RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+              requestQueue.add(category_exist_request);
+        }
+        else
+        {
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
+            Jsonsend();
+        }
 
     }
 
@@ -309,6 +367,8 @@ public class MainActivity extends AppCompatActivity {
                 }, 500);
             }
         });
+
+        v.setVisibility(View.VISIBLE);
 
         v.findViewById(R.id.category_chooser).setOnClickListener(new View.OnClickListener() {
             @Override
