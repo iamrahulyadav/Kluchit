@@ -20,6 +20,8 @@ package com.google.samples.quickstart.analytics;
 
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -43,5 +45,11 @@ public class AnalyticsApplication extends Application {
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

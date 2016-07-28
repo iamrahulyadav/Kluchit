@@ -8,16 +8,16 @@ ext {
     SUPPORT_LIB_VERSION = '24.0.0'
     VIDEO_PLAYER_VERSION = '0.2.8'
     MD_VERSION = '0.8.6.0'
-    TARGET_SDK = 24
+    TARGET_SDK = 22
     BUILD_TOOLS = "24.0.0"
 }
 
 android {
-    compileSdkVersion TARGET_SDK
+    compileSdkVersion 23
     buildToolsVersion BUILD_TOOLS
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion TARGET_SDK
         versionCode PUBLISH_VERSION_CODE
         versionName PUBLISH_VERSION

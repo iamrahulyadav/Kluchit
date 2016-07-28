@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
@@ -53,5 +54,11 @@ public class Application extends android.app.Application {
     {
         return myapplication.getApplicationContext();
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

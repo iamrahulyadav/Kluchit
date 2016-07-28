@@ -31,7 +31,6 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -379,6 +378,7 @@ public class Login_activity extends AppCompatActivity{
                                     editor1.putString("user_name", fb_name);
                                     editor1.putString("user_image",fb_email+".jpeg");
                                     editor1.putString("fb_login","1");
+                                    editor1.putString("user_session", "logeed_in");
                                     // Saving string
                                     editor1.commit();
 
@@ -823,10 +823,6 @@ public class Login_activity extends AppCompatActivity{
             }
         };
 
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);

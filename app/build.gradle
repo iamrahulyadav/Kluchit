@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     repositories {
@@ -15,10 +15,12 @@ android {
 
     defaultConfig {
         applicationId "com.cybussolutions.kluchit"
-        minSdkVersion 17
-        targetSdkVersion 22
+        minSdkVersion 16
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -53,6 +55,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     compile project (':library')
+    compile 'com.android.support:multidex:1.0.0'
+
 
 
 }

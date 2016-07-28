@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -112,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.gettingStarted)).commit();
 
-                        ringProgressDialog = ProgressDialog.show(MainActivity.this,"", "Loading ...", true);
-                        ringProgressDialog.setCancelable(false);
-                        ringProgressDialog.show();
                         Jsonsend();
                     }
                 }, 3000);
@@ -196,9 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 prepare_fragment();
             }
             else {
-                ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...",	"Checking Credentials ...", true);
-                ringProgressDialog.setCancelable(true);
-                ringProgressDialog.show();
+
                 userId = response;
 
                // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -233,12 +227,157 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Map<String, String> getHeaders() throws AuthFailureError {
+            //ringProgressDialog.dismiss();
             Map<String, String> params = new HashMap<String, String>();
             params.put("Content-Type", "application/x-www-form-urlencoded");
             return params;
         }
     };//post user
 
+
+
+    final StringRequest request_send = new StringRequest(Request.Method.POST, EndPoints.GET_CATAGORY,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+
+                    String res = response;
+
+
+                    String catagory;
+
+
+                    try {
+
+
+                        JSONObject object = new JSONObject(response);
+
+
+                        catagory = object.getString("result");
+
+                        JSONArray Array = new JSONArray(catagory);
+
+                        String Cat = "";
+
+                        for (int i = 0; i < Array.length(); i++) {
+
+
+                            JSONObject cat = Array.getJSONObject(i);
+
+                            Cat = Cat + cat.getString("cat_type") + ",";
+                            user_cat = Cat;
+
+
+                        }
+
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("user_cat", Cat);  // Saving string
+                        editor.commit();
+
+                        Jsonrecieve();
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            },
+
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    ringProgressDialog.dismiss();
+
+
+                    if(error instanceof NoConnectionError) {
+                        Intent intent = new Intent(MainActivity.this,NoInternet.class);
+                        startActivity(intent);
+
+                    }
+
+                    else
+                    {
+                        Toast.makeText(getApplication(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+
+            })
+
+
+    {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+
+            Map<String, String> params = new HashMap<>();
+            params.put("user_id", userId);
+            return params;
+
+        }
+    };
+
+
+    final StringRequest request_receive = new StringRequest(Request.Method.POST, EndPoints.GET_ALL_JOBS,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+
+                    ringProgressDialog.dismiss();
+
+
+                    parseJSONResponce(response);
+
+                    listView.setAdapter(addapter);
+
+
+
+                }
+            },
+
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error)
+                {
+                    if(error instanceof NoConnectionError) {
+
+                        ringProgressDialog.dismiss();
+
+                        Intent intent = new Intent(MainActivity.this,NoInternet.class);
+                        startActivity(intent);
+
+                    }
+
+                    else
+                    {
+                        ringProgressDialog.dismiss();
+
+                        Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+            })
+
+
+    {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+
+            Map<String, String> params = new HashMap<>();
+            params.put("user_catagory", user_cat);
+            params.put("user_id",userId);
+            params.put("screen_flag","1");
+            return params;
+
+        }
+    };
 
 
     @Override
@@ -320,17 +459,15 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
 
-
+        ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...",	"Checking Credentials ...", true);
 
         if (flag.equals("1"))
         {
             //ABdullah Method
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
-
-
-              RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-              requestQueue.add(category_exist_request);
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(category_exist_request);
         }
         else
         {
@@ -402,6 +539,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ringProgressDialog.dismiss();
     }
 
 
@@ -422,7 +560,7 @@ public class MainActivity extends AppCompatActivity {
 
             ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
             ringProgressDialog.setCancelable(false);
-            ringProgressDialog.show();
+
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_request);
 
@@ -556,8 +694,33 @@ public class MainActivity extends AppCompatActivity {
         t.send(new HitBuilders.ScreenViewBuilder().build());
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(category_exist_request);
+        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String flag=decision_pref.getString("fb_login",null);
+
+
+
+
+        if (flag.equals("1"))
+        {
+
+            //ABdullah Method
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(category_exist_request);
+        }
+        else
+        {
+
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
+            Jsonsend();
+        }
+
+
+        //RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //requestQueue.add(category_exist_request);
     }
 
 
@@ -584,61 +747,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_ALL_JOBS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
-                        ringProgressDialog.dismiss();
-
-                        parseJSONResponce(response);
-
-                        listView.setAdapter(addapter);
-
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        if(error instanceof NoConnectionError) {
-                            Intent intent = new Intent(MainActivity.this,NoInternet.class);
-                            startActivity(intent);
-
-                        }
-
-                        else
-                        {
-                            Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                })
-
-
-        {
-                        @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("user_catagory", user_cat);
-                    params.put("user_id",userId);
-                    params.put("screen_flag","1");
-                    return params;
-
-            }
-        };
-
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(request);
+        requestQueue.add(request_receive);
 
 
     }
@@ -647,97 +759,11 @@ public class MainActivity extends AppCompatActivity {
     public void Jsonsend() {
 
 
-        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_CATAGORY,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
 
-                        String res = response;
-
-
-                        String catagory;
-
-
-                        try {
-
-
-                            JSONObject object = new JSONObject(response);
-
-
-                            catagory = object.getString("result");
-
-                            JSONArray Array = new JSONArray(catagory);
-
-                            String Cat = "";
-
-                            for (int i = 0; i < Array.length(); i++) {
-
-
-                                JSONObject cat = Array.getJSONObject(i);
-
-                                Cat = Cat + cat.getString("cat_type") + ",";
-                                user_cat = Cat;
-
-
-                            }
-
-                            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("user_cat", Cat);  // Saving string
-                            editor.commit();
-
-                            Jsonrecieve();
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        if(error instanceof NoConnectionError) {
-                          Intent intent = new Intent(MainActivity.this,NoInternet.class);
-                            startActivity(intent);
-
-                        }
-
-                        else
-                        {
-                            Toast.makeText(getApplication(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
-
-                        }
-
-
-                    }
-
-                })
-
-
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id", userId);
-                return params;
-
-            }
-        };
-
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(request);
+        requestQueue.add(request_send);
 
 
     }
