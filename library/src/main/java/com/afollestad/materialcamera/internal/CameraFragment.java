@@ -644,7 +644,24 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
+
+                mCamera.stopPreview();
+                //mCamera.release();
+                Camera.Parameters parameters = mCamera.getParameters();
+                //working
+                if (position==0)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_NEGATIVE);
+                else if (position==1)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
+                else if (position==2)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_SEPIA);
+                else if (position==3)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_SOLARIZE);
+                else if (position==4)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_WHITEBOARD);
+
+                mCamera.setParameters(parameters);
+                mCamera.startPreview();
 
             }
         });
