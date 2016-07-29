@@ -94,21 +94,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
 
     String[] web = {
-            "Google",
-            "Github",
-            "Instagram",
-            "Facebook",
-            "Flickr",
-            "Pinterest",
-            "Quora",
-            "Twitter",
-            "Vimeo",
-            "WordPress",
-            "Youtube",
-            "Stumbleupon",
-            "SoundCloud",
-            "Reddit",
-            "Blogger"
+            "Negative",
+            "None"
 
     } ;
     int[] imageId = {
@@ -648,17 +635,13 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 mCamera.stopPreview();
                 //mCamera.release();
                 Camera.Parameters parameters = mCamera.getParameters();
+
+
                 //working
                 if (position==0)
                     parameters.setColorEffect(Camera.Parameters.EFFECT_NEGATIVE);
                 else if (position==1)
                     parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
-                else if (position==2)
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_SEPIA);
-                else if (position==3)
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_SOLARIZE);
-                else if (position==4)
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_WHITEBOARD);
 
                 mCamera.setParameters(parameters);
                 mCamera.startPreview();
