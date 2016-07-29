@@ -374,7 +374,6 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                         flag = true;
                     }
                     param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-
                     mCamera.setParameters(param);
                 }
                 mCamera.startPreview();
@@ -650,7 +649,6 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                     param.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 }
                 param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-
                 mCamera.setParameters(param);
             }
             setCameraDisplayOrientation(param);
