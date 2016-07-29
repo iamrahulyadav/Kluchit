@@ -70,6 +70,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_job_detail);
 
 
+
         ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
         ringProgressDialog.setCancelable(false);
         ringProgressDialog.show();

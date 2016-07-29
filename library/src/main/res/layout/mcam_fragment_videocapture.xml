@@ -86,6 +86,16 @@
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView" />
 
+    <fragment android:name="com.afollestad.materialcamera.internal.MainActivityTwo"
+        android:id="@+id/filters"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_alignTop="@+id/flash"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
+
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -117,5 +127,6 @@
         android:layout_alignBottom="@+id/include"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
