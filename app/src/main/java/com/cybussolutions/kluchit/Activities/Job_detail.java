@@ -359,6 +359,12 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
             saveDir.mkdirs();
         }
 
+        SharedPreferences pref=getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString("job_id",job_id);
+        editor.commit();
+
+
         new MaterialCamera(this)
                 .saveDir(saveDir)
                 .showPortraitWarning(true)

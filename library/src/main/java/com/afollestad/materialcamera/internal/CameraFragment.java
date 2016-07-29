@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -38,6 +40,14 @@ import com.afollestad.materialcamera.AndroidMultiPartEntity;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialcamera.util.Degrees;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -56,11 +66,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_BACK;
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_FRONT;
@@ -144,6 +157,69 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
         return result;
     }*/
+
+    final StringRequest request = new StringRequest(Request.Method.POST, "http://demo.cybussolutions.com/kluchitrm/common_controller/imageEntryDatabase",
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Toast.makeText(getActivity().getApplicationContext(),response, Toast.LENGTH_SHORT).show();
+                    // ringProgressDialog.dismiss();
+
+
+
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+
+            if(error instanceof NoConnectionError) {
+
+                Toast.makeText(getActivity().getApplicationContext(), "No internet Connection, Try Again!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }) {
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+
+            Map<String, String> params = new HashMap<>();
+
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+            params.put("images",filepath);
+
+            SharedPreferences pref=getActivity().getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+            String job_id=pref.getString("job_id",null);
+            String person_id=pref.getString("user_id",null);
+
+
+            SharedPreferences.Editor editor=pref.edit();
+            editor.remove("job_id");
+            editor.commit();
+
+            params.put("job_id",job_id);
+            params.put("uploaded_by",person_id);
+            params.put("date_added", timeStamp);//done
+            params.put("date_modified", timeStamp);//done
+            return params;
+
+        }
+    };
+
+
+    void send_image_db_request()
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        requestQueue.add(request);
+    }
+
 
 
     public static Bitmap addWatermark(Resources res, Bitmap source) {
@@ -928,6 +1004,9 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
             }
         }, 500);
+
+
+        send_image_db_request();
 
         mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
 

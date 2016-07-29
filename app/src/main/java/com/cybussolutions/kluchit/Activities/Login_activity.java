@@ -378,7 +378,9 @@ public class Login_activity extends AppCompatActivity{
                                     editor1.putString("user_name", fb_name);
                                     editor1.putString("user_image",fb_email+".jpeg");
                                     editor1.putString("fb_login","1");
-                                    editor1.putString("user_session", "logeed_in");
+                                    if (checkBox.isChecked()) {
+                                        editor1.putString("user_session", "logeed_in");
+                                    }
                                     // Saving string
                                     editor1.commit();
 

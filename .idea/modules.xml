@@ -4,7 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Kluchiiiii.iml" filepath="$PROJECT_DIR$/Kluchiiiii.iml" />
       <module fileurl="file://$PROJECT_DIR$/Kluchit_s.iml" filepath="$PROJECT_DIR$/Kluchit_s.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Kluchit_shared123.iml" filepath="$PROJECT_DIR$/Kluchit_shared123.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
