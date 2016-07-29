@@ -82,6 +82,7 @@ public class History_details extends AppCompatActivity {
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
