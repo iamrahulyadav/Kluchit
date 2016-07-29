@@ -763,6 +763,7 @@ public class Login_activity extends AppCompatActivity{
 
                                 userid = object.getString("id");
                                 username = object.getString("first_name");
+                                username += " "+object.getString("last_name");
                                 useremail = object.getString("email");
                                 userimage = object.getString("user_image");
 

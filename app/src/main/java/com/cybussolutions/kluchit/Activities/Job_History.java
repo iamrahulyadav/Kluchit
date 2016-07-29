@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,9 +89,19 @@ public class Job_History extends AppCompatActivity {
         Email = (TextView) findViewById(R.id.total);
         name = (TextView) findViewById(R.id.userid);
         listView = (ListView) findViewById(R.id.listView2);
-
         addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
+
+                Intent intent = new Intent(Job_History.this,History_details.class);
+                intent.putExtra("job_id",job_id);
+                startActivity(intent);
+            }
+        });
         t = Analytics.getInstance(this).getDefaultTracker();
 
     }
@@ -153,6 +165,8 @@ public class Job_History extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
+                        ringProgressDialog.dismiss();
                         if (error instanceof NoConnectionError) {
                             Intent intent = new Intent(Job_History.this, NoInternet.class);
                             startActivity(intent);

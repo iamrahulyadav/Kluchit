@@ -63,7 +63,7 @@ public class Questions_Activity  extends AppCompatActivity
 
     private ArrayList<Questions> list_Questions = new ArrayList<>();
 
-    HashMap<Integer, String> value = null;
+    HashMap<String, String> value = null;
 
     ProgressDialog ringProgressDialog;
 

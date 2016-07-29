@@ -21,7 +21,7 @@
         </include>
 
         <ImageView
-            android:layout_width="330dp"
+            android:layout_width="360dp"
             android:layout_height="330dp"
             android:id="@+id/imageView4"
             android:background="@drawable/nojobs"

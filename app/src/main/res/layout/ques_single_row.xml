@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:weightSum="1">
 
     <TextView
         android:layout_width="250dp"
@@ -10,14 +10,15 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/q_txt"
-        android:textColor="#FFFFFF"
+        android:textColor="#FFF"
         android:gravity="center|start"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:typeface="serif" />
+        android:typeface="serif"
+        android:layout_alignParentLeft="true" />
 
     <ImageView
         android:layout_width="30dp"
@@ -31,14 +32,14 @@
         android:layout_alignTop="@+id/cross_image"
         android:layout_toEndOf="@+id/q_txt"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/q_txt" />
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/cross_image"
         android:tag="0"
-
         android:background="@drawable/thumbdowngrey1"
         android:layout_alignTop="@+id/q_txt"
         android:layout_marginTop="20dp"
@@ -46,5 +47,14 @@
         android:paddingBottom="20dp"
 
         android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:visibility="gone"
+        android:id="@+id/ques_id"
+        android:layout_weight="0.20" />
 
 </LinearLayout>
