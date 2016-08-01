@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.CamcorderProfile;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
 import com.afollestad.materialcamera.R;
@@ -120,6 +122,18 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(getApplicationContext(), "landscape", Toast.LENGTH_LONG).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(getApplicationContext(), "portrait", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void checkPermissions() {

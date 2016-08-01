@@ -8,57 +8,126 @@
 
     <include
         layout="@layout/mcam_include_camera_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/controlsFrame"
-        android:layout_toStartOf="@+id/controlsFrame" />
-
-    <FrameLayout
-        android:id="@+id/controlsFrame"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="?colorPrimaryDark"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/controlsFrame"
+        android:id="@+id/include"
+        android:layout_gravity="center"
+
+        />
+
+    <RelativeLayout
+        android:id="@+id/controlsFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
         android:elevation="@dimen/mcam_toolbar_elevation"
-        android:paddingBottom="@dimen/mcam_content_inset"
-        android:paddingLeft="@dimen/mcam_content_inset_less"
-        android:paddingRight="@dimen/mcam_content_inset_less"
-        android:paddingTop="@dimen/mcam_content_inset"
+        android:paddingBottom="@dimen/mcam_content_inset_less"
+        android:paddingLeft="@dimen/mcam_content_inset"
+        android:paddingRight="@dimen/mcam_content_inset"
+        android:paddingTop="@dimen/mcam_content_inset_less"
         tools:ignore="UnusedAttribute">
 
         <ImageButton
             android:id="@+id/facing"
             android:layout_width="@dimen/mcam_action_icon_size_smaller"
             android:layout_height="@dimen/mcam_action_icon_size_smaller"
-            android:layout_gravity="center_horizontal|top"
+            android:layout_gravity="center_vertical|start"
             android:background="@drawable/mcam_circle_selector"
             android:padding="@dimen/mcam_content_inset_less"
             android:scaleType="fitXY"
+            tools:src="@drawable/mcam_camera_front"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/mcam_camera_front" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
 
         <ImageButton
             android:id="@+id/video"
-            android:layout_width="@dimen/mcam_action_icon_size"
-            android:layout_height="@dimen/mcam_action_icon_size"
+            android:layout_width="@dimen/mcam_action_icon_size_smaller"
+            android:layout_height="@dimen/mcam_action_icon_size_smaller"
             android:layout_gravity="center"
             android:background="@drawable/mcam_circle_selector"
             android:padding="@dimen/mcam_content_inset_less"
             android:scaleType="fitXY"
+            tools:src="@drawable/mcam_action_capture"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/mcam_action_capture" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:id="@+id/recordDuration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/mcam_defaultDuration"
-            android:textColor="#fff"
-            android:textSize="@dimen/mcam_regular_content_fontsize" />
+        <ImageButton
+            tools:src="@drawable/cam"
+            tools:ignore="ContentDescription"
+            android:id="@+id/takePicture"
+            android:layout_width="@dimen/mcam_action_icon_size_smaller"
+            android:layout_height="@dimen/mcam_action_icon_size_smaller"
+            android:layout_gravity="center_vertical|start"
+            android:background="@drawable/mcam_circle_selector"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    </FrameLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/recordDuration"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/mcam_defaultDuration"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:layout_above="@+id/controlsFrame"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignLeft="@+id/flash"
+        android:layout_alignStart="@+id/flash"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView" />
+
+    <fragment android:name="com.afollestad.materialcamera.internal.MainActivityTwo"
+        android:id="@+id/filters"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="flash"
+        android:id="@+id/flash"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/filters"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:id="@+id/imageView"
+        android:background="@drawable/logo"
+        android:layout_above="@+id/controlsFrame"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"/>
+
+    <fragment android:name="com.afollestad.materialcamera.internal.UploadFragment"
+        android:id="@+id/two"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_alignBottom="@+id/include"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
