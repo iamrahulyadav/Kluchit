@@ -103,6 +103,7 @@ public class User_profile extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Jsonrecieve();
+        Jsonrecievejobinfo();
 
         total = (TextView) findViewById(R.id.total);
         name = (TextView) findViewById(R.id.userid);
@@ -217,6 +218,8 @@ public class User_profile extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
+                        ringProgressDialog.dismiss();
+
                         if(error instanceof NoConnectionError) {
                             Intent intent = new Intent(User_profile.this,NoInternet.class);
                             startActivity(intent);
@@ -241,6 +244,82 @@ public class User_profile extends AppCompatActivity {
                 params.put("user_catagory", user_cat);
                 params.put("user_id",userId);
                 params.put("screen_flag","2");
+                return params;
+
+            }
+        };
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
+
+
+    }
+
+    public void Jsonrecievejobinfo() {
+
+
+
+        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.USER_JOB_INFO,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        String catagory;
+                        JSONObject object = null;
+
+                        try {
+                            object = new JSONObject(response);
+                            catagory = object.getString("result");
+
+                            JSONObject obj = new JSONObject(catagory);
+                            String currentvalue  = obj.getString("current");
+                            String totalvalue = obj.getString("total");
+
+                            total.setText(totalvalue);
+                            current.setText(currentvalue);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+
+
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        if(error instanceof NoConnectionError) {
+                            Intent intent = new Intent(User_profile.this,NoInternet.class);
+                            startActivity(intent);
+
+                        }
+
+                        else
+                        {
+                            Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                })
+
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id",userId);
                 return params;
 
             }

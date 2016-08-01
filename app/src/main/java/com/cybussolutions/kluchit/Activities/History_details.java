@@ -39,6 +39,7 @@ import java.util.Map;
 
 public class History_details extends AppCompatActivity {
 
+    private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     private Toolbar toolbar;
     ListView listView;
     String userId,job_id;
@@ -143,6 +144,10 @@ public class History_details extends AppCompatActivity {
             }
         };
 
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
@@ -178,7 +183,6 @@ public class History_details extends AppCompatActivity {
                 String questxt = Information.getString("qs_text");
                 String quesdis = Information.getString("description");
                 String quesans = Information.getString("question_answer");
-
 
 
                 History_model data = new History_model();

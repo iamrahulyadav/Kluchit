@@ -392,6 +392,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {
+                String imagepath = data.getData().getPath();
                 final File file = new File(data.getData().getPath());
                 Toast.makeText(this, String.format("Saved to: %s, size: %s",
                         file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();

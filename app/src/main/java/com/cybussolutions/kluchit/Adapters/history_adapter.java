@@ -55,7 +55,7 @@ public class history_adapter  extends ArrayAdapter<Questions> {
 
 
 
-        if(ques.getDescription()=="null")
+        if(ques.getDescription()=="null" && ques.getQuestionanswer().equals("1"))
         {
             positiveimage.setBackgroundResource(R.drawable.thumbsupgreen);
         }
