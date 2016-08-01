@@ -17,4 +17,5 @@ public class EndPoints
     public static final String IMG_ENTRY_DB= BASE_URL +"common_controller/imageEntryDatabase";
     //"http://demo.cybussolutions.com/kluchitrm/vidupload.php"
     //"http://demo.cybussolutions.com/kluchitrm/common_controller/imageEntryDatabase"
+
 }

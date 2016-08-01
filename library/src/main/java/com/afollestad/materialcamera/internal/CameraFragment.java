@@ -130,6 +130,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     private boolean mIsAutoFocusing;
     protected static final int MEDIA_TYPE_IMAGE = 0;
     ImageButton btn;
+    String filename;
     ProgressBar progressBar;
     private TextView txtPercentage;
     private Button btnUpload;
@@ -278,7 +279,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             Map<String, String> params = new HashMap<>();
 
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-            params.put("images",filepath);
+            params.put("images",filename);
 
             SharedPreferences pref=getActivity().getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
             String job_id=pref.getString("job_id",null);
@@ -389,6 +390,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
                 try {
                     filepath=picFile.getPath();
+                    filename=picFile.getName();
                     FileOutputStream fos = new FileOutputStream(picFile);
                     fos.write(b);
                     fos.close();
@@ -499,6 +501,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         mPreviewFrame = (RelativeLayout) view.findViewById(R.id.rootFrame);
         mPreviewFrame.setOnClickListener(this);
         veuw=view;
+        filename=null;
         filepath=null;
         view.findViewById(R.id.flash).setOnClickListener(new View.OnClickListener() {
             @Override
