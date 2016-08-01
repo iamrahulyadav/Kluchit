@@ -15,5 +15,6 @@ public class EndPoints
     public static final String FB_PROFILE_PIC_PATH= "http://demo.cybussolutions.com/kluchitrm/uploads/";
     public static final String GET_QUESANDANS_HISTORY= BASE_URL+"user/getQuestionAndAnswers";
     public static final String IMG_ENTRY_DB= BASE_URL +"common_controller/imageEntryDatabase";
-
+    //"http://demo.cybussolutions.com/kluchitrm/vidupload.php"
+    //"http://demo.cybussolutions.com/kluchitrm/common_controller/imageEntryDatabase"
 }
