@@ -18,6 +18,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -118,6 +120,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     };
 
 
+    boolean flagger,flagger_;
 
     View veuw;
     CameraPreview mPreviewView;
@@ -503,6 +506,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         veuw=view;
         filename=null;
         filepath=null;
+        flagger=false;
+        flagger_=false;
         view.findViewById(R.id.flash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -528,47 +533,62 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             @Override
             public void onClick(View view) {
 
-                boolean flag=false;
-                final Camera.Parameters param = mCamera.getParameters();
-                if (getCurrentCameraPosition()==CAMERA_POSITION_BACK) {
-                    if (i % 2 == 0) {
-                        param.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                    } else {
-                        param.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                        flag = true;
-                    }
-                    param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-                    mCamera.setParameters(param);
-                }
-                mCamera.startPreview();
-
-                takePhoto();
-                if (flag==true) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
+                if (flagger==false) {
+                    boolean flag = false;
+                    final Camera.Parameters param = mCamera.getParameters();
+                    if (getCurrentCameraPosition() == CAMERA_POSITION_BACK) {
+                        if (i % 2 == 0) {
                             param.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                            mCamera.setParameters(param);
-                            mCamera.startPreview();
-                            //mCamera.startPreview();
+                        } else {
+                            param.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                            flag = true;
                         }
-                    }, 2000);
+                        param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                        mCamera.setParameters(param);
+                    }
+                    mCamera.startPreview();
+
+                    takePhoto();
+                    if (flag == true) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                param.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                                mCamera.setParameters(param);
+                                mCamera.startPreview();
+                                flagger_=true;
+
+
+                                Bitmap bmp = BitmapFactory.decodeFile(filepath);
+                                Drawable drawable = new BitmapDrawable(getResources(), bmp);
+                                mPreviewView.setBackground(drawable);
+
+
+                                //mCamera.startPreview();
+                            }
+                        }, 2000);
+                    }
+                    mPreviewFrame.findViewById(R.id.two).setVisibility(View.VISIBLE);
+                    flagger=true;
+
+                    //view.findViewById(R.id.flash).callOnClick();
+
                 }
                 else
                 {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            mCamera.startPreview();
-                            //mCamera.startPreview();
-                        }
-                    }, 2000);
+                    if (flagger_==true)
+                    {
+                        mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
+                        mPreviewView.setBackground(null);
+                        flagger_=false;
+                    }
+                    else {
+                        mCamera.startPreview();
+                        mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
+                        flagger = false;
+                    }
                 }
-                    //view.findViewById(R.id.flash).callOnClick();
-                mPreviewFrame.findViewById(R.id.two).setVisibility(View.VISIBLE);
-
             }
         });
 
@@ -652,7 +672,11 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             }
         });
 
+
+
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -933,8 +957,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 }
 
                 // Start recording
-                mMediaRecorder.start();
 
+                mMediaRecorder.start();
                 mButtonVideo.setEnabled(false);
                 mButtonVideo.postDelayed(new Runnable() {
                     @Override
