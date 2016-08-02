@@ -69,7 +69,8 @@
         android:layout_below="@+id/textView3"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:textStyle="bold" />
 
         <com.github.siyamed.shapeimageview.CircularImageView
             android:layout_width="80dp"
@@ -100,14 +101,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="total"
+            android:text="current"
             android:id="@+id/current"
             android:textSize="15sp"
             android:textColor="#FFFFFF"
             android:layout_marginRight="10dp"
             android:layout_marginStart="29dp"
             android:layout_alignTop="@+id/total"
-            android:layout_alignStart="@+id/textView8" />
+            android:layout_alignStart="@+id/textView8"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

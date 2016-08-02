@@ -401,11 +401,11 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 byte[] b = byteArrayBitmapStream.toByteArray();
 
                 try {
-                    filepath=picFile.getPath();
+                    filepath=picFile.getName();
                     FileOutputStream fos = new FileOutputStream(picFile);
                     fos.write(b);
                     fos.close();
-                    Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Picture saved to "+filepath,Toast.LENGTH_LONG).show();
 
                 } catch (FileNotFoundException e) {
                   //  Log.e(TAG, "File not found: " + e.getMessage());

@@ -121,6 +121,7 @@
             android:exported="false" />
 
         <activity android:name=".Activities.No_Internet_Category"></activity>
+        <activity android:name=".Activities.History_details"></activity>
 
 
     </application>
