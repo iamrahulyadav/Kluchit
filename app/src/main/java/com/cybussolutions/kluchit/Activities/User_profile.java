@@ -125,17 +125,17 @@ public class User_profile extends AppCompatActivity {
         String url = EndPoints.FB_PROFILE_PIC_PATH+profile;
         imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate)
+            {
                pp.setImageBitmap(response.getBitmap());
 
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
 
                 Log.e("IMAGE ERROR","LOADING IMAGE ERROR");
-
-
 
             }
         });
@@ -197,8 +197,6 @@ public class User_profile extends AppCompatActivity {
     }
 
     public void Jsonrecieve() {
-
-
 
         final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_ALL_JOBS,
                 new Response.Listener<String>() {
@@ -263,9 +261,6 @@ public class User_profile extends AppCompatActivity {
 
     public void Jsonrecievejobinfo() {
 
-
-
-
         final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.USER_JOB_INFO,
                 new Response.Listener<String>() {
                     @Override
@@ -287,10 +282,6 @@ public class User_profile extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
-
 
                     }
                 },
@@ -341,16 +332,9 @@ public class User_profile extends AppCompatActivity {
     private void parseJSONResponce(String responce) {
 
 
-
-
         String res = responce;
         
         String catagory;
-
-
-
-
-
 
         try {
 
@@ -386,15 +370,10 @@ public class User_profile extends AppCompatActivity {
                 data.setDiscription(discription);
                 data.setJob_id(job_id);
 
-
-
                 listJobs.add(data);
 
 
             }
-
-
-
 
         }catch(JSONException e){
             e.printStackTrace();

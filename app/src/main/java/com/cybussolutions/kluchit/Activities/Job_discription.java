@@ -57,7 +57,7 @@ public class Job_discription extends AppCompatActivity {
         setContentView(R.layout.job_discription);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Kluchit");
+        toolbar.setTitle("Job Description");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

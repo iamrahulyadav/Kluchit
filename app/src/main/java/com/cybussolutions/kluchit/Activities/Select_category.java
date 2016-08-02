@@ -51,7 +51,7 @@ public class Select_category extends AppCompatActivity {
             setContentView(R.layout.activity_select_category);
 
             toolbar = (Toolbar) findViewById(R.id.app_bar);
-            toolbar.setTitle("Kluchit");
+            toolbar.setTitle("Category");
             toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

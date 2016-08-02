@@ -81,7 +81,7 @@ public class Questions_Activity  extends AppCompatActivity
         setContentView(R.layout.questions_);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Kluchit");
+        toolbar.setTitle("Questions");
 
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);

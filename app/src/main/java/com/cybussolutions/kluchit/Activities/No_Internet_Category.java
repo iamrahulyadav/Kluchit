@@ -23,7 +23,7 @@ public class No_Internet_Category extends Activity {
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Kluchit");
+        toolbar.setTitle("No Internet");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
 
