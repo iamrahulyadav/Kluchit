@@ -94,21 +94,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
 
     String[] web = {
-            "Google",
-            "Github",
-            "Instagram",
-            "Facebook",
-            "Flickr",
-            "Pinterest",
-            "Quora",
-            "Twitter",
-            "Vimeo",
-            "WordPress",
-            "Youtube",
-            "Stumbleupon",
-            "SoundCloud",
-            "Reddit",
-            "Blogger"
+            "Negative",
+            "None"
 
     } ;
     int[] imageId = {
@@ -143,6 +130,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     private boolean mIsAutoFocusing;
     protected static final int MEDIA_TYPE_IMAGE = 0;
     ImageButton btn;
+    String filename;
     ProgressBar progressBar;
     private TextView txtPercentage;
     private Button btnUpload;
@@ -291,7 +279,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             Map<String, String> params = new HashMap<>();
 
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-            params.put("images",filepath);
+            params.put("images",filename);
 
             SharedPreferences pref=getActivity().getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
             String job_id=pref.getString("job_id",null);
@@ -401,11 +389,12 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
                 byte[] b = byteArrayBitmapStream.toByteArray();
 
                 try {
-                    filepath=picFile.getName();
+                    filepath=picFile.getPath();
+                    filename=picFile.getName();
                     FileOutputStream fos = new FileOutputStream(picFile);
                     fos.write(b);
                     fos.close();
-                    Toast.makeText(getActivity(),"Picture saved to "+filepath,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
 
                 } catch (FileNotFoundException e) {
                   //  Log.e(TAG, "File not found: " + e.getMessage());
@@ -512,6 +501,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         mPreviewFrame = (RelativeLayout) view.findViewById(R.id.rootFrame);
         mPreviewFrame.setOnClickListener(this);
         veuw=view;
+        filename=null;
         filepath=null;
         view.findViewById(R.id.flash).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -644,7 +634,20 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
+
+                mCamera.stopPreview();
+                //mCamera.release();
+                Camera.Parameters parameters = mCamera.getParameters();
+
+
+                //working
+                if (position==0)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_NEGATIVE);
+                else if (position==1)
+                    parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
+
+                mCamera.setParameters(parameters);
+                mCamera.startPreview();
 
             }
         });

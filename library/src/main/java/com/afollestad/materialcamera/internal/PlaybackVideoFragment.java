@@ -90,6 +90,10 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
     @Override
     public void onResume() {
         super.onResume();
+        if (mPlayer!=null)
+        {
+            mPlayer.start();
+        }
         if (getActivity() != null)
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
@@ -98,9 +102,8 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
     public void onPause() {
         super.onPause();
         if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer.reset();
-            mPlayer = null;
+            mPlayer.pause();
+            //mPlayer = null;
         }
     }
 
