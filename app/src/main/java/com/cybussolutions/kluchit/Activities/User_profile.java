@@ -265,6 +265,7 @@ public class User_profile extends AppCompatActivity {
 
 
 
+
         final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.USER_JOB_INFO,
                 new Response.Listener<String>() {
                     @Override
