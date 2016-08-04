@@ -421,23 +421,16 @@ public class Login_activity extends AppCompatActivity{
                             },0, 0, null,  new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Intent intent = new Intent(Login_activity.this, FBregistration.class);
-                                    intent.putExtra("email",email);
-                                    intent.putExtra("name",name);
-                                    //intent.putExtra("image",R.drawable.person);
-                                    intent.putExtra("bool","00");
                                     LoginManager.getInstance().logOut();
-
-
                                     ringProgressDialog.dismiss();
-                                    startActivity(intent);
+                                    Toast.makeText(Login_activity.this,error.toString(),Toast.LENGTH_LONG).show();
                                 }
                             });
 
-                            ir.setRetryPolicy(new DefaultRetryPolicy(
+                           /* ir.setRetryPolicy(new DefaultRetryPolicy(
                                     MY_SOCKET_TIMEOUT_MS,
                                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
 
 
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());

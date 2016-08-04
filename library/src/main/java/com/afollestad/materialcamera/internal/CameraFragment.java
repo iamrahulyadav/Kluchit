@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -94,6 +95,7 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class CameraFragment extends BaseCameraFragment implements View.OnClickListener {
 
+    boolean already_uploaded;
 
     String[] web = {
             "Negative",
@@ -530,6 +532,7 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         mPreviewFrame = (RelativeLayout) view.findViewById(R.id.rootFrame);
         mPreviewFrame.setOnClickListener(this);
         veuw=view;
+        already_uploaded=false;
         filename=null;
         filepath=null;
         flagger=false;
@@ -608,6 +611,7 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                         mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
                         mPreviewView.setBackground(null);
                         flagger_=false;
+                        already_uploaded=false;
                     }
                     else {
                         mCamera.startPreview();
@@ -625,8 +629,25 @@ Bitmap resize_insta(Bitmap yourBitmap) {
             @Override
             public void onClick(View view) {
 
-                new UploadFileToServer().execute();
-               // createPreview();
+                if (already_uploaded==false) {
+                    new UploadFileToServer().execute();
+
+                    getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
+                else
+                {
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+                    builder.setMessage("Video Already Uploaded to Server").setTitle("Attention!")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                    android.app.AlertDialog alert = builder.create();
+                    alert.show();
+                }
 
             }
         });
@@ -1162,8 +1183,9 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
-                    }
+                        already_uploaded=true;
+
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);                    }
                 });
         AlertDialog alert = builder.create();
         alert.show();
@@ -1182,7 +1204,7 @@ Bitmap resize_insta(Bitmap yourBitmap) {
 
         send_image_db_request();
 
-        mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
+        //mPreviewFrame.findViewById(R.id.two).setVisibility(View.INVISIBLE);
 
     }
 }

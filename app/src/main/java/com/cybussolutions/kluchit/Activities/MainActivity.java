@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -195,13 +196,34 @@ public class MainActivity extends AppCompatActivity {
     final StringRequest category_exist_request = new StringRequest(Request.Method.POST, checkuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+
             if (response.contains("not"))
             {
+                String str = response;
+                StringTokenizer defaultTokenizer = new StringTokenizer(str);
+                int i=0;
+                String user__id = null;
+                while (defaultTokenizer.hasMoreTokens())
+                {
+                    if (i==0) {
+                        user__id=defaultTokenizer.nextToken();
+                        break;
+                    }
+                }
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("user_id", user__id);// Saving string
+                editor.commit();
+
+
                 prepare_fragment();
             }
             else {
 
                 userId = response;
+
 
                // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                // requestQueue.add(img_request);
@@ -210,11 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("user_id", response);// Saving string
-            editor.commit();
         }
 
     }, new Response.ErrorListener() {
@@ -475,10 +492,10 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
 
-            category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+            /*category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
                     MY_SOCKET_TIMEOUT_MS,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
 
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -728,10 +745,10 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
 
-            category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+            /*category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
                     MY_SOCKET_TIMEOUT_MS,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
 
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
