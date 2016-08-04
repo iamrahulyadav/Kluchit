@@ -130,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
             Map<String, String> params = new HashMap<String, String>();
 
             params.put("userid", userId);//done
+
+
+            SharedPreferences preferences=getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("user_cat",ids);
+            editor.commit();
+
             params.put("categories", ids);//done
 
             return params;
