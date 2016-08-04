@@ -136,6 +136,8 @@ public class Questions_Activity  extends AppCompatActivity
                    // Toast.makeText(Questions_Activity.this, value.toString(), Toast.LENGTH_SHORT).show();
                     finish();
 
+
+
                     Intent intent1 = new Intent(Questions_Activity.this, MainActivity.class);
                     startActivity(intent1);
 
