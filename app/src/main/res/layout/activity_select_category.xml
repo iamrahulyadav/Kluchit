@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView3"
         android:layout_centerHorizontal="true"
+        android:listSelector="#758189"
+        android:cacheColorHint="#758189"
         android:layout_below="@+id/app_bar" />
 
 

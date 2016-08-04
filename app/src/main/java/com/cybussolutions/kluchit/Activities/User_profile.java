@@ -75,9 +75,10 @@ public class User_profile extends AppCompatActivity {
         setContentView(R.layout.user_profile);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Profile");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Profile");
+
 
         ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
         ringProgressDialog.setCancelable(false);

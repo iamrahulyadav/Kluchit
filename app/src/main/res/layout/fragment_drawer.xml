@@ -21,8 +21,8 @@
         android:id="@+id/listView1"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageView"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="#758189"
+        android:cacheColorHint="#758189"
         android:divider="#000000"
         android:dividerHeight="0px"/>
 

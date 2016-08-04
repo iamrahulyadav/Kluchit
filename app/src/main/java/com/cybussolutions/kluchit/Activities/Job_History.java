@@ -65,11 +65,12 @@ public class Job_History extends AppCompatActivity {
         setContentView(R.layout.job__history);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("History");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
-        toolbar.setTitle("History");
+
 
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
@@ -96,9 +97,10 @@ public class Job_History extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
-
+                String heading = ((TextView) view.findViewById(R.id.userid)).getText().toString();
                 Intent intent = new Intent(Job_History.this,History_details.class);
                 intent.putExtra("job_id",job_id);
+                intent.putExtra("heading",heading);
                 startActivity(intent);
             }
         });

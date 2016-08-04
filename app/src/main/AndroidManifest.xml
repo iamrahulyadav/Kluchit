@@ -33,11 +33,7 @@
 
         <activity android:name=".Activities.Splash_Activity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".Activities.Job_detail"></activity>
@@ -48,7 +44,13 @@
         <activity android:name=".Activities.MainActivity">
 
         </activity>
-        <activity android:name=".Activities.Login_activity" />
+        <activity android:name=".Activities.Login_activity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".Activities.SocialSharing" />
 

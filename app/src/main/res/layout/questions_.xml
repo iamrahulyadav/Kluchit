@@ -33,6 +33,8 @@
         android:id="@+id/question_list"
         android:divider="#e4960e"
         android:dividerHeight="2dp"
+        android:listSelector="#758189"
+        android:cacheColorHint="#758189"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/app_bar"
         android:layout_above="@+id/send" />

@@ -16,4 +16,5 @@ public class EndPoints
     public static final String GET_QUESANDANS_HISTORY= BASE_URL+"user/getQuestionAndAnswers";
     public static final String IMG_ENTRY_DB= BASE_URL +"common_controller/imageEntryDatabase";
     public static final String USER_JOB_INFO= BASE_URL +"common_controller/JobsCOunt";
+    public static final String USER_AMOUNT = BASE_URL +"common_controller/getRates";
 }

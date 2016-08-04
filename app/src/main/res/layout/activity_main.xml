@@ -25,8 +25,8 @@
         android:layout_height="match_parent"
         android:divider="#e4960e"
         android:dividerHeight="2dp"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="#758189"
+        android:cacheColorHint="#758189"
         android:layout_below="@+id/app_bar" />
 
 

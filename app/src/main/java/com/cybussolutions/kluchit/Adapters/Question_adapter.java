@@ -82,7 +82,7 @@ public class Question_adapter extends ArrayAdapter<Questions> {
                     String tag = positiveimage.getTag().toString();
                     positiveimage.setTag(1);
                     values.put(questionid, tag);
-                    Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
                     crossimage.setBackgroundResource(R.drawable.thumbdowngrey1);
 
                 }
@@ -135,11 +135,11 @@ public class Question_adapter extends ArrayAdapter<Questions> {
 
                 if (answer.equals("") || answer.equals(null)) {
                     values.put(position, "null");
-                    Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
                     b.dismiss();
                 } else {
                     values.put(position, answer);
-                    Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(getContext(), values.toString(), Toast.LENGTH_SHORT).show();
                     b.dismiss();
                 }
 

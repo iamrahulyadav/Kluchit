@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,8 @@ public class History_details extends AppCompatActivity {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     private Toolbar toolbar;
     ListView listView;
-    String userId,job_id;
+    String userId,job_id,description;
+    TextView status,amount;
     ProgressDialog ringProgressDialog;
     private history_adapter history_adapter1;
     private ArrayList<History_model> listhistory = new ArrayList<>();
@@ -52,8 +55,13 @@ public class History_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_details);
 
+
+        final Intent intent = getIntent();
+        job_id = intent.getStringExtra("job_id");
+        description = intent.getStringExtra("heading");
+
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("History Details");
+        toolbar.setTitle(description);
 
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
@@ -69,13 +77,15 @@ public class History_details extends AppCompatActivity {
         ringProgressDialog.show();
 
         listView = (ListView) findViewById(R.id.history_list);
+        amount = (TextView) findViewById(R.id.amount);
+        status = (TextView) findViewById(R.id.status);
 
         history_adapter1 = new history_adapter(getApplicationContext(), R.layout.singlerow, listhistory, this);
 
         Jsonrecieve();
 
-        final Intent intent = getIntent();
-        job_id = intent.getStringExtra("job_id");
+
+
 
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -106,10 +116,10 @@ public class History_details extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        ringProgressDialog.dismiss();
+
                         parseJSONResponce(response);
                         listView.setAdapter(history_adapter1);
-
+                        JsonRecieveAmount();
                     }
                 },
 
@@ -154,7 +164,104 @@ public class History_details extends AppCompatActivity {
 
 
     }
+    public void JsonRecieveAmount() {
 
+
+        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.USER_AMOUNT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        ringProgressDialog.dismiss();
+                        String catagory;
+                        JSONObject object = null;
+                        try {
+                            object = new JSONObject(response);
+                            catagory = object.getString("result");
+                            if(catagory.equals("false"))
+                            {
+
+                                status.setText("Not Verified");
+                                amount.setText("0000");
+                            }
+
+                            else{
+                                JSONArray Array = new JSONArray(catagory);
+
+                                for (int i = 0; i < Array.length(); i++) {
+
+                                    JSONObject Information = Array.getJSONObject(i);
+
+                                    String amountreieve = Information.getString("total");
+                                    String statusrecieve = Information.getString("paid");
+                                    amount.setText(amountreieve);
+                                    status.setText(statusrecieve);
+
+
+                                    if (statusrecieve.equals("1")) {
+                                        status.setText("PAID");
+                                    } else  {
+                                        status.setText("UN-PAID");
+                                    }
+
+                                }
+                            }
+
+
+
+                            //Toast.makeText(History_details.this,catagory, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+
+
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                        if (error instanceof NoConnectionError) {
+                            Intent intent = new Intent(History_details.this, NoInternet.class);
+                            startActivity(intent);
+
+                        } else {
+                            Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                })
+
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("jobid", job_id);
+                params.put("userid", userId);
+
+                return params;
+
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
+
+
+    }
     private void parseJSONResponce(String responce) {
 
 
