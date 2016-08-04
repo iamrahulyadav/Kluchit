@@ -197,7 +197,6 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Closejob();
                                 Intent intent1 = new Intent(Job_detail.this, Questions_Activity.class);
                                 intent1.putExtra("screen", "Post");
                                 intent1.putExtra("job_id", job_id);
