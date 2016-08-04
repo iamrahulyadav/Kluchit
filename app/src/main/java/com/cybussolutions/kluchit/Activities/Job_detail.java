@@ -28,12 +28,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialcamera.AndroidMultiPartEntity;
 import com.afollestad.materialcamera.MaterialCamera;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -44,6 +44,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cybussolutions.kluchit.Adapters.AndroidMultiPartEntity;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
@@ -91,7 +92,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     ProgressBar progressBar;
     TextView txtPercentage;
     String filepath;
-
+    boolean already_uploaded;
 
     Bitmap resize_insta(Bitmap yourBitmap) {
 
@@ -119,10 +120,8 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-
+    void add_watermark()
+    {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         if (!preferences.contains("watermark")) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -148,7 +147,11 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
 
         }
+    }
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
@@ -232,7 +235,25 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         findViewById(R.id.btnUpload).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new UploadFileToServer().execute();
+                if (already_uploaded==false) {
+                    new UploadFileToServer().execute();
+
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
+                else
+                {
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(Job_detail.this);
+                    builder.setMessage("Video Already Uploaded to Server").setTitle("Attention!")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                    android.app.AlertDialog alert = builder.create();
+                    alert.show();
+                }
             }
         });
 
@@ -468,6 +489,11 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         File saveDir = null;
+        already_uploaded=false;
+
+
+        //FragmentTransaction ft = getFragmentManager().beginTransaction();
+        //ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // Only use external storage directory if permission is granted, otherwise cache directory is used by default
@@ -508,6 +534,10 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {
 
+
+                add_watermark();
+
+
                 String imagepath = data.getData().getPath();
                 final File file = new File(data.getData().getPath());
 
@@ -515,7 +545,8 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 LoadJNI vk = new LoadJNI();
                 try {
                     String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
-                    String[] complexCommand = {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/videokit/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + getFileName(data.getData())};
+                    String filename=getFileName(data.getData());
+                    String[] complexCommand = {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
                     vk.run(complexCommand, workFolder, getApplicationContext());
                     Toast.makeText(this, String.format("Saved to: %s, size: %s",
                             file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
@@ -673,7 +704,10 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
+                        already_uploaded=true;
+
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                     }
                 });
         android.app.AlertDialog alert = builder.create();
@@ -686,10 +720,6 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press button to start uploading...");
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-
 
             }
         }, 500);

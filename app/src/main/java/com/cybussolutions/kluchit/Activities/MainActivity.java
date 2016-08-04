@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,112 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     String ids,jobtype;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Kluchit");
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
-
-        drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
-
-        listView = (ListView) findViewById(R.id.list_view);
-        addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String heading = ((TextView) view.findViewById(R.id.userid)).getText().toString();
-                String discription = ((TextView) view.findViewById(R.id.department)).getText().toString();
-                String date = ((TextView) view.findViewById(R.id.specialization)).getText().toString();
-                String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
-
-                Intent intent1 = new Intent(MainActivity.this, Job_discription.class);
-                intent1.putExtra("name", heading);
-                intent1.putExtra("specialization", discription);
-                intent1.putExtra("discription", date);
-                intent1.putExtra("job_id", job_id);
-                finish();
-                startActivity(intent1);
-
-            }
-        });
-
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Check type of intent filter
-                if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
-                    //Registration success
-                    String token = intent.getStringExtra("token");
-                } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
-                    //Registration error
-                    Toast.makeText(getApplicationContext(), "GCM registration error!!!", Toast.LENGTH_LONG).show();
-                } else {
-                    //Tobe define
-                }
-            }
-        };
-
-
-        Intent itent = new Intent(this, GCMRegistrationIntentService.class);
-        startService(itent);
-
-
-
-        t= Analytics.getInstance(this).getDefaultTracker();
-
-
-
-        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String flag=decision_pref.getString("fb_login",null);
-
-
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.hide(getFragmentManager().findFragmentById(R.id.gettingStarted));
-        ft.commit();
-
-
-        ringProgressDialog = ProgressDialog.show(MainActivity.this, "",	"Please wait ...", true);
-
-        if (flag.equals("1"))
-        {
-            //ABdullah Method
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(category_exist_request);
-        }
-        else
-        {
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
-            Jsonsend();
-        }
-
-    }
-
     String postuser=EndPoints.BASE_URL+"common_controller/saveUserCategory";
 
     final StringRequest category_request = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
 
-            // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+           // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
             if (response.toString().contains("not")) {
                 ringProgressDialog.dismiss();
                 Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
@@ -229,6 +131,13 @@ public class MainActivity extends AppCompatActivity {
             Map<String, String> params = new HashMap<String, String>();
 
             params.put("userid", userId);//done
+
+
+            SharedPreferences preferences=getApplicationContext().getSharedPreferences("MyPref",MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("user_cat",ids);
+            editor.commit();
+
             params.put("categories", ids);//done
 
             return params;
@@ -287,26 +196,42 @@ public class MainActivity extends AppCompatActivity {
     final StringRequest category_exist_request = new StringRequest(Request.Method.POST, checkuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+
             if (response.contains("not"))
             {
+                String str = response;
+                StringTokenizer defaultTokenizer = new StringTokenizer(str);
+                int i=0;
+                String user__id = null;
+                while (defaultTokenizer.hasMoreTokens())
+                {
+                    if (i==0) {
+                        user__id=defaultTokenizer.nextToken();
+                        break;
+                    }
+                }
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("user_id", user__id);// Saving string
+                editor.commit();
+
+
                 prepare_fragment();
             }
             else {
 
                 userId = response;
 
-                // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                // requestQueue.add(img_request);
+
+               // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+               // requestQueue.add(img_request);
 
                 Jsonsend();
 
 
             }
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("user_id", response);// Saving string
-            editor.commit();
         }
 
     }, new Response.ErrorListener() {
@@ -480,6 +405,110 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Kluchit");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+
+        drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
+
+        listView = (ListView) findViewById(R.id.list_view);
+        addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String heading = ((TextView) view.findViewById(R.id.userid)).getText().toString();
+                String discription = ((TextView) view.findViewById(R.id.department)).getText().toString();
+                String date = ((TextView) view.findViewById(R.id.specialization)).getText().toString();
+                String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
+
+                Intent intent1 = new Intent(MainActivity.this, Job_discription.class);
+                intent1.putExtra("name", heading);
+                intent1.putExtra("specialization", discription);
+                intent1.putExtra("discription", date);
+                intent1.putExtra("job_id", job_id);
+                finish();
+                startActivity(intent1);
+
+            }
+        });
+
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Check type of intent filter
+                if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
+                    //Registration success
+                    String token = intent.getStringExtra("token");
+                } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
+                    //Registration error
+                    Toast.makeText(getApplicationContext(), "GCM registration error!!!", Toast.LENGTH_LONG).show();
+                } else {
+                    //Tobe define
+                }
+            }
+        };
+
+
+        Intent itent = new Intent(this, GCMRegistrationIntentService.class);
+        startService(itent);
+
+
+
+        t= Analytics.getInstance(this).getDefaultTracker();
+
+
+
+        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String flag=decision_pref.getString("fb_login",null);
+
+
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.hide(getFragmentManager().findFragmentById(R.id.gettingStarted));
+        ft.commit();
+
+
+        ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...",	"Checking Credentials ...", true);
+
+        if (flag.equals("1"))
+        {
+            //ABdullah Method
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
+
+            /*category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(category_exist_request);
+        }
+        else
+        {
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            userId = pref.getString("user_id", null);
+            Jsonsend();
+        }
+
+    }
 
     void prepare_fragment()
     {
@@ -563,6 +592,12 @@ public class MainActivity extends AppCompatActivity {
 
             ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
             ringProgressDialog.setCancelable(false);
+
+
+            category_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_request);
@@ -709,6 +744,13 @@ public class MainActivity extends AppCompatActivity {
             //ABdullah Method
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
+
+            /*category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
+
+
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_exist_request);
         }
