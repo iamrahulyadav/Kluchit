@@ -225,6 +225,11 @@ public class Login_activity extends AppCompatActivity{
                         .create().show();
 
 
+                upload_image_request.setRetryPolicy(new DefaultRetryPolicy(
+                        MY_SOCKET_TIMEOUT_MS,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 requestQueue.add(upload_image_request);                //Intent intent=new Intent(Login_activity.this,MainActivity.class);
@@ -288,6 +293,11 @@ public class Login_activity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
+
+
+        LoginManager.getInstance().logOut();
+
+
         ((EditText)findViewById(R.id.userpass1)).setTransformationMethod(new PasswordTransformationMethod());
 
 
@@ -386,6 +396,10 @@ public class Login_activity extends AppCompatActivity{
                                     editor1.commit();
 
 
+                                    sr.setRetryPolicy(new DefaultRetryPolicy(
+                                            MY_SOCKET_TIMEOUT_MS,
+                                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                                     requestQueue.add(sr);
@@ -419,6 +433,11 @@ public class Login_activity extends AppCompatActivity{
                                     startActivity(intent);
                                 }
                             });
+
+                            ir.setRetryPolicy(new DefaultRetryPolicy(
+                                    MY_SOCKET_TIMEOUT_MS,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -830,6 +849,9 @@ public class Login_activity extends AppCompatActivity{
                 MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);

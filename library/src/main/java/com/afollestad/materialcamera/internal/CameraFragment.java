@@ -221,6 +221,12 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     {
     }
 
+Bitmap resize_insta(Bitmap yourBitmap) {
+
+    return Bitmap.createScaledBitmap(yourBitmap, 800, 800, true);
+}
+
+
     public static Bitmap RotateBitmap(Bitmap source, float angle)
     {
         Matrix matrix = new Matrix();
@@ -478,7 +484,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         i++;
     }
 
-    private void createInstagramIntent(String type, String mediaPath){
+    private void createInstagramIntent(String type, String mediaPath) throws IOException {
 
         // Create the new Intent using the 'Send' action.
         Intent share = new Intent(Intent.ACTION_SEND);
@@ -486,8 +492,28 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         // Set the MIME type
         share.setType(type);
 
+
+        Bitmap resized=resize_insta(BitmapFactory.decodeFile(mediaPath));
+
+        File f = new File("/storage/emulated/0/Pictures/Kluchit/", "insta.jpeg");
+        f.createNewFile();
+
+        //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+
+        byte[] bitmapdata = bos.toByteArray();
+
+//write the bytes in file
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bitmapdata);
+        fos.flush();
+        fos.close();
+
+
+
         // Create the URI from the media
-        File media = new File(mediaPath);
+        File media = new File("/storage/emulated/0/Pictures/Kluchit/photos/", "insta.jpeg");
         Uri uri = Uri.fromFile(media);
 
         // Add the URI to the Intent.
@@ -635,9 +661,11 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             public void onClick(View view) {
 
                 String path = filepath;
-                createInstagramIntent("image/*",path);
-
-
+                try {
+                    createInstagramIntent("image/*",path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -1036,6 +1064,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
+
             // setting progress bar to zero
             progressBar.setProgress(0);
             super.onPreExecute();
@@ -1058,8 +1087,12 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             return uploadFile();
         }
 
+
+
+
         @SuppressWarnings("deprecation")
         private String uploadFile() {
+
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();

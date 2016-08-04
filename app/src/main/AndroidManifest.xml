@@ -31,7 +31,7 @@
             android:value="@string/app_id" />
 
 
-        <activity android:name=".Activities.MainActivityTwo">
+        <activity android:name=".Activities.Splash_Activity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

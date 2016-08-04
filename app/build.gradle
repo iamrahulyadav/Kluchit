@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "22.0.1"
 
     repositories {
@@ -20,6 +20,9 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        ndk {
+            abiFilter "armeabi-v7a"
+        }
 
     }
     buildTypes {
@@ -56,6 +59,7 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     compile project (':library')
     compile 'com.android.support:multidex:1.0.0'
+    compile project(':ffmpeg4android_lib')
 
 
 

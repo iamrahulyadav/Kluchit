@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -161,7 +160,7 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
         mPlayer.setSource(Uri.parse(mOutputUri));
 
 
-        progressBar=(ProgressBar)view.findViewById(R.id.two).findViewById(R.id.progressBar);
+       /* progressBar=(ProgressBar)view.findViewById(R.id.two).findViewById(R.id.progressBar);
         txtPercentage=(TextView)view.findViewById(R.id.two).findViewById(R.id.txtPercentage);
 
 
@@ -197,9 +196,10 @@ public class PlaybackVideoFragment extends Fragment implements CameraUriInterfac
         });
 
 
+
         progressBar.getProgressDrawable().setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
 
-
+        */
 
     }
 

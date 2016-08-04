@@ -95,7 +95,7 @@ public class VideoStreamView extends SurfaceView implements SurfaceHolder.Callba
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public VideoStreamView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context,attrs,defStyleAttr,defStyleRes);
         initPlayer();
     }
 

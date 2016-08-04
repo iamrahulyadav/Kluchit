@@ -3,17 +3,23 @@ package com.cybussolutions.kluchit.Activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
 import com.cybussolutions.kluchit.R;
+import com.netcompss.ffmpeg4android.GeneralUtils;
+import com.netcompss.loader.LoadJNI;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -69,21 +75,47 @@ public class MainActivityTwo extends AppCompatActivity implements View.OnClickLi
         return readableFileSize(file.length());
     }
 
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {
+                String imagepath = data.getData().getPath();
                 final File file = new File(data.getData().getPath());
-                Toast.makeText(this, String.format("Saved to: %s, size: %s",
-                        file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
-            } else if (data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
-                if (e != null) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                GeneralUtils.checkForPermissionsMAndAbove(MainActivityTwo.this, true);
+                LoadJNI vk = new LoadJNI();
+                try {
+                    String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
+                    String[] complexCommand = {"ffmpeg","-y" ,"-i", imagepath,"-strict","experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.png [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]","-s", "320x240","-r", "30", "-b", "15496k", "-vcodec", "mpeg4","-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/videokit/outaybee.mp4"};
+                    vk.run(complexCommand , workFolder , getApplicationContext());
+                    Toast.makeText(this, String.format("Saved to: %s, size: %s",
+                            file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
+                } catch (Throwable e) {
+                    Log.e("test", "vk run exception.", e);
                 }
             }
         }

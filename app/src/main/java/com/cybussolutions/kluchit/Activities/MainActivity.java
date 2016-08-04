@@ -467,6 +467,13 @@ public class MainActivity extends AppCompatActivity {
             //ABdullah Method
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
+
+            category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_exist_request);
         }
@@ -561,6 +568,12 @@ public class MainActivity extends AppCompatActivity {
 
             ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
             ringProgressDialog.setCancelable(false);
+
+
+            category_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_request);
@@ -707,6 +720,13 @@ public class MainActivity extends AppCompatActivity {
             //ABdullah Method
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
             userId = pref.getString("user_id", null);
+
+            category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+                    MY_SOCKET_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(category_exist_request);
         }

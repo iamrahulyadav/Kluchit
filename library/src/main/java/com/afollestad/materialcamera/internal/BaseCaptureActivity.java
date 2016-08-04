@@ -367,7 +367,9 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                     .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RECORDED)
                     .setDataAndType(Uri.parse(uri), "video/mp4"));
         }
-       // finish();//finishing video capture
+
+        finish();//finishing video capture
+
     }
 
     @Override
