@@ -41,10 +41,10 @@
 
 
 
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.Login_activity">
 
         </activity>
-        <activity android:name=".Activities.Login_activity" >
+        <activity android:name=".Activities.MainActivityTwo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

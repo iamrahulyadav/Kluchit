@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +96,24 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_
 @SuppressWarnings("deprecation")
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class CameraFragment extends BaseCameraFragment implements View.OnClickListener {
+
+
+    public int getScreenOrientation()
+    {
+        Display getOrient = getActivity().getWindowManager().getDefaultDisplay();
+        int orientation = Configuration.ORIENTATION_UNDEFINED;
+        if(getOrient.getWidth()==getOrient.getHeight()){
+            orientation = Configuration.ORIENTATION_SQUARE;
+        } else{
+            if(getOrient.getWidth() < getOrient.getHeight()){
+                orientation = Configuration.ORIENTATION_PORTRAIT;
+            }else {
+                orientation = Configuration.ORIENTATION_LANDSCAPE;
+            }
+        }
+        return orientation;
+    }
+
 
     boolean already_uploaded;
 
@@ -387,36 +407,67 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                 int orientation=cameraInfo.orientation;
 
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
+                if (getScreenOrientation()== Configuration.ORIENTATION_PORTRAIT)
+                {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
 
 
-                Bitmap bmap2=RotateBitmap(bitmap,orientation);
-                Resources res = getActivity().getResources();
-                bmap2=addWatermark(res,bmap2);
+                    Bitmap bmap2=RotateBitmap(bitmap,orientation);
+                    Resources res = getActivity().getResources();
+                    bmap2=addWatermark(res,bmap2);
 
 
-                ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-                bmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
-                byte[] b = byteArrayBitmapStream.toByteArray();
+                    ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+                    bmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+                    byte[] b = byteArrayBitmapStream.toByteArray();
 
-                try {
-                    filepath=picFile.getPath();
-                    filename=picFile.getName();
-                    FileOutputStream fos = new FileOutputStream(picFile);
-                    fos.write(b);
-                    fos.close();
-                    Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
+                    try {
+                        filepath=picFile.getPath();
+                        filename=picFile.getName();
+                        FileOutputStream fos = new FileOutputStream(picFile);
+                        fos.write(b);
+                        fos.close();
+                        Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
 
-                } catch (FileNotFoundException e) {
-                  //  Log.e(TAG, "File not found: " + e.getMessage());
-                    e.getStackTrace();
-                } catch (IOException e) {
-                  //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
-                    e.getStackTrace();
+                    } catch (FileNotFoundException e) {
+                        //  Log.e(TAG, "File not found: " + e.getMessage());
+                        e.getStackTrace();
+                    } catch (IOException e) {
+                        //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                        e.getStackTrace();
+                    }
+
                 }
+                else
+                {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
 
 
+                    Bitmap bmap2=RotateBitmap(bitmap,orientation+90);
+                    Resources res = getActivity().getResources();
+                    bmap2=addWatermark(res,bmap2);
 
+
+                    ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+                    bmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+                    byte[] b = byteArrayBitmapStream.toByteArray();
+
+                    try {
+                        filepath=picFile.getPath();
+                        filename=picFile.getName();
+                        FileOutputStream fos = new FileOutputStream(picFile);
+                        fos.write(b);
+                        fos.close();
+                        Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
+
+                    } catch (FileNotFoundException e) {
+                        //  Log.e(TAG, "File not found: " + e.getMessage());
+                        e.getStackTrace();
+                    } catch (IOException e) {
+                        //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                        e.getStackTrace();
+                    }
+                }
             }
         };
         mCamera.takePicture(null, null, pictureCB);

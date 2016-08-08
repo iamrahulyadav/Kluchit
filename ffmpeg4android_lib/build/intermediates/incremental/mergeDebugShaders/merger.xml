@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\Kluchit_s\ffmpeg4android_lib\src\main\shaders"/></dataSet><dataSet config="debug"><source path="D:\Kluchit_s\ffmpeg4android_lib\src\debug\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\Abdullah Manzoor Dar\AndroidStudioProjects\Kluchit_shared12345\ffmpeg4android_lib\src\main\shaders"/></dataSet><dataSet config="debug"><source path="C:\Users\Abdullah Manzoor Dar\AndroidStudioProjects\Kluchit_shared12345\ffmpeg4android_lib\src\debug\shaders"/></dataSet></merger>
