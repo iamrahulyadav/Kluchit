@@ -568,7 +568,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                     String filename=getFileName(data.getData());
                     String[] complexCommand=null;
 
-
+ 
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     String left=pref.getString("logo_pos",null);
 
