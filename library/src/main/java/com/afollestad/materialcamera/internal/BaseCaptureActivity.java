@@ -46,6 +46,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     private Object mFrontCameraId;
     private Object mBackCameraId;
     private boolean mDidRecord = false;
+    int img_pos=0;
 
     public static final int PERMISSION_RC = 69;
 
@@ -172,6 +173,8 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
                 ((BaseCameraFragment) frag).cleanup();
             }
         }
+        setResult(RESULT_FIRST_USER, new Intent()
+                .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RETRY));
         finish();
     }
 
@@ -280,19 +283,10 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
     @Override
     public final void onRetry(@Nullable String outputUri) {
-        if (outputUri != null)
-            deleteOutputFile(outputUri);
-        if (!shouldAutoSubmit() || restartTimerOnRetry())
-            setRecordingStart(-1);
-        if (getIntent().getBooleanExtra(CameraIntentKey.RETRY_EXITS, false)) {
-            setResult(RESULT_OK, new Intent()
-                    .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RETRY));
-            finish();
-            return;
-        }
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, createFragment())
-                .commit();
+
+        setResult(RESULT_CANCELED, new Intent()
+                .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RETRY));
+        finish();
     }
 
     @Override

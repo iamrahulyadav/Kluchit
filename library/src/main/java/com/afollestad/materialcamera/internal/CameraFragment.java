@@ -42,6 +42,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -86,6 +87,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_BACK;
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_FRONT;
 import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_UNKNOWN;
@@ -118,27 +120,19 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     boolean already_uploaded;
 
     String[] web = {
-            "Negative",
-            "None"
+            "Top Left",
+            "Top Right",
+            "Bottom Left",
+            "Bottom Right",
+            "Middle"
 
     } ;
     int[] imageId = {
-            R.drawable.camone,
-            R.drawable.camtwo,
-            R.drawable.camthree,
-            R.drawable.camfour,
-            R.drawable.camfive,
-            R.drawable.camsix,
-            R.drawable.camseven,
-            R.drawable.cameight,
-            R.drawable.camnine,
-            R.drawable.camten,
-            R.drawable.cameleven,
-            R.drawable.camtwelve,
-            R.drawable.camthirteen,
-            R.drawable.camfourteen,
-            R.drawable.camfifteen
-
+            R.drawable.tl,
+            R.drawable.tr,
+            R.drawable.bl,
+            R.drawable.br,
+            R.drawable.mid
     };
 
 
@@ -162,8 +156,9 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
     long totalSize = 0;
     private static final String TAG = CameraFragment.class.getSimpleName();
     String filepath;
-
+    static int p=3;
     GridView grid;
+    static int image_pos;
 
     public class CustomGrid extends BaseAdapter {
         private Context mContext;
@@ -179,7 +174,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return web.length;
+            return 5;
         }
 
         @Override
@@ -245,7 +240,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
 Bitmap resize_insta(Bitmap yourBitmap) {
 
-    return Bitmap.createScaledBitmap(yourBitmap, 800, 800, true);
+    return Bitmap.createScaledBitmap(yourBitmap, yourBitmap.getWidth(), yourBitmap.getHeight(), true);
 }
 
 
@@ -362,9 +357,19 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         c.drawBitmap(source, 0, 0, paint);
 
         // Load the watermark
-        watermark = BitmapFactory.decodeResource(res, R.drawable.logoone);
+        final int[] imageId = {
+                R.drawable.log_one_a,
+                R.drawable.log_two_a,
+                R.drawable.log_three_a,
+                R.drawable.log_four_a,
+                R.drawable.log_five_a,
+                R.drawable.log_six_a
+        };
+
+
+        watermark = BitmapFactory.decodeResource(res, imageId[image_pos]);
         // Scale the watermark to be approximately 10% of the source image height
-        scale = (float) (((float) h * 0.05) / (float) watermark.getHeight());
+        scale = (float) (((float) h * 0.1) / (float) watermark.getHeight());
 
         // Create the matrix
         matrix = new Matrix();
@@ -372,8 +377,31 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         // Determine the post-scaled size of the watermark
         r = new RectF(0, 0, watermark.getWidth(), watermark.getHeight());
         matrix.mapRect(r);
-        // Move the watermark to the bottom right corner
-        matrix.postTranslate(w - r.width(), h - r.height());
+
+
+
+
+        if (p==0)//wrong
+            // Move the watermark to the top left corner
+            matrix.postTranslate(0,0);
+        else if (p==1)
+            // Move the watermark to the top right corner
+            matrix.postTranslate(w-r.width(),0);
+        else if (p==2)//wrong
+            // Move the watermark to the bottom left corner
+            matrix.postTranslate(0, h - r.height());
+        else if (p==3)
+            // Move the watermark to the bottom right corner
+            matrix.postTranslate(w - r.width(), h - r.height());
+        else
+            // Move the watermark to the middle
+            matrix.postTranslate(w/2 - r.width()/2,h/2 - r.height()/2);
+
+
+
+
+
+
 
         // Draw the watermark
         c.drawBitmap(watermark, matrix, paint);
@@ -548,7 +576,7 @@ Bitmap resize_insta(Bitmap yourBitmap) {
 
         Bitmap resized=resize_insta(BitmapFactory.decodeFile(mediaPath));
 
-        File f = new File("/storage/emulated/0/Pictures/Kluchit/", "insta.jpeg");
+        File f = new File("/storage/emulated/0/Pictures/Kluchit/photos/", "insta.jpeg");
         f.createNewFile();
 
         //Convert bitmap to byte array
@@ -577,6 +605,8 @@ Bitmap resize_insta(Bitmap yourBitmap) {
     }
 
 
+
+
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -588,6 +618,7 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         filepath=null;
         flagger=false;
         flagger_=false;
+        image_pos=0;
         view.findViewById(R.id.flash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -749,29 +780,170 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         grid=(GridView)mPreviewFrame.findViewById(R.id.filters).findViewById(R.id.gridView1);
         CustomGrid adapter = new CustomGrid(getActivity().getApplicationContext(), web, imageId);
         grid.setAdapter(adapter);
+
+
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = pref.edit();
+        editor.putString("logo_pos", String.valueOf(3));
+        // Saving string
+        editor.commit();
+
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                mCamera.stopPreview();
-                //mCamera.release();
-                Camera.Parameters parameters = mCamera.getParameters();
-
 
                 //working
-                if (position==0)
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_NEGATIVE);
-                else if (position==1)
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_NONE);
+                if (position==0) {
+                    p = 0;
+                    getActivity().findViewById(R.id.t_left).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+                    Toast.makeText(getActivity(),"top left",Toast.LENGTH_LONG).show();
 
-                mCamera.setParameters(parameters);
-                mCamera.startPreview();
+                }
+                else if (position==1) {
+                    p = 1;
+                    getActivity().findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.t_right).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+                    Toast.makeText(getActivity(),"top right",Toast.LENGTH_LONG).show();
+                }
+                else if (position==2) {
+                    p = 2;
+                    getActivity().findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_left).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+                    Toast.makeText(getActivity(),"bottom left",Toast.LENGTH_LONG).show();
+                }
+                else if (position==3) {
+                    p = 3;
+                    getActivity().findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_right).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+                    Toast.makeText(getActivity(),"bottom right",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    p = 4;
+                    getActivity().findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+                    getActivity().findViewById(R.id.middle).setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(),"middle",Toast.LENGTH_LONG).show();
+                }
+                mPreviewFrame.findViewById(R.id.filters).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.hidelogopositionbar).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.showlogopositionbar).setVisibility(View.VISIBLE);
+
+                editor.putString("logo_pos", String.valueOf(position));
+                // Saving string
+                editor.commit();
 
             }
         });
 
+
+        view.findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+
+
+        mPreviewFrame.findViewById(R.id.filters).setVisibility(View.INVISIBLE);
+
+
+        mPreviewFrame.findViewById(R.id.hidelogopositionbar).setVisibility(View.INVISIBLE);
+
+
+        mPreviewFrame.findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
+
+
+        mPreviewFrame.findViewById(R.id.right).setVisibility(View.INVISIBLE);
+
+
+
+        mPreviewFrame.findViewById(R.id.showlogopositionbar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPreviewFrame.findViewById(R.id.filters).setVisibility(View.VISIBLE);
+                mPreviewFrame.findViewById(R.id.hidelogopositionbar).setVisibility(View.VISIBLE);
+                mPreviewFrame.findViewById(R.id.showlogopositionbar).setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mPreviewFrame.findViewById(R.id.hidelogopositionbar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPreviewFrame.findViewById(R.id.filters).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.hidelogopositionbar).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.showlogopositionbar).setVisibility(View.VISIBLE);
+            }
+        });
+
+        mPreviewFrame.findViewById(R.id.filters).setBackgroundResource(R.color.colorAccent);
+
+
+        mPreviewFrame.findViewById(R.id.logo_window).setBackgroundResource(R.color.colorAccent);
+
+
+
+
+        mPreviewFrame.findViewById(R.id.left).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPreviewFrame.findViewById(R.id.logo_window).setVisibility(View.VISIBLE);
+                mPreviewFrame.findViewById(R.id.right).setVisibility(View.VISIBLE);
+                mPreviewFrame.findViewById(R.id.left).setVisibility(View.INVISIBLE);
+            }
+        });
+
+        mPreviewFrame.findViewById(R.id.right).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPreviewFrame.findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.right).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.left).setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+        ListView list=(ListView)(mPreviewFrame.findViewById(R.id.logo_window).findViewById(R.id.list));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final int[] imageId = {
+                        R.drawable.log_one_a,
+                        R.drawable.log_two_a,
+                        R.drawable.log_three_a,
+                        R.drawable.log_four_a,
+                        R.drawable.log_five_a,
+                        R.drawable.log_six_a
+                };
+                mPreviewFrame.findViewById(R.id.t_right).setBackgroundResource(imageId[i]);
+                mPreviewFrame.findViewById(R.id.t_left).setBackgroundResource(imageId[i]);
+                mPreviewFrame.findViewById(R.id.b_left).setBackgroundResource(imageId[i]);
+                mPreviewFrame.findViewById(R.id.b_right).setBackgroundResource(imageId[i]);
+                mPreviewFrame.findViewById(R.id.middle).setBackgroundResource(imageId[i]);
+                image_pos=i;
+                mPreviewFrame.findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.right).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.left).setVisibility(View.VISIBLE);
+
+
+            }
+        });
 
 
     }
@@ -1059,6 +1231,18 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                 // Start recording
 
                 mMediaRecorder.start();
+
+                //changing
+                mPreviewFrame.findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.right).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.left).setVisibility(View.INVISIBLE);
+
+
+                mPreviewFrame.findViewById(R.id.filters).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.hidelogopositionbar).setVisibility(View.INVISIBLE);
+                mPreviewFrame.findViewById(R.id.showlogopositionbar).setVisibility(View.INVISIBLE);
+
+
                 mButtonVideo.setEnabled(false);
                 mButtonVideo.postDelayed(new Runnable() {
                     @Override

@@ -123,7 +123,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     void add_watermark()
     {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        if (!preferences.contains("watermark")) {
+        //if (!preferences.contains("watermark")) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("watermark", "1");
             editor.commit();
@@ -146,9 +146,29 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
             }
 
 
-        }
+       // }
     }
 
+    void add_watermark_vid()
+    {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.watermark_vid);
+        String extStorageDirectory = Environment.getExternalStorageDirectory().toString() + "/Pictures/Kluchit";
+        File file = new File(extStorageDirectory, "watermark_vid.PNG");
+        FileOutputStream outStream = null;
+        try {
+            outStream = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        try {
+            outStream.flush();
+            outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -535,6 +555,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
 
                 add_watermark();
+                add_watermark_vid();
 
 
                 String imagepath = data.getData().getPath();
@@ -545,7 +566,26 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 try {
                     String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
                     String filename=getFileName(data.getData());
-                    String[] complexCommand = {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+                    String[] complexCommand=null;
+
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                    String left=pref.getString("logo_pos",null);
+
+                    //                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+
+                    if (left=="1")
+                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark_vid.PNG , scale=120:120 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+                    else if (left=="0")
+                        complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark_vid.PNG , scale=120:120 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+                    else if (left=="3")
+                        complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark_vid.PNG , scale=120:120 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+                    else if (left=="2")
+                        complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark_vid.PNG , scale=120:120 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+                    else
+                        complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark_vid.PNG , scale=120:120 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+
+
                     vk.run(complexCommand, workFolder, getApplicationContext());
                     Toast.makeText(this, String.format("Saved to: %s, size: %s",
                             file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
@@ -561,7 +601,43 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 }
 
 
-            } else if (data != null) {
+            }
+            else if (resultCode == RESULT_CANCELED)
+            {
+                File saveDir = null;
+                already_uploaded=false;
+
+
+                //FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    // Only use external storage directory if permission is granted, otherwise cache directory is used by default
+                    saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit/videos");
+                    saveDir.mkdirs();
+                }
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("job_id", job_id);
+                editor.commit();
+
+
+
+                new MaterialCamera(this)
+                        .saveDir(saveDir)
+                        .showPortraitWarning(true)
+                        .allowRetry(true)
+                        .defaultToFrontFacing(true)
+                        .start(CAMERA_RQ);
+
+            }
+            else if (resultCode==RESULT_FIRST_USER)
+            {
+
+            }
+
+            else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                 if (e != null) {
                     e.printStackTrace();

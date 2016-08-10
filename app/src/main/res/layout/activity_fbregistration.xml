@@ -44,7 +44,7 @@
         android:id="@+id/user_namefb"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/imageView5"
+        android:layout_below="@+id/middle"
         android:layout_alignParentStart="true">
 
         <EditText
@@ -54,7 +54,7 @@
             android:inputType="textEmailAddress"
             android:hint="Username"
             android:typeface="serif"
-            android:layout_below="@+id/imageView5"
+            android:layout_below="@+id/middle"
             android:layout_alignStart="@+id/category_chooser"
             android:layout_alignEnd="@+id/radio_Group"
             android:textColor="#FFFF"
