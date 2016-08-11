@@ -10,11 +10,12 @@
         layout="@layout/mcam_include_camera_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/controlsFrame"
         android:id="@+id/include"
         android:layout_gravity="center"
 
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:id="@+id/controlsFrame"
@@ -73,32 +74,6 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/recordDuration"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/mcam_defaultDuration"
-        android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        android:layout_above="@+id/controlsFrame"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignLeft="@+id/flash"
-        android:layout_alignStart="@+id/flash"
-        android:layout_toLeftOf="@+id/imageView"
-        android:layout_toStartOf="@+id/imageView" />
-
-    <fragment android:name="com.afollestad.materialcamera.internal.MainActivityTwo"
-        android:id="@+id/filters"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView" />
-
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -110,14 +85,82 @@
         android:layout_alignParentStart="true" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:id="@+id/imageView"
-        android:background="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t_right"
+        android:background="@drawable/log_one_a"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t_left"
+        android:background="@drawable/log_one_a"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/middle"
+        android:background="@drawable/log_one_a"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/b_left"
+        android:background="@drawable/log_one_a"
+        android:layout_above="@+id/controlsFrame"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/b_right"
+        android:background="@drawable/log_one_a"
         android:layout_above="@+id/controlsFrame"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="flash"
+        android:id="@+id/showlogopositionbar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/down"/>
+
+    <TextView
+        android:id="@+id/recordDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/mcam_defaultDuration"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:layout_above="@+id/controlsFrame"
+        android:layout_centerHorizontal="true" />
+
+    <fragment android:name="com.afollestad.materialcamera.internal.MainActivityTwo"
+        android:id="@+id/filters"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="10dp"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <fragment android:name="com.afollestad.materialcamera.internal.UploadFragment"
         android:id="@+id/two"
@@ -125,9 +168,50 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_gravity="center"
-        android:layout_alignBottom="@+id/include"
+        android:layout_above="@+id/controlsFrame"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="flash"
+        android:id="@+id/hidelogopositionbar"
+        android:background="@drawable/up"
+        android:layout_below="@+id/filters"
+        android:layout_centerHorizontal="true" />
+
+
+    <fragment android:name="com.afollestad.materialcamera.internal.Logo_chooser"
+        android:id="@+id/logo_window"
+        android:layout_weight="1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorAccent"
+        android:layout_alignTop="@+id/flash"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="flash"
+        android:id="@+id/right"
+        android:background="@drawable/right"
+        android:layout_above="@+id/middle"
+        android:layout_toLeftOf="@+id/logo_window"
+        android:layout_toStartOf="@+id/logo_window" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="flash"
+        android:id="@+id/left"
+        android:background="@drawable/left"
+        android:layout_alignTop="@+id/right"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
