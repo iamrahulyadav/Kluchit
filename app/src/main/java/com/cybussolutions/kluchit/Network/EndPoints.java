@@ -12,6 +12,7 @@ public class EndPoints
     public static final String GET_JOB_DETAILS = BASE_URL+"common_controller/getUserJobDataById";
     public static final String CLOSE_JOB = BASE_URL+"common_controller/closeJob";
     public static final String GET_POST_QUESTIONS = BASE_URL+"user/getUserPostQuestions";
+    public static final String GET_PRE_QUESTIONS = BASE_URL+"user/getUserQuestions";
     public static final String FB_PROFILE_PIC_PATH=  BASE_URL +"uploads/";
     public static final String GET_QUESANDANS_HISTORY= BASE_URL+"user/getQuestionAndAnswers";
     public static final String IMG_ENTRY_DB= BASE_URL +"common_controller/imageEntryDatabase";
