@@ -117,6 +117,8 @@ public class Questions_Activity extends AppCompatActivity
 
 
 
+
+
         sendReply = (Button) findViewById(R.id.send);
         listView = (ListView) findViewById(R.id.question_list);
 
