@@ -21,7 +21,7 @@
         </include>
 
         <ImageView
-            android:layout_width="360dp"
+            android:layout_width="330dp"
             android:layout_height="330dp"
             android:id="@+id/imageView4"
             android:background="@drawable/nojobs"
@@ -37,7 +37,7 @@
             android:id="@+id/jobs_title"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:layout_below="@+id/b_left"
+            android:layout_below="@+id/imageView4"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:textStyle="bold"

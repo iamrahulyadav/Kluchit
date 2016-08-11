@@ -48,7 +48,7 @@ public class Questions_Activity  extends AppCompatActivity
 
     ListView listView;
 
-    String catagory,q_Type,is_Accept,job_id,status;
+    String catagory,q_Type,is_Accept,job_id;
 
     private Question_adapter addapter ;
 
@@ -63,7 +63,7 @@ public class Questions_Activity  extends AppCompatActivity
 
     private ArrayList<Questions> list_Questions = new ArrayList<>();
 
-    HashMap<String, String> value = null;
+    HashMap<Integer, String> value = null;
 
     ProgressDialog ringProgressDialog;
 
@@ -81,7 +81,7 @@ public class Questions_Activity  extends AppCompatActivity
         setContentView(R.layout.questions_);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("Questions");
+        toolbar.setTitle("Kluchit");
 
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         setSupportActionBar(toolbar);
@@ -126,17 +126,11 @@ public class Questions_Activity  extends AppCompatActivity
 
                 value = addapter.getvalue();
 
-
                 if (list_Questions.size() == value.size()) {
                     jsonSendAnswers();
-                    if(status.equals("POST"))
-                    {
-                        Closejob();
-                    }
+
                    // Toast.makeText(Questions_Activity.this, value.toString(), Toast.LENGTH_SHORT).show();
                     finish();
-
-
 
                     Intent intent1 = new Intent(Questions_Activity.this, MainActivity.class);
                     startActivity(intent1);
@@ -192,7 +186,7 @@ public class Questions_Activity  extends AppCompatActivity
                         list_Questions = parseJSONResponce(response);
                         listView.setAdapter(addapter);
                         ringProgressDialog.dismiss();
-                        status = "PRE";
+
 
 
                     }
@@ -238,63 +232,7 @@ public class Questions_Activity  extends AppCompatActivity
 
 
     // for post questions
-    public void Closejob(){
 
-        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.CLOSE_JOB,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        ringProgressDialog.dismiss();
-
-                        Toast.makeText(Questions_Activity.this,response, Toast.LENGTH_SHORT).show();
-                        parseJSONResponce(response);
-
-
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error instanceof NoConnectionError) {
-                            Intent intent = new Intent(Questions_Activity.this, NoInternet.class);
-                            startActivity(intent);
-
-                        } else {
-                            Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                })
-
-
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                Map<String, String> params = new HashMap<>();
-                params.put("job_id",job_id );
-                params.put("user_id",userid);
-                // 1 for open 0 for close
-                params.put("is_open","1");
-                return params;
-
-            }
-        };
-
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(request);
-
-
-    }
     public void jsonSendPost()
     {
 
@@ -310,7 +248,6 @@ public class Questions_Activity  extends AppCompatActivity
                         listView.setAdapter(addapter);
                         ringProgressDialog.dismiss();
 
-                        status = "POST";
 
 
                     }
