@@ -96,7 +96,7 @@ public class GCMRegistrationIntentService extends IntentService {
                     @Override
                     public void onResponse(String response)
                     {
-                       // Toast.makeText(getApplicationContext(),userid, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),userid, Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {
