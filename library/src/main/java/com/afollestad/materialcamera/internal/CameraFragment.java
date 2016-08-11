@@ -100,6 +100,19 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_
 public class CameraFragment extends BaseCameraFragment implements View.OnClickListener {
 
 
+    boolean is_offline()
+    {
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String offline=pref.getString("offline",null);
+        if (offline=="0")
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+
     public int getScreenOrientation()
     {
         Display getOrient = getActivity().getWindowManager().getDefaultDisplay();
@@ -680,7 +693,8 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                             }
                         }, 2000);
                     }
-                    mPreviewFrame.findViewById(R.id.two).setVisibility(View.VISIBLE);
+                    if (!is_offline())
+                        mPreviewFrame.findViewById(R.id.two).setVisibility(View.VISIBLE);
                     flagger=true;
 
                     //view.findViewById(R.id.flash).callOnClick();
