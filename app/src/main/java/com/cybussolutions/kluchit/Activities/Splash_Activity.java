@@ -48,5 +48,5 @@ public class Splash_Activity extends AppCompatActivity {
         super.onResume();
         tr.send(new HitBuilders.ScreenViewBuilder().build());
     }
-    }
+}
 
