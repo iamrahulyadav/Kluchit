@@ -23,6 +23,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
+import android.media.ExifInterface;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -442,6 +443,30 @@ Bitmap resize_insta(Bitmap yourBitmap) {
 
                     }
                 }, 2000);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
                 Camera.getCameraInfo(getCurrentCameraId(), cameraInfo);
 
@@ -453,11 +478,16 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
 
 
-                    Bitmap bmap2=RotateBitmap(bitmap,orientation);
+                    Bitmap bmap2=null;
+                    if (orientation==90 && cameraInfo.facing!= Camera.CameraInfo.CAMERA_FACING_FRONT)//portrait back
+                        bmap2=RotateBitmap(bitmap,0);
+                    if (orientation==270 && cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_FRONT)//portrait front
+                        bmap2=RotateBitmap(bitmap,180);
+
                     Resources res = getActivity().getResources();
                     bmap2=addWatermark(res,bmap2);
 
-
+// left 90
                     ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
                     bmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
                     byte[] b = byteArrayBitmapStream.toByteArray();
@@ -469,6 +499,11 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                         fos.write(b);
                         fos.close();
                         Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
+
+
+
+
+
 
                     } catch (FileNotFoundException e) {
                         //  Log.e(TAG, "File not found: " + e.getMessage());
@@ -484,7 +519,11 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data , 0, data.length);
 
 
-                    Bitmap bmap2=RotateBitmap(bitmap,orientation+90);
+                    Bitmap bmap2=null;
+                    if ((orientation==270 && cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_FRONT) || (orientation==90 && cameraInfo.facing!= Camera.CameraInfo.CAMERA_FACING_FRONT))
+                        bmap2=RotateBitmap(bitmap,0);
+
+
                     Resources res = getActivity().getResources();
                     bmap2=addWatermark(res,bmap2);
 
@@ -500,6 +539,9 @@ Bitmap resize_insta(Bitmap yourBitmap) {
                         fos.write(b);
                         fos.close();
                         Toast.makeText(getActivity(),"Picture saved to "+picFile.getPath(),Toast.LENGTH_LONG).show();
+
+
+
 
                     } catch (FileNotFoundException e) {
                         //  Log.e(TAG, "File not found: " + e.getMessage());

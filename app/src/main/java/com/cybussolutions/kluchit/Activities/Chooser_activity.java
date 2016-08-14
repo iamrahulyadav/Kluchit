@@ -1,6 +1,7 @@
 package com.cybussolutions.kluchit.Activities;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,10 +12,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -80,6 +83,7 @@ public class Chooser_activity extends Activity {
         app= (ImageButton) findViewById(R.id.app);
 
         camera.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 continue_=true;
@@ -101,13 +105,15 @@ public class Chooser_activity extends Activity {
                 editor.commit();
 
 
+                //if (ContextCompat.checkSelfPermission(Chooser_activity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                    requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO, Manifest.permission.WAKE_LOCK,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAPTURE_VIDEO_OUTPUT,Manifest.permission.FLASHLIGHT,Manifest.permission.RECORD_AUDIO}, CAMERA_RQ);
+
                 new MaterialCamera(Chooser_activity.this)
                         .saveDir(saveDir)
                         .showPortraitWarning(true)
                         .allowRetry(true)
                         .defaultToFrontFacing(true)
                         .start(CAMERA_RQ);
-
             }
         });
 
@@ -205,6 +211,32 @@ public class Chooser_activity extends Activity {
 
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_RQ) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Now user should be able to use camera
+                new MaterialCamera(Chooser_activity.this)
+                        .saveDir(saveDir)
+                        .showPortraitWarning(true)
+                        .allowRetry(true)
+                        .defaultToFrontFacing(true)
+                        .start(CAMERA_RQ);
+            }
+            else {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+                // Your app will not have this permission. Turn off all functions
+                // that require this permission or it will force close like your
+                // original question
+            }
+        }
+
+    }
+
+    File saveDir = null;
+
     public String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -295,7 +327,7 @@ public class Chooser_activity extends Activity {
             }
             else if (resultCode == RESULT_CANCELED)
             {
-                File saveDir = null;
+                saveDir = null;
 
 
                 //FragmentTransaction ft = getFragmentManager().beginTransaction();

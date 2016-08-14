@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     repositories {
@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "com.cybussolutions.kluchit"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
