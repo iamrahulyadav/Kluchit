@@ -5,8 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/KK.iml" filepath="$PROJECT_DIR$/KK.iml" />
       <module fileurl="file://$PROJECT_DIR$/KKVV.iml" filepath="$PROJECT_DIR$/KKVV.iml" />
       <module fileurl="file://$PROJECT_DIR$/Kluch_it.iml" filepath="$PROJECT_DIR$/Kluch_it.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Native_camera.iml" filepath="$PROJECT_DIR$/Native_camera.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" filepath="$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" filepath="$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" filepath="$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" />
     </modules>

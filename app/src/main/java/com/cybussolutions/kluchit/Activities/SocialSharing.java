@@ -104,9 +104,13 @@ public class SocialSharing extends FragmentActivity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     public String abc;
-    static int t=0;
+    static int t=0;//no worries
     int pos;
-    static int p=3;
+
+    static int p=-1;
+    int logo_index=-1;
+    static int image_pos=-1;
+
     GridView grid;
     String filename=null;
 
@@ -130,10 +134,11 @@ public class SocialSharing extends FragmentActivity {
     private String filePath = null;
     private static final String TAG = SocialSharing.class.getSimpleName();
     com.google.android.gms.analytics.Tracker tr;
-    static int image_pos;
-    int logo_index=0;
     boolean edited=false;
     public static int resumed=0;
+    MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
+
+
 
     final StringRequest request = new StringRequest(Request.Method.POST, "http://demo.cybussolutions.com/kluchitrm/common_controller/imageEntryDatabase",
             new Response.Listener<String>() {
@@ -260,7 +265,7 @@ public class SocialSharing extends FragmentActivity {
             findViewById(R.id.b_left).setVisibility(View.VISIBLE);
         else if (p==3)
             findViewById(R.id.b_right).setVisibility(View.VISIBLE);
-        else
+        else if (p==4)
             findViewById(R.id.middle).setVisibility(View.VISIBLE);
     }
 
@@ -382,6 +387,9 @@ public class SocialSharing extends FragmentActivity {
         flag=0;
         filePath=null;
         abc=null;
+        p=-1;
+        logo_index=-1;
+        image_pos=-1;
         this.finish();
     }
 
@@ -389,8 +397,28 @@ public class SocialSharing extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_sharing);
+
+
+        if (!marshMallowPermission.checkPermissionForCamera()) {
+            marshMallowPermission.requestPermissionForCamera();
+        } else {
+            if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+                marshMallowPermission.requestPermissionForExternalStorage();
+            } else {
+
+                File saveDir = null;
+                // Only use external storage directory if permission is granted, otherwise cache directory is used by default
+                saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit Camera");
+
+                if (!saveDir.exists()) {
+                    saveDir.mkdirs();
+                }
+            }
+        }
+
+
+
         tr = Analytics.getInstance(this).getDefaultTracker();
-        image_pos=0;
         imgPreview = (ImageView) findViewById(R.id.img);
         videoPreview = (VideoView) findViewById(R.id.vid);
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
@@ -409,6 +437,10 @@ public class SocialSharing extends FragmentActivity {
             public void onClick(View v) {
                 // capture picture
                 edited=false;
+                p=-1;
+                logo_index=-1;
+                image_pos=-1;
+
 
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
@@ -426,6 +458,10 @@ public class SocialSharing extends FragmentActivity {
             public void onClick(View v) {
                 // record video\\\
                 edited=false;
+                p=-1;
+                logo_index=-1;
+                image_pos=-1;
+
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
                 findViewById(R.id.save).setVisibility(View.INVISIBLE);
@@ -507,6 +543,9 @@ public class SocialSharing extends FragmentActivity {
                 if (already_uploaded==false) {
                     new UploadFileToServer().execute();
 
+
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     /*Intent intent = new Intent(SocialSharing.this, UploaderService.class);
                     SharedPreferences queue=getApplication().getSharedPreferences("Queue",Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=queue.edit();
@@ -638,7 +677,7 @@ public class SocialSharing extends FragmentActivity {
                     findViewById(R.id.middle).setVisibility(View.INVISIBLE);
                     Toast.makeText(SocialSharing.this,"bottom right",Toast.LENGTH_LONG).show();
                 }
-                else {
+                else if (position==4) {
                     p = 4;
                     findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
                     findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
@@ -721,125 +760,126 @@ public class SocialSharing extends FragmentActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edited=true;
-                if (flag == 1) {
-                    already_uploaded = false;
-                    btnUpload.setVisibility(View.VISIBLE);
-                    filePath = abc;
+                if (image_pos==-1 || p==-1 || logo_index==-1)
+                {
+                    Toast.makeText(SocialSharing.this,"Please select logo position and type of logo",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    edited = true;
+                    if (flag == 1) {
+                        already_uploaded = false;
+                        btnUpload.setVisibility(View.VISIBLE);
+                        filePath = abc;
 
-                    Bitmap bmp = BitmapFactory.decodeFile(filePath);
-                    bmp = addWatermark(getResources(), bmp);
+                        Bitmap bmp = BitmapFactory.decodeFile(filePath);
+                        bmp = addWatermark(getResources(), bmp);
 
-                    File file = new File(filePath);
-                    ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
-                    byte[] b = byteArrayBitmapStream.toByteArray();
+                        File file = new File(filePath);
+                        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+                        byte[] b = byteArrayBitmapStream.toByteArray();
 
-                    try {
-                        FileOutputStream fos = new FileOutputStream(file);
-                        fos.write(b);
-                        fos.close();
-                        Toast.makeText(SocialSharing.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
+                        try {
+                            FileOutputStream fos = new FileOutputStream(file);
+                            fos.write(b);
+                            fos.close();
+                            Toast.makeText(SocialSharing.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
 
-                    } catch (FileNotFoundException e) {
-                        //  Log.e(TAG, "File not found: " + e.getMessage());
-                        e.getStackTrace();
-                    } catch (IOException e) {
-                        //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
-                        e.getStackTrace();
+                        } catch (FileNotFoundException e) {
+                            //  Log.e(TAG, "File not found: " + e.getMessage());
+                            e.getStackTrace();
+                        } catch (IOException e) {
+                            //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                            e.getStackTrace();
+                        }
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                            }
+                        }, 2000);
+                        save.setVisibility(View.INVISIBLE);
+                        hide_editing_controls();
+                        previewCapturedImage();
+
                     }
+                    if (flag == 2) {
+                        findViewById(R.id.save).setVisibility(View.INVISIBLE);
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        hide_editing_controls();
+
+
+                        add_watermark();
+                        add_watermark_vid();
+
+                        final File file;
+                        if (abc != null)
+                            file = new File(abc);
+                        else
+                            file = new File(fileUri.getPath());
+
+                        GeneralUtils.checkForPermissionsMAndAbove(SocialSharing.this, true);
+                        LoadJNI vk = new LoadJNI();
+                        try {
+                            String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
+                            String filename = getFileName(fileUri);
+                            String[] complexCommand = null;
+
+                            //                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+
+
+                            if (abc != null) {
+                                if (p == 0)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 1)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 2)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 3)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                            } else {
+                                if (p == 0)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 1)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 2)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else if (p == 3)
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                                else
+                                    complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                            }
+                            ringProgressDialog = ProgressDialog.show(SocialSharing.this, "Please wait ...", "Editing Video ...", true);
+                            ringProgressDialog.setCancelable(false);
+                            ringProgressDialog.show();
+                            vk.run(complexCommand, "/storage/emulated/0/Pictures/Kluchit Camera", getApplicationContext());
+                            ringProgressDialog.dismiss();
+                            Toast.makeText(SocialSharing.this, String.format("Saved to: %s, size: %s", file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
+
+
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                            //filepath = "/sdcard/Pictures/Kluchit/" + getFileName(data.getData());
+                            videoPreview.pause();
+                            File old_file = new File(abc);
+                            file.delete();
+
+                            abc = "/storage/emulated/0/Pictures/Kluchit Camera/" + "k" + filename;
+                            File file_ = new File(abc);
+                            fileUri = Uri.fromFile(file);
+                            videoPreview.setVideoPath(abc);
+                            // start playing
+                            videoPreview.start();
+                        } catch (Throwable e) {
+                            Log.e("test", "vk run exception.", e);
                         }
-                    }, 2000);
-                    save.setVisibility(View.INVISIBLE);
-                    hide_editing_controls();
-                    previewCapturedImage();
-
-                }
-                if (flag==2)
-                {
-                    findViewById(R.id.save).setVisibility(View.INVISIBLE);
-
-                    hide_editing_controls();
 
 
-                    add_watermark();
-                    add_watermark_vid();
-
-                    final File file;
-                    if (abc!=null)
-                    file = new File(abc);
-                    else
-                     file = new File(fileUri.getPath());
-
-                    GeneralUtils.checkForPermissionsMAndAbove(SocialSharing.this, true);
-                    LoadJNI vk = new LoadJNI();
-                    try {
-                        String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
-                        String filename=getFileName(fileUri);
-                        String[] complexCommand=null;
-
-                        //                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
-
-
-                        if (abc!=null) {
-                            if (p == 0)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 1)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 2)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 3)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                        }
-                        else
-                        {
-                            if (p == 0)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 1)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 2)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i",fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else if (p == 3)
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                            else
-                                complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                        }
-                        ringProgressDialog = ProgressDialog.show(SocialSharing.this, "Please wait ...",	"Editing Video ...", true);
-                        ringProgressDialog.setCancelable(false);
-                        ringProgressDialog.show();
-                        vk.run(complexCommand, "/storage/emulated/0/Pictures/Kluchit Camera", getApplicationContext());
-                        ringProgressDialog.dismiss();
-                        Toast.makeText(SocialSharing.this, String.format("Saved to: %s, size: %s", file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
-
-
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                        //filepath = "/sdcard/Pictures/Kluchit/" + getFileName(data.getData());
-                        videoPreview.pause();
-                        File old_file=new File(abc);
-                        file.delete();
-
-                        abc="/storage/emulated/0/Pictures/Kluchit Camera/"+"k"+filename;
-                        File file_=new File(abc);
-                        fileUri=Uri.fromFile(file);
-                        videoPreview.setVideoPath(abc);
-                        // start playing
-                        videoPreview.start();
-                    } catch (Throwable e) {
-                        Log.e("test", "vk run exception.", e);
                     }
-
-
-
-
                 }
             }
 
@@ -873,15 +913,19 @@ public class SocialSharing extends FragmentActivity {
      * Capturing Camera Image will lauch camera app requrest image capture
      */
     private void captureImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
-        // start the image capture Intent
-        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-    }
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+                // start the image capture Intent
+                startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+
+        }
+
+
 
     /**
      * Here we store the file url as it will be null after returning from camera
@@ -901,6 +945,9 @@ public class SocialSharing extends FragmentActivity {
         outState.putInt("flag",flag);
         outState.putString("abc",abc);
         outState.putBoolean("edited",edited);
+        outState.putInt("p",p);
+        outState.putInt("logo_index",logo_index);
+        outState.putInt("image_pos",image_pos);
 
 
 
@@ -941,6 +988,12 @@ public class SocialSharing extends FragmentActivity {
         flag=savedInstanceState.getInt("flag");
        abc=savedInstanceState.getString("abc");
         edited=savedInstanceState.getBoolean("edited");
+
+
+        p=-1;
+        logo_index=-1;
+        image_pos=-1;
+
 
         int x;
         if (savedInstanceState.containsKey("logo_window")) {
@@ -1122,7 +1175,7 @@ public class SocialSharing extends FragmentActivity {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
                     }
-                }, 500);
+                }, 10);
 
 
                 show_editing_controls();
@@ -1628,6 +1681,7 @@ public class SocialSharing extends FragmentActivity {
             // showing the server response in an alert dialog
             showAlert(result);
             SocialSharing.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
             super.onPostExecute(result);
         }
 
@@ -1660,6 +1714,8 @@ public class SocialSharing extends FragmentActivity {
         if (flag==1)
         send_image_db_request();
 
+
+        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
     }
 
@@ -1731,7 +1787,7 @@ public class SocialSharing extends FragmentActivity {
         else if (p==3)
             // Move the watermark to the bottom right corner
             matrix.postTranslate(0, h - r.height());
-        else
+        else if (p==4)
             // Move the watermark to the middle
             matrix.postTranslate(w/2 - r.width()/2,h/2 - r.height()/2);
 
