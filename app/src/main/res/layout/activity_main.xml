@@ -6,53 +6,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity"
-    android:background="@drawable/background">
-
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar">
-
-    </include>
-
-    <ListView
-        android:id="@+id/list_view"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#e4960e"
-        android:dividerHeight="2dp"
-        android:listSelector="#758189"
-        android:cacheColorHint="#758189"
-        android:layout_below="@+id/app_bar" />
+        tools:context=".Activities.MainActivity"
+        android:background="@drawable/background">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar">
+
+        </include>
+        <ImageView
+            android:layout_width="360dp"
+            android:layout_height="300dp"
+            android:id="@+id/nojobimage"
+            android:paddingTop="200dp"
+            android:background="@drawable/nojobs"
+            android:visibility="gone"
+            android:layout_alignTop="@+id/gettingStarted"
+            android:layout_toRightOf="@+id/jobs_title"
+            android:layout_toEndOf="@+id/jobs_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="NO JOBS AVAILABLE FOR YOUR CATEGORY AT THIS MOMENT"
+            android:id="@+id/jobs_title"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="5dp" />
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#e4960e"
+            android:dividerHeight="2dp"
+            android:listSelector="#758189"
+            android:cacheColorHint="#758189"
+            android:layout_below="@+id/app_bar" />
 
 
 
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView6"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="51dp"
-        android:layout_marginBottom="186dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="51dp"
+            android:layout_marginBottom="186dp" />
 
-    <fragment android:name="com.cybussolutions.kluchit.Fragments.GettingStarted"
-        android:id="@+id/gettingStarted"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        />
+        <fragment android:name="com.cybussolutions.kluchit.Fragments.GettingStarted"
+            android:id="@+id/gettingStarted"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
 
-</RelativeLayout>
+    </RelativeLayout>
 
     <fragment
         android:id="@+id/fragment_navdrawer"

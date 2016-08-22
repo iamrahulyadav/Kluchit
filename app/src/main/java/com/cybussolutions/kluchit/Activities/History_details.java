@@ -44,7 +44,7 @@ public class History_details extends AppCompatActivity {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     private Toolbar toolbar;
     ListView listView;
-    String userId,job_id,description;
+    String userId,job_id,description,house;
     TextView status,amount;
     ProgressDialog ringProgressDialog;
     private history_adapter history_adapter1;
@@ -91,7 +91,7 @@ public class History_details extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
-
+        house = pref.getString("house",null);
     }
 
 
@@ -182,9 +182,18 @@ public class History_details extends AppCompatActivity {
                             if(catagory.equals("false"))
                             {
 
-                                status.setText("Not Verified");
-                                amount.setText("0000");
+                                if(house.equals("1"))
+                            {
+                                amount.setText("In-House");
+                                status.setText("");
                             }
+                                else {
+
+                                status.setText("Not Verified");
+                                amount.setText("0000");}
+                            }
+
+
 
                             else{
                                 JSONArray Array = new JSONArray(catagory);
@@ -199,11 +208,14 @@ public class History_details extends AppCompatActivity {
                                     status.setText(statusrecieve);
 
 
-                                    if (statusrecieve.equals("1")) {
-                                        status.setText("PAID");
-                                    } else  {
-                                        status.setText("UN-PAID");
-                                    }
+
+
+                                        if (statusrecieve.equals("1")) {
+                                            status.setText("PAID");
+                                        } else {
+                                            status.setText("UN-PAID");
+                                        }
+
 
                                 }
                             }

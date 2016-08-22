@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     private Main_addapter addapter;
 
     private Toolbar toolbar;
+
+    ImageView nojobpic;
+
+    TextView nojobtext;
 
     String userId, user_cat;
 
@@ -424,6 +429,8 @@ public class MainActivity extends AppCompatActivity {
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
         listView = (ListView) findViewById(R.id.list_view);
+        nojobpic = (ImageView) findViewById(R.id.nojobimage);
+        nojobtext = (TextView) findViewById(R.id.jobs_title);
         addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
 
 
@@ -862,11 +869,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (catagory == "false") {
 
-                    Intent intent = new Intent(MainActivity.this,No_jobs.class);
-                    intent.putExtra("message","NO JOBS AVAILABLE FOR YOUR CATEGORY AT THIS MOMMENT");
-                    startActivity(intent);
+                    nojobpic.setVisibility(View.VISIBLE);
+                    nojobtext.setVisibility(View.VISIBLE);
                 }
-
+                else {
                     JSONArray Array = new JSONArray(catagory);
 
 
@@ -891,11 +897,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-
-                }catch(JSONException e){
-                    e.printStackTrace();
                 }
 
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
 
 
     }

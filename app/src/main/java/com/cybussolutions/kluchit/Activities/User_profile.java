@@ -53,8 +53,9 @@ public class User_profile extends AppCompatActivity {
 
     Tracker t;
     private Toolbar toolbar;
-    TextView total,name,current;
+    TextView total,name,current,nojobtext;
     ListView listView;
+    ImageView nojobpic;
     private Main_addapter addapter;
     private ArrayList<Main_screen_pojo> listJobs = new ArrayList<>();
     ProgressDialog ringProgressDialog;
@@ -99,7 +100,8 @@ public class User_profile extends AppCompatActivity {
         username = pref.getString("user_name",null);
         useremail = pref.getString("user_email",null);
         profile = pref.getString("user_image",null);
-
+        nojobpic = (ImageView) findViewById(R.id.nojobimage);
+        nojobtext = (TextView) findViewById(R.id.jobs_title);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -347,38 +349,39 @@ public class User_profile extends AppCompatActivity {
 
             if (catagory == "false") {
 
-                Intent intent = new Intent(User_profile.this,No_jobs.class);
-                intent.putExtra("message","NO CURRENTY HAVE NO JOBS AVAILABLE");
-                startActivity(intent);
+                nojobpic.setVisibility(View.VISIBLE);
+                nojobtext.setVisibility(View.VISIBLE);
             }
-
-            JSONArray Array = new JSONArray(catagory);
-
-
-            for (int i = 0; i < Array.length(); i++) {
-
-                JSONObject Information = Array.getJSONObject(i);
-
-                String job_id = Information.getString("job_id");
-                String name = Information.getString("job_heading");
-                String headin = Information.getString("job_start_date");
-                String discription = Information.getString("job_description");
+            else {
+                JSONArray Array = new JSONArray(catagory);
 
 
-                Main_screen_pojo data = new Main_screen_pojo();
-                data.setMaintxt(name);
-                data.setCatagory(headin);
-                data.setDiscription(discription);
-                data.setJob_id(job_id);
+                for (int i = 0; i < Array.length(); i++) {
 
-                listJobs.add(data);
+                    JSONObject Information = Array.getJSONObject(i);
+
+                    String job_id = Information.getString("job_id");
+                    String name = Information.getString("job_heading");
+                    String headin = Information.getString("job_start_date");
+                    String discription = Information.getString("job_description");
 
 
+                    Main_screen_pojo data = new Main_screen_pojo();
+                    data.setMaintxt(name);
+                    data.setCatagory(headin);
+                    data.setDiscription(discription);
+                    data.setJob_id(job_id);
+
+                    listJobs.add(data);
+
+
+                }
             }
 
         }catch(JSONException e){
             e.printStackTrace();
         }
+
 
 
 

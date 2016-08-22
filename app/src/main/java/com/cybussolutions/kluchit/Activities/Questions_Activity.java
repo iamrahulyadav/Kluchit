@@ -304,7 +304,7 @@ public class Questions_Activity extends AppCompatActivity
     public void jsonSendPost()
     {
 
-        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_POST_QUESTIONS,
+        final StringRequest request = new StringRequest(Request.Method.POST, EndPoints.GET_PRE_QUESTIONS,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -347,6 +347,7 @@ public class Questions_Activity extends AppCompatActivity
                 catagory = pref.getString("user_cat", null);
                 Map<String,String> params = new HashMap<>();
                 params.put("user_catagory",catagory);
+                params.put("is_accept","1");
                 params.put("ques_type","1");
                 params.put("job_id",job_id);
                 return params;

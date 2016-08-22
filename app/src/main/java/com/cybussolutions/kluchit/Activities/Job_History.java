@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,8 +57,8 @@ public class Job_History extends AppCompatActivity {
     private static final int MY_SOCKET_TIMEOUT_MS = 10000;
     String userId, user_cat;
     DrawerFragment drawerFragment = new DrawerFragment();
-
-
+    TextView nojobtext;
+    ImageView nojobpic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,8 @@ public class Job_History extends AppCompatActivity {
 
         Jsonrecieve();
 
+        nojobpic = (ImageView) findViewById(R.id.nojobimage);
+        nojobtext = (TextView) findViewById(R.id.jobs_title);
         Email = (TextView) findViewById(R.id.total);
         name = (TextView) findViewById(R.id.userid);
         listView = (ListView) findViewById(R.id.listView2);
@@ -227,40 +230,40 @@ public class Job_History extends AppCompatActivity {
 
             if (catagory == "false") {
 
-                Intent intent = new Intent(Job_History.this,No_jobs.class);
-                intent.putExtra("message","YOU HAVE NOT DONE ANY JOB WITH KLUCHIT");
-                startActivity(intent);
+                nojobpic.setVisibility(View.VISIBLE);
+                nojobtext.setVisibility(View.VISIBLE);
             }
+            else {
 
-            JSONArray Array = new JSONArray(catagory);
-
-
-            for (int i = 0; i < Array.length(); i++) {
-
-                JSONObject Information = Array.getJSONObject(i);
-
-                String job_id = Information.getString("job_id");
-                String name = Information.getString("job_heading");
-                String headin = Information.getString("job_start_date");
-                String discription = Information.getString("job_description");
+                JSONArray Array = new JSONArray(catagory);
 
 
-                Main_screen_pojo data = new Main_screen_pojo();
-                data.setMaintxt(name);
-                data.setCatagory(headin);
-                data.setDiscription(discription);
-                data.setJob_id(job_id);
+                for (int i = 0; i < Array.length(); i++) {
+
+                    JSONObject Information = Array.getJSONObject(i);
+
+                    String job_id = Information.getString("job_id");
+                    String name = Information.getString("job_heading");
+                    String headin = Information.getString("job_start_date");
+                    String discription = Information.getString("job_description");
 
 
-                listJobs.add(data);
+                    Main_screen_pojo data = new Main_screen_pojo();
+                    data.setMaintxt(name);
+                    data.setCatagory(headin);
+                    data.setDiscription(discription);
+                    data.setJob_id(job_id);
 
 
+                    listJobs.add(data);
+
+
+                }
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
     }
 }

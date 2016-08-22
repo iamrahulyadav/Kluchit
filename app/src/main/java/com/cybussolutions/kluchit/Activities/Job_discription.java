@@ -104,9 +104,7 @@ public class Job_discription extends AppCompatActivity {
             public void onClick(View v) {
 
                 Jsonsend("0");
-                finish();
-                Intent intent = new Intent(Job_discription.this,MainActivity.class);
-                startActivity(intent);
+
 
             }
         });
@@ -116,10 +114,8 @@ public class Job_discription extends AppCompatActivity {
             public void onClick(View v) {
 
                 Jsonsend("2");
-                finish();
-                finish();
-                Intent intent = new Intent(Job_discription.this,MainActivity.class);
-                startActivity(intent);
+
+
 
             }
         });
@@ -163,7 +159,7 @@ public class Job_discription extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (result == "1") {
-
+                            ringProgressDialog.dismiss();
                             Intent intent = new Intent(Job_discription.this, Questions_Activity.class);
                             intent.putExtra("user_catagory", cat_type);
                             intent.putExtra("is_accept", result);
@@ -173,14 +169,16 @@ public class Job_discription extends AppCompatActivity {
 
                             startActivity(intent);
                             finish();
-                            ringProgressDialog.dismiss();
+
 
                         } else {
+                            ringProgressDialog.dismiss();
                             Toast.makeText(Job_discription.this,response, Toast.LENGTH_SHORT).show();
                             Toast.makeText(Job_discription.this, "Result has been Sent to the Administration", Toast.LENGTH_SHORT).show();
-
+                            Intent intent = new Intent(Job_discription.this,MainActivity.class);
+                            startActivity(intent);
                             finish();
-                           // ringProgressDialog.dismiss();
+
                         }
 
 

@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.cybussolutions.kluchit.Activities.Login_activity;
@@ -40,7 +40,7 @@ public class GCMPushReceiverService extends GcmListenerService {
             //Sound
             Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             //Build notification
-            NotificationCompat.Builder noBuilder = new NotificationCompat.Builder(this)
+            NotificationCompat.Builder noBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.applogo)
                     .setContentTitle("New Even Created")
                     .setContentText(message)

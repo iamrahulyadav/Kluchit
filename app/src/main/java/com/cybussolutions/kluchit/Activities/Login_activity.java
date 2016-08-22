@@ -84,7 +84,7 @@ public class Login_activity extends AppCompatActivity{
 
     Button login;
 
-    String user,pass,username,useremail,userimage;
+    String user,pass,username,useremail,userimage,house;
 
     CheckBox checkBox;
 
@@ -784,6 +784,7 @@ public class Login_activity extends AppCompatActivity{
                                 username += " "+object.getString("last_name");
                                 useremail = object.getString("email");
                                 userimage = object.getString("user_image");
+                                house = object.getString("house");
 
 
                                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -795,10 +796,9 @@ public class Login_activity extends AppCompatActivity{
                                 editor.putString("user_email",useremail);
                                 editor.putString("user_image", userimage);
                                 editor.putString("fb_login","0");
-
+                                editor.putString("house",house);
 
                                 if(checkBox.isChecked())
-
                                 {
                                     editor.putString("user_session", "logeed_in");
                                 }
