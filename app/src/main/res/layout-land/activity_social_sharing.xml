@@ -31,6 +31,32 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t_left"
+        android:background="@drawable/log_one_a"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t_right"
+        android:background="@drawable/log_one_a"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/middle"
+        android:background="@drawable/log_one_a"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
     <fragment android:name="com.cybussolutions.kluchit.Fragments.UploadFragment"
         android:id="@+id/two"
         android:layout_weight="1"
@@ -83,24 +109,6 @@
         android:layout_centerVertical="true"/>
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/t_left"
-        android:background="@drawable/log_one_a"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/t_right"
-        android:background="@drawable/log_one_a"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <fragment android:name="com.cybussolutions.kluchit.Fragments.Filters"
         android:id="@+id/filters"
         android:layout_weight="1"
@@ -134,13 +142,5 @@
         android:layout_alignLeft="@+id/down"
         android:layout_alignStart="@+id/down"
         android:layout_centerHorizontal="true"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/middle"
-        android:background="@drawable/log_one_a"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
