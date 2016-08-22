@@ -448,25 +448,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Check type of intent filter
-                if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
-                    //Registration success
-                    String token = intent.getStringExtra("token");
-                } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
-                    //Registration error
-                    Toast.makeText(getApplicationContext(), "GCM registration error!!!", Toast.LENGTH_LONG).show();
-                } else {
-                    //Tobe define
+        SharedPreferences pref1 = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = pref1.edit();
+        String check =pref1.getString("GCM_Registered",null);
+
+        if(check =="true")
+        {
+            Log.w("GCM Registerd","registerd");
+        }
+
+        else {
+
+            mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    //Check type of intent filter
+                    if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
+                        //Registration success
+                        editor.putString("GCM_Registered", "true");
+                        editor.commit();
+                        String token = intent.getStringExtra("token");
+                    } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
+                        //Registration error
+                        Toast.makeText(getApplicationContext(), "GCM registration error!!!", Toast.LENGTH_LONG).show();
+                    } else {
+                        //Tobe define
+                    }
                 }
-            }
-        };
+            };
 
 
-        Intent itent = new Intent(this, GCMRegistrationIntentService.class);
-        startService(itent);
+            Intent itent = new Intent(this, GCMRegistrationIntentService.class);
+            startService(itent);
+        }
 
 
 

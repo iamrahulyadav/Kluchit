@@ -1152,6 +1152,13 @@ Bitmap resize_insta(Bitmap yourBitmap) {
         mCamera.setDisplayOrientation(previewOrientation);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // ignore orientation/keyboard change
+        super.onConfigurationChanged(newConfig);
+    }
+
+
     private void createPreview() {//here
         Activity activity = getActivity();
         if (activity == null) return;

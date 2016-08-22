@@ -29,8 +29,8 @@
     <Button
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:id="@+id/share"
+        android:id="@+id/save"
         android:layout_gravity="right|bottom"
-        android:background="@drawable/share"
+        android:background="@drawable/save"
         />
 </FrameLayout>

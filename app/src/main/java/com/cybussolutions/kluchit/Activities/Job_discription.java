@@ -84,6 +84,7 @@ public class Job_discription extends AppCompatActivity {
         editor.putString("job_id", job_id);
         userId = pref.getString("user_id", null);
 
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         discription.setText(discript);
         specialization.setText(spcl);

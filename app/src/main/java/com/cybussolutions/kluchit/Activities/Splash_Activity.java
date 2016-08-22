@@ -1,6 +1,7 @@
 package com.cybussolutions.kluchit.Activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class Splash_Activity extends AppCompatActivity {
         }, SPLASH_DISPLAY_LENGTH);
 
         tr = Analytics.getInstance(this).getDefaultTracker();
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
     }
 

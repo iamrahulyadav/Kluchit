@@ -293,14 +293,4 @@
 
     </RelativeLayout>
 
-    <fragment android:name="com.cybussolutions.kluchit.Fragments.UploadFragment"
-        android:id="@+id/two"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

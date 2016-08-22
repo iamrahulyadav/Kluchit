@@ -3,6 +3,7 @@ package com.cybussolutions.kluchit.Activities;
 import android.Manifest;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,7 +35,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialcamera.MaterialCamera;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
@@ -48,6 +48,7 @@ import com.cybussolutions.kluchit.Adapters.AndroidMultiPartEntity;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
+import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -122,11 +123,11 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
     void add_watermark()
     {
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        //SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         //if (!preferences.contains("watermark")) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("watermark", "1");
-            editor.commit();
+            //SharedPreferences.Editor editor = preferences.edit();
+            //editor.putString("watermark", "1");
+            //editor.commit();
 
             Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.watermark);
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString() + "/Pictures/Kluchit";
@@ -243,18 +244,20 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         }
 
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+      //  FragmentTransaction ft = getFragmentManager().beginTransaction();
+       // ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         txtPercentage = (TextView) findViewById(R.id.txtPercentage);
 
 
 
-        findViewById(R.id.btnUpload).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.btnUpload).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (already_uploaded==false) {
+
+
                     new UploadFileToServer().execute();
 
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -288,13 +291,14 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
             }
         });
 
-        findViewById(R.id.cross).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-            }
-        });
+        */
+       // findViewById(R.id.cross).setOnClickListener(new View.OnClickListener() {
+          //  @Override
+           // public void onClick(View view) {
+              //  FragmentTransaction ft = getFragmentManager().beginTransaction();
+              //  ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+          //  }
+      //  });
 
     }
 
@@ -507,6 +511,8 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onClick(View view) {
+
+
         File saveDir = null;
         already_uploaded=false;
 
@@ -516,22 +522,27 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // Only use external storage directory if permission is granted, otherwise cache directory is used by default
-            saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit/videos");
+            saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit");
             saveDir.mkdirs();
         }
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("job_id", job_id);
         editor.commit();
 
 
-        new MaterialCamera(this)
+        /*new MaterialCamera(this)
                 .saveDir(saveDir)
                 .showPortraitWarning(true)
                 .allowRetry(true)
                 .defaultToFrontFacing(true)
-                .start(CAMERA_RQ);
+               .start(CAMERA_RQ);*/
+        Intent intent=new Intent(Job_detail.this,SocialSharing.class);
+        startActivity(intent);
+
+
+
     }
 
     private String readableFileSize(long size) {
@@ -550,7 +561,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
 
         // Received recording or error from MaterialCamera
-        if (requestCode == CAMERA_RQ) {
+       /* if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {
 
 
@@ -591,8 +602,8 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                             file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
 
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                  //  FragmentTransaction ft = getFragmentManager().beginTransaction();
+                 //   ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
                     filepath = "/sdcard/Pictures/Kluchit/" + getFileName(data.getData());
 
 
@@ -622,29 +633,30 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 editor.putString("job_id", job_id);
                 editor.commit();
 
+            */
 
-
-                new MaterialCamera(this)
+              /*  new MaterialCamera(this)
                         .saveDir(saveDir)
                         .showPortraitWarning(true)
                         .allowRetry(true)
                         .defaultToFrontFacing(true)
-                        .start(CAMERA_RQ);
+                        .start(CAMERA_RQ);*/
 
-            }
-            else if (resultCode==RESULT_FIRST_USER)
+            //}
+           /* else if (resultCode==RESULT_FIRST_USER)
             {
 
             }
 
             else if (data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
+               /* Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                 if (e != null) {
                     e.printStackTrace();
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        }
+                }*/
+         //   }
+        //}
+
     }
 
     @Override

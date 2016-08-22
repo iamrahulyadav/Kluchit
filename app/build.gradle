@@ -57,7 +57,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     testCompile 'junit:junit:4.12'
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
-    compile project (':library')
     compile 'com.android.support:multidex:1.0.0'
     compile project(':ffmpeg4android_lib')
 

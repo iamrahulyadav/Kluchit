@@ -2,6 +2,7 @@ package com.cybussolutions.kluchit.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +33,7 @@ public class NoInternet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.no_internet);
 
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("Kluchit");

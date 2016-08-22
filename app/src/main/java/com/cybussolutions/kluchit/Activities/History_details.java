@@ -59,6 +59,7 @@ public class History_details extends AppCompatActivity {
         final Intent intent = getIntent();
         job_id = intent.getStringExtra("job_id");
         description = intent.getStringExtra("heading");
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle(description);

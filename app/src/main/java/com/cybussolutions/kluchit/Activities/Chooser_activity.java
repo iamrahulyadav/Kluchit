@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.afollestad.materialcamera.MaterialCamera;
 import com.cybussolutions.kluchit.R;
 import com.netcompss.ffmpeg4android.GeneralUtils;
 import com.netcompss.loader.LoadJNI;
@@ -108,12 +107,16 @@ public class Chooser_activity extends Activity {
                 //if (ContextCompat.checkSelfPermission(Chooser_activity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
                     requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO, Manifest.permission.WAKE_LOCK,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAPTURE_VIDEO_OUTPUT,Manifest.permission.FLASHLIGHT,Manifest.permission.RECORD_AUDIO}, CAMERA_RQ);
 
-                new MaterialCamera(Chooser_activity.this)
+                /*new MaterialCamera(Chooser_activity.this)
                         .saveDir(saveDir)
                         .showPortraitWarning(true)
                         .allowRetry(true)
                         .defaultToFrontFacing(true)
-                        .start(CAMERA_RQ);
+                        .start(CAMERA_RQ);*/
+
+                Intent intent=new Intent(Chooser_activity.this,SocialSharing.class);
+                startActivity(intent);
+
             }
         });
 
@@ -217,12 +220,12 @@ public class Chooser_activity extends Activity {
         if (requestCode == CAMERA_RQ) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Now user should be able to use camera
-                new MaterialCamera(Chooser_activity.this)
+               /* new MaterialCamera(Chooser_activity.this)
                         .saveDir(saveDir)
                         .showPortraitWarning(true)
                         .allowRetry(true)
                         .defaultToFrontFacing(true)
-                        .start(CAMERA_RQ);
+                        .start(CAMERA_RQ);*/
             }
             else {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -342,12 +345,12 @@ public class Chooser_activity extends Activity {
 
 
 
-                new MaterialCamera(this)
+              /*  new MaterialCamera(this)
                         .saveDir(saveDir)
                         .showPortraitWarning(true)
                         .allowRetry(true)
                         .defaultToFrontFacing(true)
-                        .start(CAMERA_RQ);
+                        .start(CAMERA_RQ);*/
 
             }
             else if (resultCode==RESULT_FIRST_USER)
@@ -356,11 +359,11 @@ public class Chooser_activity extends Activity {
             }
 
             else if (data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
+              /*  Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                 if (e != null) {
                     e.printStackTrace();
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         }
     }

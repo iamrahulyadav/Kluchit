@@ -523,6 +523,9 @@ public class Login_activity extends AppCompatActivity{
        // holder.addCallback(this);
        // holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
        // mp = new MediaPlayer();
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     }
 
     public boolean saveArray(String[] array, String arrayName, Context mContext) {
