@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="650dp"
+    tools:context="com.cybussolutions.kluchit.Activities.Job_detail"
+    android:background="@drawable/background">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
+
+
+    <Button
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/btn"
+        android:background="@drawable/cambutton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="right" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text1"
+        android:text="Job OnDemand"
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        android:textColor="#FFFF"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_alignParentStart="true"
+        android:foregroundGravity="center_vertical"
+        android:fillViewport="true">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/description"
+            android:textColor="#FFFF"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_above="@+id/tableLayout1"
+            android:layout_alignLeft="@+id/tableLayout1"
+            android:layout_alignStart="@+id/tableLayout1"
+            android:layout_alignRight="@+id/btn"
+            android:layout_alignEnd="@+id/btn"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"/>
+    </ScrollView>
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/background"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/scrollView"
+        android:stretchColumns="1"
+        android:layout_weight="1">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TitleView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job Title: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#FFFF" />
+
+            <EditText
+                android:id="@+id/SetTitleHere"
+                android:textColor="#FFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/FnameView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job start date: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#FFFF" />
+
+            <TextView
+                android:id="@+id/start_dob"
+                android:textColor="#FFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/DOBView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Job end date: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#FFFF" />
+
+            <TextView
+                android:id="@+id/end_dob"
+                android:textColor="#FFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/AddressView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Venue :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#FFFF" />
+
+            <EditText
+                android:id="@+id/venue"
+                android:textColor="#FFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="normal"
+                android:layout_marginTop="6dp"/>
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/EmailView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="2dp"
+                android:text="Status :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold|normal"
+                android:layout_marginTop="6dp"
+                android:typeface="serif"
+                android:textColor="#FFFF" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:text="On Demand"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="normal"
+                    android:layout_marginTop="6dp"
+                    android:textColor="#FFFF"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="end"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
+                    />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:id="@+id/submit"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:textColor="#ffffff"
+        android:background="@drawable/submit_job"
+        android:layout_below="@+id/tableLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/relativeLayout2"
+        android:layout_below="@+id/text1"
+        android:layout_alignParentStart="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Even Description : "
+            android:textColor="#FFFF"
+            android:id="@+id/textView5"
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+</ScrollView>

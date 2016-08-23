@@ -42,6 +42,7 @@
 
         <activity android:name=".Activities.Splash_Activity"/>
 
+        <activity android:name=".Activities.JobOnDemand"></activity>
 
 
         <activity android:name=".Activities.Login_activity">

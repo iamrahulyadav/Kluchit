@@ -1,37 +1,20 @@
 package com.cybussolutions.kluchit.Activities;
 
-import android.Manifest;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,35 +27,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cybussolutions.kluchit.Adapters.AndroidMultiPartEntity;
 import com.cybussolutions.kluchit.DataModels.Job_details_pojo;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
-import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.netcompss.ffmpeg4android.GeneralUtils;
-import com.netcompss.loader.LoadJNI;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,7 +89,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
         end = (TextView) findViewById(R.id.end_dob);
         venuejob = (TextView) findViewById(R.id.venue);
         isopen = (TextView) findViewById(R.id.status);
-        closejob = (Button) findViewById(R.id.close_job);
+        closejob = (Button) findViewById(R.id.submit);
 
 
         closejob.setOnClickListener(new View.OnClickListener() {

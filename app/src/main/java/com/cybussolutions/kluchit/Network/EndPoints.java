@@ -18,4 +18,6 @@ public class EndPoints
     public static final String IMG_ENTRY_DB= BASE_URL +"common_controller/imageEntryDatabase";
     public static final String USER_JOB_INFO= BASE_URL +"common_controller/JobsCOunt";
     public static final String USER_AMOUNT = BASE_URL +"common_controller/getRates";
+    public static final String DEMAND_JOB = BASE_URL +"common_controller/job_on_demand";
+
 }
