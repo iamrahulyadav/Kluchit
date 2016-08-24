@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -87,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     String ids,jobtype;
 
     String postuser=EndPoints.BASE_URL+"common_controller/saveUserCategory";
+
+
+    Button jobOnDemand;
 
     final StringRequest category_request = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
         @Override
@@ -432,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
         nojobpic = (ImageView) findViewById(R.id.nojobimage);
         nojobtext = (TextView) findViewById(R.id.jobs_title);
         addapter = new Main_addapter(getApplicationContext(), R.layout.singlerow, listJobs, this);
-
+        jobOnDemand=(Button)findViewById(R.id.jobOnDemand);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -529,6 +533,15 @@ public class MainActivity extends AppCompatActivity {
             Jsonsend();
         }
 
+
+        jobOnDemand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(MainActivity.this,JobOnDemand.class);
+                startActivity(intent);
+            }
+        });
     }
 
     void prepare_fragment()

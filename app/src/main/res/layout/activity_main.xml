@@ -77,6 +77,16 @@
             android:layout_marginRight="10dp"
             />
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Job"
+            android:id="@+id/jobOnDemand"
+            android:layout_below="@+id/nojobimage"
+            android:layout_alignRight="@+id/gettingStarted"
+            android:layout_alignEnd="@+id/gettingStarted" />
+
     </RelativeLayout>
 
     <fragment
