@@ -313,7 +313,7 @@ public class JobOnDemand extends Activity {
                 Map<String, String> params = new Hashtable<String, String>();
 
 
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                 params.put("job_id",pref.getString("job_id",null));
                 params.put("user_id",userId);
                 params.put("is_open","1");
