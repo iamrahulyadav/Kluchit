@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -74,7 +75,6 @@ public class JobOnDemand extends Activity {
 
 
 
-
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
 
 
@@ -91,7 +91,9 @@ public class JobOnDemand extends Activity {
                 s_date.setText(pref.getString("start_date",null));
                 e_date.setText("When you wish to!");
                 submit.setBackgroundResource(R.drawable.closejob);
-
+                job_description.setFocusable(false);
+                job_title.setFocusable(false);
+                venue.setFocusable(false);
             }
             else
             {
@@ -131,7 +133,8 @@ public class JobOnDemand extends Activity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     SharedPreferences.Editor editor=pref.edit();
                                     editor.putString("Status","inactive");
-                                    finish();
+                                    editor.commit();
+                                    close_job();
                                     //should have an api of closing date
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -141,6 +144,16 @@ public class JobOnDemand extends Activity {
                     }).setCancelable(false)
                             .create().show();
                 }
+            }
+        });
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(JobOnDemand.this,SocialSharing.class);
+                startActivity(intent);
+
             }
         });
     }
@@ -187,7 +200,7 @@ public class JobOnDemand extends Activity {
                         venue.setFocusable(false);
 
 
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("job_id", s);
                         editor.commit();
@@ -259,6 +272,61 @@ public class JobOnDemand extends Activity {
         editor.putString("venue", venue.getText().toString());
         editor.putString("start_date", timeStamp);
         editor.commit();
+
+        pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putString("job_id", s);
+        editor.commit();
+
+    }
+
+
+    void close_job()
+    {
+        String close_job= EndPoints.CLOSE_JOB;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, close_job,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(JobOnDemand.this,s,Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+
+                        //Showing toast
+                        //result+=volleyError.toString();
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                params.put("job_id",pref.getString("job_id",null));
+                params.put("user_id",userId);
+                params.put("is_open","1");
+                return params;
+            }
+        };
+
+        ringProgressDialog = ProgressDialog.show(JobOnDemand.this, "Please wait ...", "Closing job ...", true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
     }
 
 }

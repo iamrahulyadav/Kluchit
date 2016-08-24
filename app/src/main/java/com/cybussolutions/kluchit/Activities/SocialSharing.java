@@ -401,20 +401,24 @@ public class SocialSharing extends FragmentActivity {
 
         if (!marshMallowPermission.checkPermissionForCamera()) {
             marshMallowPermission.requestPermissionForCamera();
-        } else {
+        }
             if (!marshMallowPermission.checkPermissionForExternalStorage()) {
                 marshMallowPermission.requestPermissionForExternalStorage();
-            } else {
-
-                File saveDir = null;
-                // Only use external storage directory if permission is granted, otherwise cache directory is used by default
-                saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit Camera");
-
-                if (!saveDir.exists()) {
-                    saveDir.mkdirs();
-                }
             }
-        }
+
+                if (!marshMallowPermission.checkPermissionForRecord())
+                {
+                    marshMallowPermission.requestPermissionForRecord();
+                }
+                    File saveDir = null;
+                    // Only use external storage directory if permission is granted, otherwise cache directory is used by default
+                    saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit Camera");
+
+                    if (!saveDir.exists()) {
+                        saveDir.mkdirs();
+                    }
+
+
 
 
 
