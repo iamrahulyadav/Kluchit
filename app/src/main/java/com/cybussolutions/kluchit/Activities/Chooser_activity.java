@@ -75,10 +75,6 @@ public class Chooser_activity extends Activity {
             @Override
             public void onClick(View view) {
                 continue_=true;
-
-
-
-
                 Intent intent=new Intent(Chooser_activity.this,JobOnDemand.class);
                 startActivity(intent);
 
@@ -89,7 +85,6 @@ public class Chooser_activity extends Activity {
             @Override
             public void onClick(View view) {
                 continue_=true;
-
                 Intent intent=new Intent(Chooser_activity.this,Splash_Activity.class);
                 startActivity(intent);
                 finish();

@@ -62,6 +62,23 @@ public class JobOnDemand extends Activity {
         setContentView(R.layout.activity_job_on_demand);
 
 
+        SharedPreferences pref_ = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        if (!pref_.contains("user_id"))
+        {
+            new AlertDialog.Builder(JobOnDemand.this)
+                    .setTitle("Job Creation Error")
+                    .setMessage("You are not logged in, Click Ok to Return to main screen")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            //should have an api of closing date
+                        }
+                    }).create().show();
+        }
+
+
+
 
         btn=(Button)findViewById(R.id.btn);
         s_date=(TextView)findViewById(R.id.start_dob);

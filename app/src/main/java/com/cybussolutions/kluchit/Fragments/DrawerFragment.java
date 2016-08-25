@@ -98,8 +98,15 @@ public class DrawerFragment extends Fragment {
 
                     SharedPreferences pref = getActivity().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.remove("user_session");
+                    editor.clear();
                     editor.commit();
+
+                    pref = getActivity().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                    editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+
+
 
                     LoginManager.getInstance().logOut();
 

@@ -1,6 +1,5 @@
 package com.cybussolutions.kluchit.Activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -31,8 +30,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -62,7 +59,6 @@ import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.identity.intents.AddressConstants;
 import com.netcompss.ffmpeg4android.GeneralUtils;
 import com.netcompss.loader.LoadJNI;
 
@@ -78,13 +74,11 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -538,9 +532,9 @@ public class SocialSharing extends FragmentActivity {
             public void onClick(View v) {
 
 
-                Intent mServiceIntent = new Intent(SocialSharing.this, UploaderService.class);
+              /*  Intent mServiceIntent = new Intent(SocialSharing.this, UploaderService.class);
                 mServiceIntent.setData(Uri.parse(fileUri.getPath()));
-                startService(mServiceIntent);
+                startService(mServiceIntent);*/
 
 
                 // uploading the file to server
