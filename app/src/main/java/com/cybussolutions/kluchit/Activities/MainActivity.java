@@ -1,5 +1,6 @@
 package com.cybussolutions.kluchit.Activities;
 
+import android.app.ActivityManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -44,6 +45,7 @@ import com.cybussolutions.kluchit.DataModels.Main_screen_pojo;
 import com.cybussolutions.kluchit.Fragments.DrawerFragment;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
+import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.PushNotification.GCMRegistrationIntentService;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
@@ -542,7 +544,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (!isMyServiceRunning(UploaderService.class)) {
+            Intent mServiceIntent = new Intent(getApplicationContext(), UploaderService.class);
+            startService(mServiceIntent);
+        }
     }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     void prepare_fragment()
     {

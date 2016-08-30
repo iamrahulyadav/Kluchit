@@ -56,6 +56,7 @@ import com.android.volley.toolbox.Volley;
 import com.cybussolutions.kluchit.Adapters.AndroidMultiPartEntity;
 import com.cybussolutions.kluchit.Network.Analytics;
 import com.cybussolutions.kluchit.Network.EndPoints;
+import com.cybussolutions.kluchit.Network.UploadPreferenceManager;
 import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.R;
 import com.google.android.gms.analytics.HitBuilders;
@@ -131,7 +132,7 @@ public class SocialSharing extends FragmentActivity {
     boolean edited=false;
     public static int resumed=0;
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(this);
-
+    private Button queue;
 
 
     final StringRequest request = new StringRequest(Request.Method.POST, "http://demo.cybussolutions.com/kluchitrm/common_controller/imageEntryDatabase",
@@ -426,6 +427,7 @@ public class SocialSharing extends FragmentActivity {
         txtPercentage = (TextView) findViewById(R.id.txtPercentage);
         btnUpload = (Button) findViewById(R.id.btnUpload);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        queue=(Button)findViewById(R.id.queue);
         /**
          * Capture image button click event
          */
@@ -439,7 +441,7 @@ public class SocialSharing extends FragmentActivity {
                 logo_index=-1;
                 image_pos=-1;
 
-
+                findViewById(R.id.queue).setVisibility(View.VISIBLE);
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
                 findViewById(R.id.save).setVisibility(View.INVISIBLE);
@@ -459,6 +461,7 @@ public class SocialSharing extends FragmentActivity {
                 p=-1;
                 logo_index=-1;
                 image_pos=-1;
+                findViewById(R.id.queue).setVisibility(View.VISIBLE);
 
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
@@ -888,6 +891,19 @@ public class SocialSharing extends FragmentActivity {
         hide_editing_controls();
 
         findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+
+
+        queue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadPreferenceManager p=new UploadPreferenceManager(getApplicationContext());
+                p.add_upload(abc);
+                Toast.makeText(getApplicationContext(),
+                        "Image Added to Upload Queue", Toast.LENGTH_SHORT)
+                        .show();
+                findViewById(R.id.queue).setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
 
@@ -946,7 +962,10 @@ public class SocialSharing extends FragmentActivity {
         outState.putInt("p",p);
         outState.putInt("logo_index",logo_index);
         outState.putInt("image_pos",image_pos);
-
+        if (findViewById(R.id.queue).getVisibility()==View.VISIBLE)
+        outState.putInt("queue",1);
+        else
+            outState.putInt("queue",0);
 
 
         if (flag!=0) {
@@ -981,16 +1000,16 @@ public class SocialSharing extends FragmentActivity {
 
         fileUri = savedInstanceState.getParcelable("file_uri");
         filePath = savedInstanceState.getParcelable("filePath");
-        filename=savedInstanceState.getParcelable("filename");
-        already_uploaded=savedInstanceState.getBoolean("already_uploaded");
-        flag=savedInstanceState.getInt("flag");
-       abc=savedInstanceState.getString("abc");
-        edited=savedInstanceState.getBoolean("edited");
+        filename = savedInstanceState.getParcelable("filename");
+        already_uploaded = savedInstanceState.getBoolean("already_uploaded");
+        flag = savedInstanceState.getInt("flag");
+        abc = savedInstanceState.getString("abc");
+        edited = savedInstanceState.getBoolean("edited");
 
 
-        p=-1;
-        logo_index=-1;
-        image_pos=-1;
+        p = -1;
+        logo_index = -1;
+        image_pos = -1;
 
 
         int x;
@@ -1020,14 +1039,15 @@ public class SocialSharing extends FragmentActivity {
                 ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
             } else {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();            }
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+            }
         }
-        if (flag==0)
+        if (flag == 0)
             hide_editing_controls();
 
-        if (flag==2) {
-            if (abc!=null)
-            videoPreview.setVideoPath(abc);
+        if (flag == 2) {
+            if (abc != null)
+                videoPreview.setVideoPath(abc);
             else {
                 if (fileUri != null) {
                     videoPreview.setVideoPath(fileUri.getPath());
@@ -1035,9 +1055,14 @@ public class SocialSharing extends FragmentActivity {
                 }
             }
         }
-        if (edited==true)
+        if (edited == true)
             hide_editing_controls();
 
+        int queue = savedInstanceState.getInt("queue");
+        if (queue == 0)
+            findViewById(R.id.queue).setVisibility(View.INVISIBLE);
+        else
+            findViewById(R.id.queue).setVisibility(View.VISIBLE);
 
     }
 

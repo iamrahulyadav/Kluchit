@@ -103,7 +103,12 @@ public class DrawerFragment extends Fragment {
 
                     pref = getActivity().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
                     editor = pref.edit();
-                    editor.clear();
+                    if (pref.contains("current"))
+                    editor.remove("current");
+                    if (pref.contains("total"))
+                    editor.remove("total");
+                    if (pref.contains("completed"))
+                        editor.remove("completed");
                     editor.commit();
 
 

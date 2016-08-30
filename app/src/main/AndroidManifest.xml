@@ -39,7 +39,7 @@
         <activity android:name=".Activities.Splash_Activity" />
         <activity android:name=".Activities.JobOnDemand" />
         <activity android:name=".Activities.Login_activity"></activity>
-        <activity android:name=".Activities.test">
+        <activity android:name=".Activities.Chooser_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

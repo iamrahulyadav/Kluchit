@@ -43,15 +43,18 @@ public class UploaderService extends Service {
         // Let it continue running until it is stopped.
 
         myUploadManager=new UploadPreferenceManager(this);
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Remaining images are being uploaded!", Toast.LENGTH_LONG).show();
 
-        while (!myUploadManager.is_empty())
-        {
-            if (continue_==true) {
-                new UploadFileToServer().execute();
-                continue_=false;
+        if (!myUploadManager.is_done()) {
+            while (!myUploadManager.is_empty()) {
+                if (continue_ == true) {
+                    new UploadFileToServer().execute();
+                    continue_ = false;
+                }
             }
         }
+
+        Toast.makeText(this, "All job pictures and videos uploaded!", Toast.LENGTH_LONG).show();
 
 
         return START_STICKY;
