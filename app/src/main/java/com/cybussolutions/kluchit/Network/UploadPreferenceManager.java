@@ -23,7 +23,7 @@ public class UploadPreferenceManager  {
         {
             editor.putInt("total",total);
             editor.putInt("current",current);
-            editor.putInt("completed",0);
+            editor.putInt("completed",1);
             editor.commit();
         }
         else
@@ -80,7 +80,7 @@ public class UploadPreferenceManager  {
     }
     boolean is_done()
     {
-        if (preferences.getInt("completed",-1)==0)
+        if (preferences.getInt("completed",1)==0)
         {
             return false;
         }

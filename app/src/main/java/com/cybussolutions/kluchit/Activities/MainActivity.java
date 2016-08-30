@@ -818,6 +818,12 @@ public class MainActivity extends AppCompatActivity {
 
         //RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         //requestQueue.add(category_exist_request);
+
+        if (!isMyServiceRunning(UploaderService.class)) {
+            Intent mServiceIntent = new Intent(getApplicationContext(), UploaderService.class);
+            startService(mServiceIntent);
+        }
+
     }
 
 
