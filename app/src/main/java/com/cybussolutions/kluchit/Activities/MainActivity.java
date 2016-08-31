@@ -233,6 +233,13 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
 
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("user_id", response);// Saving string
+                editor.commit();
+
+
                 userId = response;
 
 

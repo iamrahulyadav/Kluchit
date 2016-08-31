@@ -397,14 +397,14 @@ public class SocialSharing extends FragmentActivity {
         if (!marshMallowPermission.checkPermissionForCamera()) {
             marshMallowPermission.requestPermissionForCamera();
         }
-            if (!marshMallowPermission.checkPermissionForExternalStorage()) {
+           /* if (!marshMallowPermission.checkPermissionForExternalStorage()) {
                 marshMallowPermission.requestPermissionForExternalStorage();
             }
 
                 if (!marshMallowPermission.checkPermissionForRecord())
                 {
                     marshMallowPermission.requestPermissionForRecord();
-                }
+                }*/
                     File saveDir = null;
                     // Only use external storage directory if permission is granted, otherwise cache directory is used by default
                     saveDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/Kluchit Camera");
@@ -1221,13 +1221,13 @@ public class SocialSharing extends FragmentActivity {
 
                 already_uploaded=false;
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                //new Handler().postDelayed(new Runnable() {
+                 //   @Override
+                   // public void run() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 500);
+                 //   }
+               // }, 500);
 
                 hide_editing_controls();
 
@@ -1249,13 +1249,13 @@ public class SocialSharing extends FragmentActivity {
 
 
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+               // new Handler().postDelayed(new Runnable() {
+                 //   @Override
+                 //   public void run() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 500);
+              //      }
+              //  }, 500);
 
                 hide_editing_controls();
 
@@ -1274,13 +1274,13 @@ public class SocialSharing extends FragmentActivity {
                 previewVideo();
                 abc=fileUri.getPath();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+               // new Handler().postDelayed(new Runnable() {
+                //    @Override
+                //    public void run() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 500);
+               //     }
+               // }, 500);
 
 
                 show_editing_controls();
@@ -1300,13 +1300,13 @@ public class SocialSharing extends FragmentActivity {
                 btnUpload.setVisibility(View.INVISIBLE);
 
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+              //  new Handler().postDelayed(new Runnable() {
+                //    @Override
+               //     public void run() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 500);
+                //    }
+              //  }, 500);
 
                 // user cancelled recording
                 Toast.makeText(getApplicationContext(),
@@ -1329,13 +1329,13 @@ public class SocialSharing extends FragmentActivity {
                 btnUpload.setVisibility(View.INVISIBLE);
 
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            //    new Handler().postDelayed(new Runnable() {
+               //     @Override
+              //      public void run() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 500);
+               //     }
+             //   }, 500);
 
                 // failed to record video
                 Toast.makeText(getApplicationContext(),
@@ -1725,14 +1725,14 @@ public class SocialSharing extends FragmentActivity {
         if (message.contains("successfully"))
             already_uploaded=true;
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+       // new Handler().postDelayed(new Runnable() {
+        //    @Override
+         //   public void run() {
 
                 txtPercentage.setText("Upload completed");
 
-            }
-        }, 500);
+        //    }
+      //  }, 500);
 
         if (flag==1)
         send_image_db_request();
