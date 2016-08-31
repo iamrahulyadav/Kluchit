@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Kluch_it.iml" filepath="$PROJECT_DIR$/Kluch_it.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Kluchit.iml" filepath="$PROJECT_DIR$/Kluchit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" filepath="$PROJECT_DIR$/ffmpeg4android_lib/ffmpeg4android_lib.iml" />
     </modules>
