@@ -12,7 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
+
         tools:context="com.cybussolutions.kluchit.Activities.Job_History">
 
         <ImageView
@@ -28,7 +28,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="YOU HAVE NOT DONE ANY JOB WITH KLUCHIT "
             android:id="@+id/jobs_title"
             android:textAlignment="center"
@@ -39,7 +38,8 @@
             android:visibility="gone"
             android:gravity="bottom"
             android:textStyle="bold"
-            android:typeface="serif" />
+            android:typeface="serif"
+            android:textSize="14dp"/>
 
 
 
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView2"
-            android:divider="#e4960e"
+            android:divider="#584595"
             android:dividerHeight="2dp"
             android:listSelector="#758189"
             android:cacheColorHint="#758189"

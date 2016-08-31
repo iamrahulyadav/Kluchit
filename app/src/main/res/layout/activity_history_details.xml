@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     tools:context="com.cybussolutions.kluchit.Activities.History_details">
 
     <include
@@ -21,7 +20,7 @@
         android:layout_below="@+id/app_bar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:textStyle="bold"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
@@ -35,7 +34,7 @@
         android:layout_below="@+id/textView9"
         android:layout_marginLeft="60dp"
         android:textStyle="bold"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:layout_marginBottom="20dp" />
 
     <TextView
@@ -44,7 +43,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/status"
         android:textStyle="bold"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:layout_above="@+id/amount"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -55,10 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/history_list"
-        android:divider="#e4960e"
+        android:divider="#584595"
         android:dividerHeight="2dp"
-        android:listSelector="#758189"
-        android:cacheColorHint="#758189"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/amount" />

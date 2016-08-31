@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="650dp"
+    android:layout_height="match_parent"
     tools:context="com.cybussolutions.kluchit.Activities.Job_detail"
-    android:background="@drawable/background">
+   >
 
     <include
         android:id="@+id/app_bar"
@@ -41,7 +33,7 @@
         android:text="Job OnDemand"
         android:textSize="25dp"
         android:layout_gravity="center"
-        android:textColor="#FFFF"
+        android:textColor="#584595"
         android:typeface="serif"
         android:textStyle="bold"
         android:padding="5dp"
@@ -50,12 +42,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="50dp"
         android:id="@+id/scrollView"
         android:layout_below="@+id/relativeLayout2"
         android:layout_alignParentStart="true"
         android:foregroundGravity="center_vertical"
         android:fillViewport="true">
+        </ScrollView>
 
 
         <EditText
@@ -63,7 +56,7 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/description"
-            android:textColor="#FFFF"
+            android:textColor="#000"
             android:layout_below="@+id/relativeLayout2"
             android:layout_above="@+id/tableLayout1"
             android:layout_alignLeft="@+id/tableLayout1"
@@ -72,15 +65,15 @@
             android:layout_alignEnd="@+id/btn"
             android:layout_gravity="left"
             android:gravity="center_vertical"/>
-    </ScrollView>
+
 
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/background"
+        android:layout_height="230dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/scrollView"
         android:stretchColumns="1"
         android:layout_weight="1">
@@ -97,22 +90,21 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:text="Job Title: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
                 android:typeface="serif"
-                android:textColor="#FFFF" />
+                android:textColor="#000" />
 
             <EditText
                 android:id="@+id/SetTitleHere"
-                android:textColor="#FFFF"
+                android:textColor="#000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -130,22 +122,22 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:text="Job start date: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
                 android:typeface="serif"
-                android:textColor="#FFFF" />
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/start_dob"
-                android:textColor="#FFFF"
+                android:textColor="#000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -164,22 +156,22 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:text="Job end date: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
                 android:typeface="serif"
-                android:textColor="#FFFF" />
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/end_dob"
-                android:textColor="#FFFF"
+                android:textColor="#000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -195,22 +187,22 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:text="Venue :"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
                 android:typeface="serif"
-                android:textColor="#FFFF" />
+                android:textColor="#000" />
 
             <EditText
                 android:id="@+id/venue"
-                android:textColor="#FFFF"
+                android:textColor="#000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
+
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -229,13 +221,13 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
+                android:paddingTop="5dp"
                 android:text="Status :"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold|normal"
                 android:layout_marginTop="6dp"
                 android:typeface="serif"
-                android:textColor="#FFFF" />
+                android:textColor="#000" />
 
                 <TextView
                     android:id="@+id/status"
@@ -243,12 +235,12 @@
                     android:layout_height="match_parent"
                     android:paddingBottom="2dp"
                     android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingTop="5dp"
                     android:text="On Demand"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="normal"
                     android:layout_marginTop="6dp"
-                    android:textColor="#FFFF"
+                    android:textColor="#000"
                     android:singleLine="true"
                     android:maxLines="1"
                     android:scrollHorizontally="true"
@@ -273,12 +265,12 @@
         android:background="@drawable/submit_job"
         android:layout_below="@+id/tableLayout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="59dp" />
+        android:layout_marginTop="35dp" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:id="@+id/relativeLayout2"
         android:layout_below="@+id/text1"
         android:layout_alignParentStart="true">
@@ -289,7 +281,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Even Description : "
-            android:textColor="#FFFF"
+            android:textColor="#000"
             android:id="@+id/textView5"
             android:layout_marginRight="10dp"
             android:textStyle="bold"
@@ -302,4 +294,3 @@
     </RelativeLayout>
 
 </RelativeLayout>
-</ScrollView>

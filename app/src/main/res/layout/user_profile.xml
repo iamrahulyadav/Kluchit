@@ -13,7 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
 
         tools:context="com.cybussolutions.kluchit.Activities.User_Profile"
-        android:background="@drawable/background">
+        >
 
 
 
@@ -25,7 +25,7 @@
             android:layout_height="210dp"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             tools:context="com.cybussolutions.kluchit.Activities.User_Profile"
-            android:background="@drawable/background">
+            >
 
             <include
                 android:id="@+id/app_bar"
@@ -41,7 +41,7 @@
                 android:id="@+id/userid"
                 android:layout_below="@+id/profile"
                 android:layout_centerVertical="true"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="20dp" />
 
@@ -51,7 +51,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Total Jobs "
                 android:id="@+id/textView3"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:textStyle="bold"
                 android:typeface="serif"
 
@@ -66,7 +66,7 @@
                 android:text="total"
                 android:id="@+id/total"
                 android:textSize="15sp"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:layout_below="@+id/textView3"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
@@ -90,7 +90,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Current Jobs "
                 android:id="@+id/textView8"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:layout_marginLeft="5dp"
@@ -105,7 +105,7 @@
                 android:text="current"
                 android:id="@+id/current"
                 android:textSize="15sp"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:layout_marginRight="10dp"
                 android:layout_marginStart="29dp"
                 android:layout_alignTop="@+id/total"
@@ -119,7 +119,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_below="@+id/firstlayout"
             tools:context="com.cybussolutions.kluchit.Activities.User_Profile"
@@ -137,14 +136,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="YOU HAVE NOT BEEN ALOCATED WITH ANY JOB AT THIS MOMENT"
                 android:id="@+id/jobs_title"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="#000"
                 android:textStyle="bold"
                 android:typeface="serif"
-                android:visibility="gone"
+                android:textSize="14dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -153,10 +151,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/list_profile"
-                android:divider="#e4960e"
+                android:divider="#584595"
                 android:dividerHeight="2dp"
-                android:listSelector="#758189"
-                android:cacheColorHint="#758189"
+
                 />
         </RelativeLayout>
 

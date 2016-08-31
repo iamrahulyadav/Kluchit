@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
 
-        ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...",	"Checking Credentials ...", true);
+        ringProgressDialog = ProgressDialog.show(MainActivity.this, "",	"Please wait ...", true);
 
         if (flag.equals("1"))
         {

@@ -19,7 +19,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/heading"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:layout_alignTop="@+id/img"
         android:layout_toEndOf="@+id/img"
         android:layout_marginTop="5dp"

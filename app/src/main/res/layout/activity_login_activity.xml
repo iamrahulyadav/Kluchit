@@ -5,13 +5,12 @@
     android:id="@+id/sc"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    >
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/home_container1"
@@ -45,7 +44,6 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/userid1"
-                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -68,7 +66,6 @@
 
                 <EditText
                     android:id="@+id/userpass1"
-                    android:textColor="#FFFFFF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="User Password"
@@ -90,7 +87,6 @@
                 android:text="Keep Me Logged In"
                 android:id="@+id/checkBox"
                 android:checked="false"
-                android:textColor="#FFB300"
                 android:layout_below="@+id/userpass"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="10dp"
@@ -116,7 +112,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="80dp"
                 android:layout_marginTop="20dp"
-                android:textColor="#FFB300"/>
+                android:textColor="#584595"/>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
@@ -135,7 +131,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="© 2016, Kluchit Resource Management All Rights Reserved."
                 android:id="@+id/textView7"
-                android:textColor="#FFB300"
+                android:textColor="#584595"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
 

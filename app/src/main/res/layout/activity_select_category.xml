@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     tools:context="com.cybussolutions.kluchit.Activities.Select_category">
 
 
@@ -18,8 +17,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView3"
         android:layout_centerHorizontal="true"
-        android:listSelector="#758189"
-        android:cacheColorHint="#758189"
         android:layout_below="@+id/app_bar" />
 
 

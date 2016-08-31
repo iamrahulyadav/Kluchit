@@ -11,6 +11,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +47,7 @@ import java.util.Map;
 
 
  */
-public class JobOnDemand extends Activity {
+public class JobOnDemand extends AppCompatActivity {
 
 
     Button btn;
@@ -55,12 +60,20 @@ public class JobOnDemand extends Activity {
     Button submit;
     boolean created;
     String userId=null;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_on_demand);
 
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Job On Demand");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
 
         SharedPreferences pref_ = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         if (!pref_.contains("user_id"))
@@ -173,6 +186,20 @@ public class JobOnDemand extends Activity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     boolean check_compulsory_fields_for_submission()
