@@ -131,7 +131,6 @@ public class User_profile extends AppCompatActivity {
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate)
             {
                pp.setImageBitmap(response.getBitmap());
-
             }
 
             @Override
