@@ -413,6 +413,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Map<String, String> getParams() throws AuthFailureError {
 
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("user_id", userId);
+            editor.commit();
+
             Map<String, String> params = new HashMap<>();
             params.put("user_catagory", user_cat);
             params.put("user_id",userId);
@@ -894,6 +900,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             String res = responce;
+
 
 
             String catagory;
