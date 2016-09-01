@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cybussolutions.kluchit.Activities.Job_discription"
-    android:background="@drawable/background">
+   >
 
 
     <include
@@ -22,7 +22,7 @@
         android:layout_below="@+id/app_bar"
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
-        android:textColor="#FFFFFF"
+        android:textColor="#584595"
         android:textStyle="bold" />
 
     <TextView
@@ -31,7 +31,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Event Desription : "
         android:layout_marginTop="41dp"
-        android:textColor="#FFFFFF"
+        android:textColor="#000"
         android:id="@+id/textView14"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -57,7 +57,7 @@
         android:layout_alignEnd="@+id/busy"
         android:layout_marginRight="10dp"
         android:textStyle="bold"
-        android:textColor="#FFFFFF" />
+        android:textColor="#000" />
 
     <Button
         android:layout_width="120dp"
@@ -68,7 +68,7 @@
         android:background="@drawable/acept"
         android:textStyle="bold"
         android:typeface="serif"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:layout_below="@+id/scrollView3"
         android:layout_alignParentStart="true" />
 
@@ -80,7 +80,7 @@
         android:background="@drawable/occupied"
         android:textStyle="bold"
         android:typeface="serif"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:layout_below="@+id/scrollView3"
         android:layout_toEndOf="@+id/reject"
          />
@@ -102,7 +102,7 @@
             android:text="Small Text"
             android:id="@+id/discription"
             android:layout_marginLeft="10dp"
-            android:textColor="#FFFFFF"
+            android:textColor="#000"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="10dp" />
@@ -117,7 +117,7 @@
         android:background="@drawable/reject"
         android:textStyle="bold"
         android:typeface="serif"
-        android:textColor="#ffffff"
+        android:textColor="#000"
         android:layout_marginTop="29dp"
         android:layout_below="@+id/scrollView3"
         android:layout_centerHorizontal="true"

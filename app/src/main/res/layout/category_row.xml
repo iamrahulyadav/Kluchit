@@ -12,5 +12,5 @@
         android:checked="false"
         android:padding="15dp"
         android:clickable="false"
-        android:textColor="@color/white"/>
+        android:textColor="@color/black"/>
 </LinearLayout>
