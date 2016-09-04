@@ -82,7 +82,7 @@ public class UploaderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
     }
 
 

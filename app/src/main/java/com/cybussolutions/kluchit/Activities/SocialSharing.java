@@ -442,6 +442,8 @@ public class SocialSharing extends FragmentActivity {
                 image_pos=-1;
 
                 findViewById(R.id.queue).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
+
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
                 findViewById(R.id.save).setVisibility(View.INVISIBLE);
@@ -462,6 +464,7 @@ public class SocialSharing extends FragmentActivity {
                 logo_index=-1;
                 image_pos=-1;
                 findViewById(R.id.queue).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
 
                 progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
@@ -535,6 +538,9 @@ public class SocialSharing extends FragmentActivity {
             public void onClick(View v) {
 
 
+
+                findViewById(R.id.btnUpload).setVisibility(View.INVISIBLE);
+                findViewById(R.id.queue).setVisibility(View.INVISIBLE);
               /*  Intent mServiceIntent = new Intent(SocialSharing.this, UploaderService.class);
                 mServiceIntent.setData(Uri.parse(fileUri.getPath()));
                 startService(mServiceIntent);*/
@@ -902,6 +908,7 @@ public class SocialSharing extends FragmentActivity {
                         "Image Added to Upload Queue", Toast.LENGTH_SHORT)
                         .show();
                 findViewById(R.id.queue).setVisibility(View.INVISIBLE);
+                findViewById(R.id.btnUpload).setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -962,10 +969,13 @@ public class SocialSharing extends FragmentActivity {
         outState.putInt("p",p);
         outState.putInt("logo_index",logo_index);
         outState.putInt("image_pos",image_pos);
+
         if (findViewById(R.id.queue).getVisibility()==View.VISIBLE)
-        outState.putInt("queue",1);
+            outState.putInt("queue",1);
         else
             outState.putInt("queue",0);
+
+
 
 
         if (flag!=0) {
@@ -1059,11 +1069,15 @@ public class SocialSharing extends FragmentActivity {
             hide_editing_controls();
 
         int queue = savedInstanceState.getInt("queue");
-        if (queue == 0)
+        if (queue == 0) {
             findViewById(R.id.queue).setVisibility(View.INVISIBLE);
-        else
+            findViewById(R.id.btnUpload).setVisibility(View.INVISIBLE);
+        }
+        else {
             findViewById(R.id.queue).setVisibility(View.VISIBLE);
+            findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
 
+        }
     }
 
     /**

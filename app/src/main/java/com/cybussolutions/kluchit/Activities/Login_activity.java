@@ -108,11 +108,6 @@ public class Login_activity extends AppCompatActivity{
     private ArrayAdapter<String> adapter ;
 
 
-    private MediaPlayer mp;
-  //  private SurfaceView mPreview;
-  //  private SurfaceHolder holder;
-
-
     AssetFileDescriptor afd;
 
     String fb_email,fb_name,fb_userid;
@@ -124,169 +119,6 @@ public class Login_activity extends AppCompatActivity{
     String upload = EndPoints.BASE_URL + "upload_profile.php";
 
 
-    StringRequest upload_image_request = new StringRequest(Request.Method.POST, upload,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String s) {
-                    if (s.contains("Uploaded"))
-                    {
-                        ringProgressDialog.dismiss();
-                        Intent intent=new Intent(Login_activity.this,MainActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    //Dismissing the progress dialog
-
-                    //Showing toast
-                    //result+=volleyError.toString();
-                    ringProgressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
-                }
-            }) {
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            //Converting Bitmap to String
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            fb_image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            final String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
-            String image = encodedImage;
-
-            //Creating parameters
-            Map<String, String> params = new Hashtable<String, String>();
-
-            //Adding parameters
-            params.put("userImage", image);
-            params.put("filename",fb_email);
-
-            //returning parameters
-            return params;
-        }
-    };
-
-
-
-    final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
-            if (response.toString().contains("Already")) {
-
-                LoginManager.getInstance().logOut();
-
-
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("user_id", fb_userid);
-                // Saving string
-                editor.commit();
-
-
-
-                //Dont update profile pic
-                ringProgressDialog.dismiss();
-                //RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                //requestQueue.add(upload_image_request);
-
-
-
-                Intent intent=new Intent(Login_activity.this,MainActivity.class);
-                startActivity(intent);
-
-                //call intent for already registered
-            }
-            else if (response.toString().contains("Taken"))
-            {
-                ringProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Fill out correct details and try again!", Toast.LENGTH_LONG).show();
-                LoginManager.getInstance().logOut();
-
-                //call intent for username taken (which would not be in our case)
-                //((TextInputLayout)findViewById(R.id.user_namefb)).setError(response+" Please choose another username!");
-            }
-            else {
-                //ringProgressDialog.dismiss();
-                LoginManager.getInstance().logOut();
-                new AlertDialog.Builder(Login_activity.this)
-                        .setTitle("Signup Confirmation Dialog:")
-                        .setMessage("You have successfully registered with (Email: " + fb_email + "). Thank You!")
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //getting started page
-                            }
-                        }).setCancelable(false)
-                        .create().show();
-
-
-                upload_image_request.setRetryPolicy(new DefaultRetryPolicy(
-                        MY_SOCKET_TIMEOUT_MS,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                requestQueue.add(upload_image_request);                //Intent intent=new Intent(Login_activity.this,MainActivity.class);
-                //startActivity(intent);
-            }
-        }
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            ringProgressDialog.dismiss();
-            LoginManager.getInstance().logOut();
-            Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
-        }
-    }) {
-        @Override
-        protected Map<String, String> getParams() {
-            Map<String, String> params = new HashMap<String, String>();
-
-
-            params.put("username", fb_userid);//done
-            params.put("password", "facebook");//done
-            params.put("is_active", "1");//done
-            params.put("email", fb_email.toLowerCase());//done
-
-            String timeStamp = (new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime())).toString();
-            params.put("date_added", timeStamp);//done
-            params.put("filename", fb_email.toLowerCase() + ".jpeg");//done
-
-
-            String first = "", last = "";
-            StringTokenizer st = new StringTokenizer(fb_name);
-            int i = 0, count = 0;
-            while (st.hasMoreTokens()) {
-                if (i == 0)
-                    first = st.nextToken();
-                else {
-                    if (count > 0)
-                        last += " ";
-                    last += st.nextToken();
-                    count++;
-                }
-                i++;
-            }
-
-            params.put("first_name", first);//done
-            params.put("last_name", last);//done
-
-            return params;
-        }
-
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("Content-Type", "application/x-www-form-urlencoded");
-            return params;
-        }
-    };//post user
 
 
     @Override
@@ -366,75 +198,15 @@ public class Login_activity extends AppCompatActivity{
                                 id="";
                             }
 
+                            fb_email=email;
+                            fb_name=name;
+                            fb_userid=id;
+
+
                             Toast.makeText(getApplicationContext(),email+" Facebook Login Successful",Toast.LENGTH_LONG).show();
-                            ImageRequest ir = new ImageRequest("http://graph.facebook.com/"+id+"/picture?type=large", new Response.Listener<Bitmap>() {
 
-                                @Override
-                                public void onResponse(Bitmap response) {
-
-                                    int abc=0;
-//                                    String fb_email,fb_name,fb_image,fb_userid;
-                                    fb_email=email;
-                                    fb_name=name;
-                                    fb_userid=id;
-                                    if (response==null)
-                                        fb_image=BitmapFactory.decodeResource(getResources(),R.drawable.logomain);
-                                    else
-                                        fb_image=response;
-
-
-
-                                    SharedPreferences pref1 = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor1 = pref.edit();
-                                    editor1.putString("user_name", fb_name);
-                                    editor1.putString("user_image",fb_email+".jpeg");
-                                    editor1.putString("fb_login","1");
-                                    if (checkBox.isChecked()) {
-                                        editor1.putString("user_session", "logeed_in");
-                                    }
-                                    // Saving string
-                                    editor1.commit();
-
-
-                                    sr.setRetryPolicy(new DefaultRetryPolicy(
-                                            MY_SOCKET_TIMEOUT_MS,
-                                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-                                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                                    requestQueue.add(sr);
-
-                                    /*Intent intent = new Intent(Login_activity.this, FBregistration.class);
-                                    intent.putExtra("email",email);
-                                    intent.putExtra("name",name);
-                                    intent.putExtra("image",response);
-                                    intent.putExtra("bool","1");
-                                    LoginManager.getInstance().logOut();
-
-                                    ringProgressDialog.dismiss();
-                                    startActivity(intent);
-                                    */
-
-
-
-                                }
-                            },0, 0, null,  new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    LoginManager.getInstance().logOut();
-                                    ringProgressDialog.dismiss();
-                                    Toast.makeText(Login_activity.this,error.toString(),Toast.LENGTH_LONG).show();
-                                }
-                            });
-
-                           /* ir.setRetryPolicy(new DefaultRetryPolicy(
-                                    MY_SOCKET_TIMEOUT_MS,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
-
-
-                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                            requestQueue.add(ir);
+                            check_old_or_new_user_server();
+                            //here now hit server to find out new or old sign_up
 
 
                         } catch (JSONException e) {
@@ -516,13 +288,7 @@ public class Login_activity extends AppCompatActivity{
 
         afd = getResources().openRawResourceFd(R.raw.bkt);
         getWindow().setFormat(PixelFormat.UNKNOWN);
-       // mPreview = (SurfaceView)findViewById(R.id.surface);
-       // holder = mPreview.getHolder();
-        //holder.setFixedSize(800, 480);
 
-       // holder.addCallback(this);
-       // holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-       // mp = new MediaPlayer();
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -663,30 +429,6 @@ public class Login_activity extends AppCompatActivity{
 
             }
         });
-       /* ml_move.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                new Handler().postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        findViewById(R.id.imageView).startAnimation(move);
-                    }
-                }, 10);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });*/
-
 
         new Handler().postDelayed(new Runnable()
         {
@@ -861,75 +603,282 @@ public class Login_activity extends AppCompatActivity{
         super.onResume();
         start_animations();
         t.send(new HitBuilders.ScreenViewBuilder().build());
-
-
-
-        //mp.stop();
-        //mp=
-        //mp.setDisplay(holder);
-        //mp.start();
-        //cou=0;
-        //onStart();
     }
 
 
     protected void onPause(){
         super.onPause();
-       // mp.release();
     }
-   /* @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
-        //int x=0;
-        try {
-            if (mp.isPlaying()) {
-                mp.stop();
-                mp.release();
-                mp = new MediaPlayer();
-            }
-        }
-            catch (Exception e)
-            {
-                Toast.makeText(getApplicationContext(),"abc",Toast.LENGTH_LONG).show();
-            }
 
 
-        try {
-            mp.setDisplay(holder);
-            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
-            mp.setLooping(true);
-            mp.setVolume(0, 0);
+    void image_download_fb_function()
+    {
+        ImageRequest ir = new ImageRequest("http://graph.facebook.com/"+fb_userid+"/picture?type=large", new Response.Listener<Bitmap>() {
 
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
-                // Do something. For example: playButton.setEnabled(true);
-                mp.start();
-                cou++;
+            public void onResponse(Bitmap response) {
+
+                int abc=0;
+//                                    String fb_email,fb_name,fb_image,fb_userid;
+
+                if (response==null)
+                    fb_image=BitmapFactory.decodeResource(getResources(),R.drawable.logomain);
+                else
+                    fb_image=response;
+
+
+
+                SharedPreferences pref1 = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = pref1.edit();
+                editor1.putString("user_name", fb_name);
+                editor1.putString("user_image",fb_email+".jpeg");
+
+                // Saving string
+                editor1.commit();
+
+
+             /*   sr.setRetryPolicy(new DefaultRetryPolicy(
+                        MY_SOCKET_TIMEOUT_MS,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                requestQueue.add(sr);
+
+                                    /*Intent intent = new Intent(Login_activity.this, FBregistration.class);
+                                    intent.putExtra("email",email);
+                                    intent.putExtra("name",name);
+                                    intent.putExtra("image",response);
+                                    intent.putExtra("bool","1");
+                                    LoginManager.getInstance().logOut();
+
+                                    ringProgressDialog.dismiss();
+                                    startActivity(intent);
+                                    */
+
+                image_upload_server_function();
+
+            }
+        },0, 0, null,  new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoginManager.getInstance().logOut();
+                ringProgressDialog.dismiss();
+                Toast.makeText(Login_activity.this,error.toString(),Toast.LENGTH_LONG).show();
             }
         });
-        mp.prepareAsync();
 
-}
+                           /* ir.setRetryPolicy(new DefaultRetryPolicy(
+                                    MY_SOCKET_TIMEOUT_MS,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(ir);
 
     }
 
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        //Toast.makeText(getApplicationContext(),"Destroyed",Toast.LENGTH_LONG).show();
+
+    void check_old_or_new_user_server()
+    {
+        final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
+
+                    LoginManager.getInstance().logOut();
+
+                    ringProgressDialog.dismiss();
+
+
+                SharedPreferences m_pref=getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor1=m_pref.edit();
+                if (checkBox.isChecked()) {
+                    editor1.putString("user_session", "logeed_in");
+                }
+
+                editor1.putString("user_image",fb_email+".jpeg");
+                editor1.commit();
+
+
+                if (!response.contains("old")) {
+
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("user_id", response);
+                    editor.commit();
+
+
+                    new AlertDialog.Builder(Login_activity.this)
+                            .setTitle("Signup Confirmation Dialog:")
+                            .setMessage("You have successfully registered with (Email: " + fb_email + "). Thank You!")
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    image_download_fb_function();
+                                    Intent intent = new Intent(Login_activity.this, MainActivity.class);
+                                    startActivity(intent);
+
+                                }
+                            }).setCancelable(false)
+                            .create().show();
+
+                }
+                else
+                {
+
+                    StringTokenizer st = new StringTokenizer(response);
+                    int i = 0;
+                    String u=null;
+                    while (st.hasMoreTokens()) {
+                        if (i == 0) {
+                            u = st.nextToken();
+                            break;
+                        }
+                        i++;
+                    }
+
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("user_id", u);
+                    editor.commit();
+
+
+                    Intent intent = new Intent(Login_activity.this, MainActivity.class);
+                    startActivity(intent);
+
+                }
+
+
+
+                    //call intent for already registered
+            }
+                    //ringProgressDialog.dismiss();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ringProgressDialog.dismiss();
+                LoginManager.getInstance().logOut();
+                Toast.makeText(getApplicationContext(),"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+
+                params.put("username", fb_userid);//done
+                params.put("password", "facebook");//done
+                params.put("is_active", "1");//done
+                params.put("email", fb_email.toLowerCase());//done
+
+                String timeStamp = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime())).toString();
+                params.put("date_added", timeStamp);//done
+                params.put("filename", fb_email.toLowerCase() + ".jpeg");//done
+
+
+                String first = "", last = "";
+                StringTokenizer st = new StringTokenizer(fb_name);
+                int i = 0, count = 0;
+                while (st.hasMoreTokens()) {
+                    if (i == 0)
+                        first = st.nextToken();
+                    else {
+                        if (count > 0)
+                            last += " ";
+                        last += st.nextToken();
+                        count++;
+                    }
+                    i++;
+                }
+
+                params.put("first_name", first);//done
+                params.put("last_name", last);//done
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };//post user
+
+
+              sr.setRetryPolicy(new DefaultRetryPolicy(
+                        MY_SOCKET_TIMEOUT_MS,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                requestQueue.add(sr);
     }
-*/
+
+
+    void image_upload_server_function()
+    {
+        StringRequest upload_image_request = new StringRequest(Request.Method.POST, upload,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        if (s.contains("Uploaded"))
+                        {
+                            ringProgressDialog.dismiss();
+                            //Intent intent=new Intent(Login_activity.this,MainActivity.class);
+                            //startActivity(intent);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+
+                        //Showing toast
+                        //result+=volleyError.toString();
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                fb_image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                final String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+                String image = encodedImage;
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put("userImage", image);
+                params.put("filename",fb_email);
+
+                //returning parameters
+                return params;
+            }
+        };
+
+        upload_image_request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(upload_image_request);                //Intent intent=new Intent(Login_activity.this,MainActivity.class);
+        //startActivity(intent);
+
+    }
 }
 
 

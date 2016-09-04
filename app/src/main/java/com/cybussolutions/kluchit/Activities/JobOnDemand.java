@@ -365,9 +365,13 @@ public class JobOnDemand extends AppCompatActivity {
                 Map<String, String> params = new Hashtable<String, String>();
 
 
+                SharedPreferences pref2 = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+
+
+
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                params.put("job_id",pref.getString("job_id",null));
-                params.put("user_id",userId);
+                params.put("job_id",pref2.getString("job_id",null));
+                params.put("user_id",pref.getString("user_id",null));
                 params.put("is_open","1");
                 return params;
             }

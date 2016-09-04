@@ -94,17 +94,18 @@ public class MainActivity extends AppCompatActivity {
 
     Button jobOnDemand;
 
+
     final StringRequest category_request = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
 
            // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
             if (response.toString().contains("not")) {
-                ringProgressDialog.dismiss();
+              //  ringProgressDialog.dismiss();
                 Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
             }
             else {
-                ringProgressDialog.dismiss();
+              //  ringProgressDialog.dismiss();
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Signup Confirmation Dialog:")
                         .setMessage("You have successfully registered with categories. Proceed Thank You!")
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            ringProgressDialog.dismiss();
+          //  ringProgressDialog.dismiss();
             Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
         }
     }) {
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            ringProgressDialog.dismiss();
+          //  ringProgressDialog.dismiss();
             Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
         }
     }) {
@@ -210,58 +211,30 @@ public class MainActivity extends AppCompatActivity {
 
             if (response.contains("not"))
             {
-                String str = response;
-                StringTokenizer defaultTokenizer = new StringTokenizer(str);
-                int i=0;
-                String user__id = null;
-                while (defaultTokenizer.hasMoreTokens())
-                {
-                    if (i==0) {
-                        user__id=defaultTokenizer.nextToken();
-                        break;
-                    }
-                }
-
-
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("user_id", user__id);// Saving string
-                editor.commit();
-
-
+                ringProgressDialog.dismiss();
                 prepare_fragment();
             }
             else {
-
-
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("user_id", response);// Saving string
-                editor.commit();
-
-
-                userId = response;
-
-
-               // RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-               // requestQueue.add(img_request);
-
                 Jsonsend();
-
-
             }
         }
 
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            ringProgressDialog.dismiss();
+           //ringProgressDialog.dismiss();
             Toast.makeText(MainActivity.this,"Something went Wrong! Slow Internet Connection",Toast.LENGTH_LONG).show();
         }
     }) {
         @Override
         protected Map<String, String> getParams() {
             Map<String, String> params = new HashMap<String, String>();
+
+            ringProgressDialog.show();
+
+
+            SharedPreferences mypref=getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+            userId=mypref.getString("user_id",null);
 
             params.put("userid", userId);//done
 
@@ -348,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
-
                 }
 
             })
@@ -380,7 +352,6 @@ public class MainActivity extends AppCompatActivity {
                     listView.setAdapter(addapter);
 
 
-
                 }
             },
 
@@ -404,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_SHORT).show();
 
                     }
+
                 }
 
             })
@@ -436,6 +408,15 @@ public class MainActivity extends AppCompatActivity {
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
+
+        ringProgressDialog = ProgressDialog.show(MainActivity.this,"", "Loading ...", true);
+        ringProgressDialog.setCancelable(false);
+
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.hide(getFragmentManager().findFragmentById(R.id.gettingStarted));
+        ft.commit();
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -514,23 +495,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String flag=decision_pref.getString("fb_login",null);
+        //SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        //String flag=decision_pref.getString("fb_login",null);
 
 
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.hide(getFragmentManager().findFragmentById(R.id.gettingStarted));
-        ft.commit();
 
 
-        ringProgressDialog = ProgressDialog.show(MainActivity.this, "",	"Please wait ...", true);
 
-        if (flag.equals("1"))
-        {
-            //ABdullah Method
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
+      /*  ringProgressDialog = ProgressDialog.show(MainActivity.this, "",	"Please wait ...", true);
+
 
             category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
                     MY_SOCKET_TIMEOUT_MS,
@@ -539,14 +513,8 @@ public class MainActivity extends AppCompatActivity {
 
 
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(category_exist_request);
-        }
-        else
-        {
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
-            Jsonsend();
-        }
+            requestQueue.add(category_exist_request);*/
+
 
 
         jobOnDemand.setOnClickListener(new View.OnClickListener() {
@@ -632,11 +600,10 @@ public class MainActivity extends AppCompatActivity {
         v.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              //  ringProgressDialog.show();
                 submit_get_started();
             }
         });
-
-        ringProgressDialog.dismiss();
     }
 
 
@@ -655,8 +622,8 @@ public class MainActivity extends AppCompatActivity {
         else
         {
 
-            ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
-            ringProgressDialog.setCancelable(false);
+          //  ringProgressDialog = ProgressDialog.show(this,"", "Loading ...", true);
+          //  ringProgressDialog.setCancelable(false);
 
 
             category_request.setRetryPolicy(new DefaultRetryPolicy(
@@ -688,6 +655,7 @@ public class MainActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.category_chooser)).setError("Please Select a category!");
         }
 
+       // ringProgressDialog.dismiss();
 
 
     }
@@ -784,6 +752,7 @@ public class MainActivity extends AppCompatActivity {
                 }).create().show();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -796,41 +765,9 @@ public class MainActivity extends AppCompatActivity {
 
         t.send(new HitBuilders.ScreenViewBuilder().build());
 
-
-        SharedPreferences decision_pref=getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String flag=decision_pref.getString("fb_login",null);
+          category_exist_request_function();
 
 
-
-
-        if (flag.equals("1"))
-        {
-
-            //ABdullah Method
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPreffb", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
-
-            category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
-                    MY_SOCKET_TIMEOUT_MS,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(category_exist_request);
-        }
-        else
-        {
-
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-            userId = pref.getString("user_id", null);
-            Jsonsend();
-        }
-
-
-        //RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        //requestQueue.add(category_exist_request);
 
         if (!isMyServiceRunning(UploaderService.class)) {
             Intent mServiceIntent = new Intent(getApplicationContext(), UploaderService.class);
@@ -966,4 +903,21 @@ public class MainActivity extends AppCompatActivity {
         t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    void category_exist_request_function()
+    {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        userId = pref.getString("user_id", null);
+
+        category_exist_request.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(category_exist_request);
+
+    }
 }
