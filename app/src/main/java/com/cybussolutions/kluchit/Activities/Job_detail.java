@@ -52,7 +52,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
     private ArrayList<Job_details_pojo> listJobs = new ArrayList<>();
     TextView title, jobdescription, start, end, venuejob, isopen;
     Button closejob;
-
+    String j_o_d;
 
 
 
@@ -104,11 +104,27 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface arg0, int arg1) {
-                                Intent intent1 = new Intent(Job_detail.this, Questions_Activity.class);
-                                intent1.putExtra("screen", "Post");
-                                intent1.putExtra("job_id", job_id);
-                                startActivity(intent1);
-                                finish();
+
+                                if (j_o_d.equals("1"))
+                                {
+                                    SharedPreferences pref = getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=pref.edit();
+                                    editor.clear();
+                                    editor.commit();
+
+                                    Closejob();
+
+                                    finish();
+                                }
+
+                                else {
+                                    Intent intent1 = new Intent(Job_detail.this, Questions_Activity.class);
+                                    intent1.putExtra("screen", "Post");
+                                    intent1.putExtra("job_id", job_id);
+                                    startActivity(intent1);
+                                    finish();
+                                }
+
                             }
                         }).create().show();
 
@@ -294,6 +310,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 String discription = Information.getString("job_description");
                 String venue = Information.getString("job_venue");
                 String start_date = Information.getString("job_start_date");
+                j_o_d = Information.getString("job_on_demand");
                 String end_date = Information.getString("job_end_date");
                 String job_status = Information.getString("job_status");
 

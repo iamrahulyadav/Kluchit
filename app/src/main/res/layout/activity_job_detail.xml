@@ -98,7 +98,6 @@
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="2dp"
-                android:text="Title Here"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -132,7 +131,6 @@
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="2dp"
-                android:text="D-O-B"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -167,7 +165,6 @@
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="2dp"
-                android:text="D-O-B"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -199,7 +196,6 @@
                 android:paddingBottom="2dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="2dp"
-                android:text="Venue Here"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:layout_marginTop="6dp"/>
@@ -236,7 +232,6 @@
                     android:paddingBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingTop="2dp"
-                    android:text="Status here"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="normal"
                     android:layout_marginTop="6dp"
@@ -263,8 +258,9 @@
         android:textStyle="bold"
         android:typeface="serif"
         android:textColor="#000"
-        android:background="@drawable/closejob"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/closejob"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true" />
 
 
