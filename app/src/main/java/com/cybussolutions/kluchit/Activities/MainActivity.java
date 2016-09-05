@@ -48,6 +48,7 @@ import com.cybussolutions.kluchit.Network.EndPoints;
 import com.cybussolutions.kluchit.Network.UploaderService;
 import com.cybussolutions.kluchit.PushNotification.GCMRegistrationIntentService;
 import com.cybussolutions.kluchit.R;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -57,6 +58,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -737,21 +739,92 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent a = new Intent(Intent.ACTION_MAIN);
-                        a.addCategory(Intent.CATEGORY_HOME);
-                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(a);
+
+        boolean flag=false;
+
+        SharedPreferences logg=getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+        SharedPreferences logg_ = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+
+        String check=null;
+        String logger=null;
+        if (logg_.contains("user_session"))
+            logger = logg_.getString("user_session", null);
+
+
+
+        if (logg.contains("Status") ) {
+            check=logg.getString("Status",null);
+            if (check.equals("active") && logger==null)
+            {
+                flag=true;
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("End Job And Signout Confirmation Dialog:")
+                        .setMessage("Logging out would remove your created job and images in upload queue?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                SharedPreferences pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("Status", "inactive");
+                                editor.commit();
+
+
+                                close_job();
+                                //should have an api of closing date
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                     }
-                }).create().show();
-    }
+                }).setCancelable(false)
+                        .create().show();
+            }
+        }
 
+
+        check = null;
+        if (logg_.contains("user_session"))
+            check = logg_.getString("user_session", null);
+
+
+        if (check != null && check.equals("logeed_in"))
+        {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+
+        }
+        else {
+
+            if (flag == false) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Logout Confirmation Dialog:")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                                Intent intent = new Intent(getApplicationContext(), Login_activity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+
+
+                                //should have an api of closing date
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).setCancelable(false).create().show();
+            }
+        }
+
+    }
 
     @Override
     protected void onResume() {
@@ -918,6 +991,83 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(category_exist_request);
+
+    }
+
+    void close_job()
+    {
+        String close_job= EndPoints.CLOSE_JOB;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, close_job,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(MainActivity.this,s,Toast.LENGTH_LONG).show();
+                        //finish();
+
+
+                        SharedPreferences pref=getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor=pref.edit();
+                        editor.clear();
+                        editor.commit();
+
+
+                        pref = getApplicationContext().getSharedPreferences("JobOnDemand", Context.MODE_PRIVATE);
+                        editor = pref.edit();
+
+
+                        if (pref.contains("current"))
+                            editor.remove("current");
+                        if (pref.contains("total"))
+                            editor.remove("total");
+                        if (pref.contains("completed"))
+                            editor.remove("completed");
+
+
+                        editor.commit();
+
+
+                        LoginManager.getInstance().logOut();
+
+                        Intent intent = new Intent(MainActivity.this, Login_activity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+
+                        //Showing toast
+                        //result+=volleyError.toString();
+                        ringProgressDialog.dismiss();
+                        Toast.makeText(MainActivity.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                params.put("job_id",pref.getString("job_id",null));
+                params.put("user_id",pref.getString("user_id",null));
+                params.put("is_open","1");
+                return params;
+            }
+        };
+
+        ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...", "Closing job ...", true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
 
     }
 }
