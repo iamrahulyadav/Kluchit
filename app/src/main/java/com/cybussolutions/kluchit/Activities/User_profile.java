@@ -94,6 +94,7 @@ public class User_profile extends AppCompatActivity {
 
         drawerFragment.setup((DrawerLayout) findViewById(R.id.drawerlayout), toolbar);
 
+
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
         user_cat=pref.getString("user_cat",null);
