@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Activities.MainActivity"
-       >
+        >
 
         <include
             android:id="@+id/app_bar"
@@ -24,10 +24,12 @@
             android:id="@+id/nojobimage"
             android:paddingTop="200dp"
             android:background="@drawable/nojobs"
-            android:visibility="gone"
-            android:layout_alignTop="@+id/gettingStarted"
-            android:layout_toRightOf="@+id/jobs_title"
-            android:layout_toEndOf="@+id/jobs_title" />
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/jobs_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,15 +37,15 @@
             android:text="NO JOBS AVAILABLE FOR YOUR CATEGORY AT THIS MOMENT"
             android:id="@+id/jobs_title"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#000"
             android:textStyle="bold"
             android:typeface="serif"
             android:textSize="14dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="20dp" />
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"

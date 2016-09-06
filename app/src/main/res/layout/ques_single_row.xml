@@ -12,6 +12,7 @@
         android:id="@+id/q_txt"
         android:textColor="#000"
         android:gravity="center|start"
+        android:singleLine="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"

@@ -140,7 +140,7 @@ public class SocialSharing extends FragmentActivity {
                 @Override
                 public void onResponse(String response) {
 
-                    Toast.makeText(SocialSharing.this,response, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(SocialSharing.this,response, Toast.LENGTH_SHORT).show();
                     // ringProgressDialog.dismiss();
 
 
@@ -1716,7 +1716,7 @@ public class SocialSharing extends FragmentActivity {
             Log.e(TAG, "Response from server: " + result);
 
             // showing the server response in an alert dialog
-            showAlert(result);
+            showAlert("Image Uploaded successfully");
             SocialSharing.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
             super.onPostExecute(result);

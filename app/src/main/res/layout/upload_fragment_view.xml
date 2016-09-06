@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/background_floating_material_dark">
+    android:layout_height="290dp"
+    android:background="#d1424242">
 
     <TextView
         android:id="@+id/txtPercentage"
@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="24dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal|top"
         android:text="Press Button to start uploading..."
         android:textAlignment="center"
@@ -23,6 +24,7 @@
         android:layout_height="24dp"
         android:id="@+id/cross"
         android:layout_gravity="right|top"
+        android:layout_margin="10dp"
         android:background="@drawable/cross"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -34,24 +36,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/txtPercentage"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <Button
         android:id="@+id/share"
-        android:layout_width="121dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
         android:background="@color/btn_bg"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="Share"
         android:textColor="@color/white"
         android:layout_alignTop="@+id/btnUpload"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/progressBar"
+        android:layout_alignEnd="@+id/progressBar" />
 
     <Button
         android:id="@+id/btnUpload"
@@ -62,6 +65,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/btnUploadToServer"
+        android:layout_margin="10dp"
         android:textColor="@color/white"
         android:layout_below="@+id/queue"
         android:layout_alignParentLeft="true"
@@ -76,6 +80,7 @@
         android:background="@color/btn_bg"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Add to upload queue"
         android:textColor="@color/white"
         android:layout_marginTop="31dp"

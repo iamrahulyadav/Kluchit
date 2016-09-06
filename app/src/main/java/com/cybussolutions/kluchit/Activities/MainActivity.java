@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         protected Map<String, String> getParams() {
             Map<String, String> params = new HashMap<String, String>();
 
-            ringProgressDialog.show();
+
 
 
             SharedPreferences mypref=getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
@@ -414,6 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
         ringProgressDialog = ProgressDialog.show(MainActivity.this,"", "Loading ...", true);
         ringProgressDialog.setCancelable(false);
+        ringProgressDialog.show();
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -602,7 +603,7 @@ public class MainActivity extends AppCompatActivity {
         v.findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  ringProgressDialog.show();
+
                 submit_get_started();
             }
         });
@@ -1065,7 +1066,6 @@ public class MainActivity extends AppCompatActivity {
 
         ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...", "Closing job ...", true);
         ringProgressDialog.setCancelable(false);
-        ringProgressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
 
