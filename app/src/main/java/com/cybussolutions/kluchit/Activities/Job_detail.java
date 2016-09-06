@@ -346,7 +346,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
                 .allowRetry(true)
                 .defaultToFrontFacing(true)
                .start(CAMERA_RQ);*/
-        Intent intent=new Intent(Job_detail.this,SocialSharing.class);
+        Intent intent=new Intent(Job_detail.this,SocialSharingCusDef.class);
         startActivity(intent);
 
 

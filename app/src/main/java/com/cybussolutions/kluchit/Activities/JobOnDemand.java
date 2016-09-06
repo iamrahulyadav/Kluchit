@@ -184,7 +184,7 @@ public class JobOnDemand extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(JobOnDemand.this,SocialSharing.class);
+                Intent intent=new Intent(JobOnDemand.this,SocialSharingCusDef.class);
                 startActivity(intent);
 
             }

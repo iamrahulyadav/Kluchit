@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@color/com_facebook_button_background_color_disabled">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:text="Camera Editing Default/Custom Chooser"
+        android:textSize="25dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#584595"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_below="@+id/app_bar"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"/>
+
+    <RadioGroup
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/title"
+        android:layout_alignLeft="@+id/position"
+        android:layout_alignStart="@+id/position"
+        android:orientation="horizontal"
+        android:layout_alignRight="@+id/position"
+        android:layout_alignEnd="@+id/position">
+
+        <RadioButton
+            android:layout_width="123dp"
+            android:layout_height="wrap_content"
+            android:text="Default"
+            android:id="@+id/def"
+            android:checked="true"
+            android:textColorHint="#000000"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="#584595"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_alignTop="@+id/radioGroup"
+            android:layout_alignRight="@+id/button"
+            android:layout_alignEnd="@+id/button" />
+
+        <RadioButton
+            android:layout_width="123dp"
+            android:layout_height="wrap_content"
+            android:text="Custom"
+            android:id="@+id/cus"
+            android:checked="false"
+            android:textColorHint="#000000"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="#584595"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_below="@+id/title"
+            android:layout_alignLeft="@+id/position"
+            android:layout_alignStart="@+id/position"
+            android:layout_marginLeft="70dp"
+
+            />
+
+
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/position"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/radioGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
+
+    <Spinner
+        android:id="@+id/color"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@+id/position"
+        android:layout_alignLeft="@+id/position"
+        android:layout_alignStart="@+id/position"
+        android:layout_marginTop="31dp"
+        android:spinnerMode="dropdown" />
+
+    <ImageButton
+        android:layout_width="280dp"
+        android:layout_height="100dp"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:baselineAlignBottom="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/continue_button"
+        android:padding="100dp"/>
+
+
+</RelativeLayout>

@@ -39,6 +39,10 @@
         <activity android:name=".Activities.Splash_Activity" />
         <activity android:name=".Activities.JobOnDemand" />
         <activity android:name=".Activities.Login_activity"></activity>
+        <activity android:name=".Activities.SocialSharingCusDef"></activity>
+        <activity android:name=".Activities.CustomSocialSharing"></activity>
+
+
         <activity android:name=".Activities.Chooser_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +50,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity android:name=".Activities.SocialSharing" />
+
+
+
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

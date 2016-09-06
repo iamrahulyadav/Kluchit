@@ -699,6 +699,7 @@ public class Login_activity extends AppCompatActivity{
                 }
 
                 editor1.putString("user_image",fb_email+".jpeg");
+                editor1.putString("user_name",fb_name);
                 editor1.commit();
 
 
