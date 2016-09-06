@@ -15,6 +15,7 @@
         android:text="Large Text"
         android:textColor="#000"
         android:padding="2dp"
+        android:singleLine="true"
         android:id="@+id/userid"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/profile" />

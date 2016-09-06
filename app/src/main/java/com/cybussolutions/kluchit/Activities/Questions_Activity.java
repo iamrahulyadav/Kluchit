@@ -1,19 +1,24 @@
 package com.cybussolutions.kluchit.Activities;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -56,6 +61,7 @@ public class Questions_Activity extends AppCompatActivity
 
     String userid;
 
+    final Context context= this;
 
     Button sendReply;
 
@@ -123,6 +129,15 @@ public class Questions_Activity extends AppCompatActivity
         sendReply = (Button) findViewById(R.id.send);
         listView = (ListView) findViewById(R.id.question_list);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String question = ((TextView) view.findViewById(R.id.q_txt)).getText().toString();
+                showdetailquestion(question);
+            }
+        });
+
         addapter = new Question_adapter(getApplicationContext(), R.layout.ques_single_row, list_Questions, this);
 
         sendReply.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +174,29 @@ public class Questions_Activity extends AppCompatActivity
     }
 
 
+    void showdetailquestion (final String position)
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.question_details, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
+        final TextView reason = (TextView) dialogView.findViewById(R.id.question_txt);
+        Button submit = (Button) dialogView.findViewById(R.id.okbutton);
+
+        reason.setText(position);
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

@@ -59,6 +59,8 @@ public class Job_History extends AppCompatActivity {
     DrawerFragment drawerFragment = new DrawerFragment();
     TextView nojobtext;
     ImageView nojobpic;
+    String job_on_demand;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +102,21 @@ public class Job_History extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
-                String heading = ((TextView) view.findViewById(R.id.userid)).getText().toString();
-                Intent intent = new Intent(Job_History.this,History_details.class);
-                intent.putExtra("job_id",job_id);
-                intent.putExtra("heading",heading);
-                startActivity(intent);
+
+                if (job_on_demand.equals("1"))
+                {
+                    Toast.makeText(Job_History.this, "This is job on demand", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
+                    String heading = ((TextView) view.findViewById(R.id.userid)).getText().toString();
+                    Intent intent = new Intent(Job_History.this,History_details.class);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("heading",heading);
+                    startActivity(intent);
+                }
+
             }
         });
         t = Analytics.getInstance(this).getDefaultTracker();
@@ -246,6 +257,7 @@ public class Job_History extends AppCompatActivity {
                     String name = Information.getString("job_heading");
                     String headin = Information.getString("job_start_date");
                     String discription = Information.getString("job_description");
+                    job_on_demand = Information.getString("job_on_demand");
 
 
                     Main_screen_pojo data = new Main_screen_pojo();

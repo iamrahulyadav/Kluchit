@@ -709,6 +709,7 @@ public class Login_activity extends AppCompatActivity{
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("user_id", response);
+                    editor.putString("user_name",fb_name);
                     editor.commit();
 
 
@@ -745,6 +746,7 @@ public class Login_activity extends AppCompatActivity{
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("user_id", u);
+                    editor.putString("user_name",fb_name);
                     editor.commit();
 
 
