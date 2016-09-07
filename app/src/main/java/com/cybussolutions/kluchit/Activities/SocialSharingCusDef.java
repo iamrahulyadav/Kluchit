@@ -7,6 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +29,7 @@ import java.util.List;
 /**
  * Created by Abdul on 05/09/2016.
  */
-public class SocialSharingCusDef extends Activity {
+public class SocialSharingCusDef extends AppCompatActivity {
 
     Spinner color_spinner;
     Spinner position_spinner;
@@ -32,7 +37,7 @@ public class SocialSharingCusDef extends Activity {
     RadioButton default_;
     RadioButton custom_;
     ImageButton submit;
-
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,14 @@ public class SocialSharingCusDef extends Activity {
         setContentView(R.layout.social_sharing_asker);
 
 
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("Customise Camera");
+
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         color_spinner= (Spinner) findViewById(R.id.color);
         position_spinner = (Spinner) findViewById(R.id.position);
         submit=(ImageButton)findViewById(R.id.button);
@@ -135,6 +148,7 @@ public class SocialSharingCusDef extends Activity {
                 }
             }
 
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -203,6 +217,20 @@ public class SocialSharingCusDef extends Activity {
     {
         color_spinner.setVisibility(View.VISIBLE);
         position_spinner.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        finish();
+        return true;
     }
 
 
