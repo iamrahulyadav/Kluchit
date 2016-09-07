@@ -106,10 +106,9 @@ public class CustomSocialSharing extends FragmentActivity {
     int pos;
 
     static int p=-1;
-    int logo_index=-1;
+    static int logo_index=-1;
     static int image_pos=-1;
 
-    GridView grid;
     String filename=null;
 
     boolean already_uploaded=false;
@@ -208,6 +207,123 @@ public class CustomSocialSharing extends FragmentActivity {
     };
 
 
+    void auto_save()
+    {
+        edited = true;
+        if (flag == 1) {
+            already_uploaded = false;
+            btnUpload.setVisibility(View.VISIBLE);
+            filePath = abc;
+
+            Bitmap bmp = BitmapFactory.decodeFile(filePath);
+            bmp = addWatermark(getResources(), bmp);
+
+            File file = new File(filePath);
+            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+            byte[] b = byteArrayBitmapStream.toByteArray();
+
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(b);
+                fos.close();
+                Toast.makeText(CustomSocialSharing.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
+
+            } catch (FileNotFoundException e) {
+                //  Log.e(TAG, "File not found: " + e.getMessage());
+                e.getStackTrace();
+            } catch (IOException e) {
+                //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                e.getStackTrace();
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                }
+            }, 2000);
+            previewCapturedImage();
+
+        }
+        if (flag == 2) {
+            findViewById(R.id.save).setVisibility(View.INVISIBLE);
+
+
+
+            add_watermark();
+            add_watermark_vid();
+
+            final File file;
+            if (abc != null)
+                file = new File(abc);
+            else
+                file = new File(fileUri.getPath());
+
+            GeneralUtils.checkForPermissionsMAndAbove(CustomSocialSharing.this, true);
+            LoadJNI vk = new LoadJNI();
+            try {
+                String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
+                String filename = getFileName(fileUri);
+                String[] complexCommand = null;
+
+                //                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
+
+
+                if (abc != null) {
+                    if (p == 0)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 1)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 2)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 3)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                } else {
+                    if (p == 0)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 1)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 2)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else if (p == 3)
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                    else
+                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
+                }
+                ringProgressDialog = ProgressDialog.show(CustomSocialSharing.this, "Please wait ...", "Editing Video ...", true);
+                ringProgressDialog.setCancelable(false);
+                ringProgressDialog.show();
+                vk.run(complexCommand, "/storage/emulated/0/Pictures/Kluchit Camera", getApplicationContext());
+                ringProgressDialog.dismiss();
+                Toast.makeText(CustomSocialSharing.this, String.format("Saved to: %s, size: %s", file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
+
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                //filepath = "/sdcard/Pictures/Kluchit/" + getFileName(data.getData());
+                videoPreview.pause();
+                File old_file = new File(abc);
+                file.delete();
+
+                abc = "/storage/emulated/0/Pictures/Kluchit Camera/" + "k" + filename;
+                File file_ = new File(abc);
+                fileUri = Uri.fromFile(file);
+                videoPreview.setVideoPath(abc);
+                // start playing
+                videoPreview.start();
+            } catch (Throwable e) {
+                Log.e("test", "vk run exception.", e);
+            }
+
+
+        }
+
+    }
+
 
 
     private void createInstagramIntent(String type, String mediaPath){
@@ -234,76 +350,6 @@ public class CustomSocialSharing extends FragmentActivity {
         super.onStart();
 
         tr.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-    void hide_editing_controls()
-    {
-        findViewById(R.id.up).setVisibility(View.INVISIBLE);
-        findViewById(R.id.down).setVisibility(View.INVISIBLE);
-        findViewById(R.id.left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.filters).setVisibility(View.INVISIBLE);
-        findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
-
-        findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-
-    }
-    void show_editing_controls()
-    {
-        findViewById(R.id.down).setVisibility(View.VISIBLE);
-        findViewById(R.id.left).setVisibility(View.VISIBLE);
-        if (p==0)
-            findViewById(R.id.t_left).setVisibility(View.VISIBLE);
-        else if (p==1)
-            findViewById(R.id.t_right).setVisibility(View.VISIBLE);
-        else if (p==2)
-            findViewById(R.id.b_left).setVisibility(View.VISIBLE);
-        else if (p==3)
-            findViewById(R.id.b_right).setVisibility(View.VISIBLE);
-        else if (p==4)
-            findViewById(R.id.middle).setVisibility(View.VISIBLE);
-    }
-
-    void shrink_editing_controls()
-    {
-        findViewById(R.id.up).setVisibility(View.INVISIBLE);
-        findViewById(R.id.down).setVisibility(View.VISIBLE);
-        findViewById(R.id.left).setVisibility(View.VISIBLE);
-        findViewById(R.id.right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.filters).setVisibility(View.INVISIBLE);
-        findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
-    }
-
-    void show_logo_chooser()
-    {
-        findViewById(R.id.left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.right).setVisibility(View.VISIBLE);
-        findViewById(R.id.logo_window).setVisibility(View.VISIBLE);
-    }
-
-    void show_logo_position_selector()
-    {
-        findViewById(R.id.down).setVisibility(View.INVISIBLE);
-        findViewById(R.id.up).setVisibility(View.VISIBLE);
-        findViewById(R.id.filters).setVisibility(View.VISIBLE);
-    }
-
-
-    void hide_logo_chooser()
-    {
-        findViewById(R.id.left).setVisibility(View.VISIBLE);
-        findViewById(R.id.right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.logo_window).setVisibility(View.INVISIBLE);
-    }
-
-    void hide_logo_position_selector()
-    {
-        findViewById(R.id.down).setVisibility(View.VISIBLE);
-        findViewById(R.id.up).setVisibility(View.INVISIBLE);
-        findViewById(R.id.filters).setVisibility(View.INVISIBLE);
     }
 
 
@@ -357,12 +403,8 @@ public class CustomSocialSharing extends FragmentActivity {
                     imgPreview.setImageBitmap(bmp);
                 }
             }
-            if (flag==0)
-                hide_editing_controls();
-        }
 
-        if (edited==true)
-            hide_editing_controls();
+        }
 
 
     }
@@ -394,7 +436,7 @@ public class CustomSocialSharing extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_social_sharing);
+        setContentView(R.layout.activity_default_social_sharing);
 
 
         if (!marshMallowPermission.checkPermissionForCamera()) {
@@ -631,139 +673,10 @@ public class CustomSocialSharing extends FragmentActivity {
             }
         });*/
 
-        grid=(GridView)findViewById(R.id.filters).findViewById(R.id.gridView1);
-        CustomGrid adapter = new CustomGrid(getApplicationContext(), web, imageId);
-        grid.setAdapter(adapter);
-
-
-        SharedPreferences pref =getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        final SharedPreferences.Editor editor = pref.edit();
-        editor.putString("logo_pos", String.valueOf(3));
-        // Saving string
-        editor.commit();
-
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                shrink_editing_controls();
-                //working
-                if (position==0) {
-                    p = 0;
-                    findViewById(R.id.t_left).setVisibility(View.VISIBLE);
-                    findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-                    Toast.makeText(CustomSocialSharing.this,"top left",Toast.LENGTH_LONG).show();
-
-                }
-                else if (position==1) {
-                    p = 1;
-                    findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.t_right).setVisibility(View.VISIBLE);
-                    findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-                    Toast.makeText(CustomSocialSharing.this,"top right",Toast.LENGTH_LONG).show();
-                }
-                else if (position==2) {
-                    p = 2;
-                    findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_left).setVisibility(View.VISIBLE);
-                    findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-                    Toast.makeText(CustomSocialSharing.this,"bottom left",Toast.LENGTH_LONG).show();
-                }
-                else if (position==3) {
-                    p = 3;
-                    findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_right).setVisibility(View.VISIBLE);
-                    findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-                    Toast.makeText(CustomSocialSharing.this,"bottom right",Toast.LENGTH_LONG).show();
-                }
-                else if (position==4) {
-                    p = 4;
-                    findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.middle).setVisibility(View.VISIBLE);
-                    Toast.makeText(CustomSocialSharing.this,"middle",Toast.LENGTH_LONG).show();
-                }
-                shrink_editing_controls();
-
-                editor.putString("logo_pos", String.valueOf(position));
-                // Saving string
-                editor.commit();
-
-
-                findViewById(R.id.save).setVisibility(View.VISIBLE);
-            }
-        });
 
 
 
-        ListView logo_list=(ListView) findViewById(R.id.logo_window).findViewById(R.id.list);
-        logo_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                logo_index=position;
-                image_pos=position;
-                final int[] imageId = {
-                        R.drawable.log_one_a,
-                        R.drawable.log_two_a,
-                        R.drawable.log_three_a,
-                        R.drawable.log_four_a,
-                        R.drawable.log_five_a,
-                        R.drawable.log_six_a
-                };
 
-                findViewById(R.id.t_left).setBackgroundResource(imageId[position]);
-                findViewById(R.id.t_right).setBackgroundResource(imageId[position]);
-                findViewById(R.id.b_left).setBackgroundResource(imageId[position]);
-                findViewById(R.id.b_right).setBackgroundResource(imageId[position]);
-                findViewById(R.id.middle).setBackgroundResource(imageId[position]);
-                hide_logo_chooser();
-
-                findViewById(R.id.save).setVisibility(View.VISIBLE);
-            }
-        });
-
-        hide_editing_controls();
-
-        findViewById(R.id.down).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                show_logo_position_selector();
-            }
-        });
-
-        findViewById(R.id.left).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                show_logo_chooser();
-            }
-        });
-
-        findViewById(R.id.right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide_logo_chooser();
-            }
-        });
-
-        findViewById(R.id.up).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide_logo_position_selector();
-            }
-        });
 
 
         final Button save=(Button)findViewById(R.id.save);
@@ -811,14 +724,12 @@ public class CustomSocialSharing extends FragmentActivity {
                             }
                         }, 2000);
                         save.setVisibility(View.INVISIBLE);
-                        hide_editing_controls();
                         previewCapturedImage();
 
                     }
                     if (flag == 2) {
                         findViewById(R.id.save).setVisibility(View.INVISIBLE);
 
-                        hide_editing_controls();
 
 
                         add_watermark();
@@ -897,9 +808,7 @@ public class CustomSocialSharing extends FragmentActivity {
 
         save.setVisibility(View.INVISIBLE);
 
-        hide_editing_controls();
 
-        findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
 
 
         queue.setOnClickListener(new View.OnClickListener() {
@@ -914,6 +823,121 @@ public class CustomSocialSharing extends FragmentActivity {
                 findViewById(R.id.btnUpload).setVisibility(View.INVISIBLE);
             }
         });
+
+
+        hide_logos();
+
+    }
+
+
+
+    void hide_logos()
+    {
+        findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+        findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+        findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+        findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+        findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+
+    }
+
+
+    void requested_logo_position()
+    {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("CameraPref", Context.MODE_PRIVATE);
+        String position=preferences.getString("position",null);
+        String logo_type=preferences.getString("color",null);
+
+        final int[] imageId = {
+                R.drawable.log_one_a,
+                R.drawable.log_two_a,
+                R.drawable.log_three_a,
+                R.drawable.log_four_a,
+                R.drawable.log_five_a,
+                R.drawable.log_six_a
+        };
+
+
+        if (logo_type.equals("1"))
+        {
+
+            findViewById(R.id.t_left).setBackgroundResource(imageId[0]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[0]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[0]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[0]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[0]);
+        }
+        else if (logo_type.equals("2"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[1]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[1]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[1]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[1]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[1]);
+        }
+        else if (logo_type.equals("3"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[2]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[2]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[2]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[2]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[2]);
+        }
+        else if (logo_type.equals("4"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[3]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[3]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[3]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[3]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[3]);
+        }
+        else if (logo_type.equals("5"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[4]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[4]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[4]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[4]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[4]);
+        }
+        else
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[5]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[5]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[5]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[5]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[5]);
+        }
+
+        if (position.equals("1"))
+        {
+            findViewById(R.id.t_left).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("2"))
+        {
+            findViewById(R.id.t_right).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("3"))
+        {
+            findViewById(R.id.b_left).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("4"))
+        {
+            findViewById(R.id.b_right).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            findViewById(R.id.middle).setVisibility(View.VISIBLE);
+        }
+
+
+        p=Integer.valueOf(position);
+        p--;
+        image_pos=p;
+        logo_index=Integer.valueOf(logo_type);
+        logo_index--;
+
+
+        hide_logos();
     }
 
 
@@ -1028,20 +1052,11 @@ public class CustomSocialSharing extends FragmentActivity {
         int x;
         if (savedInstanceState.containsKey("logo_window")) {
             x = savedInstanceState.getInt("logo_window");
-            if (x == 1) {
-                show_logo_chooser();
-            } else {
-                hide_logo_chooser();
-            }
+
         }
 
         if (savedInstanceState.containsKey("filters")) {
             x = savedInstanceState.getInt("filters");
-            if (x == 1) {
-                show_logo_position_selector();
-            } else {
-                hide_logo_position_selector();
-            }
         }
 
 
@@ -1055,8 +1070,7 @@ public class CustomSocialSharing extends FragmentActivity {
                 ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
             }
         }
-        if (flag == 0)
-            hide_editing_controls();
+
 
         if (flag == 2) {
             if (abc != null)
@@ -1068,8 +1082,6 @@ public class CustomSocialSharing extends FragmentActivity {
                 }
             }
         }
-        if (edited == true)
-            hide_editing_controls();
 
         int queue = savedInstanceState.getInt("queue");
         if (queue == 0) {
@@ -1199,6 +1211,9 @@ public class CustomSocialSharing extends FragmentActivity {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
+
+                requested_logo_position();
+
                 flag=1;
 
                 findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
@@ -1209,20 +1224,12 @@ public class CustomSocialSharing extends FragmentActivity {
                 abc=fileUri.getPath();
 
 
-              /*  new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                    }
-                }, 10);*/
+                auto_save();
 
 
-                show_editing_controls();
-
-
-                findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
             } else if (resultCode == RESULT_CANCELED) {
+
+                hide_logos();
 
                 flag=0;
                 abc=null;
@@ -1246,40 +1253,16 @@ public class CustomSocialSharing extends FragmentActivity {
                 //   }
                 // }, 500);
 
-                hide_editing_controls();
 
             } else {
 
-                flag=0;
-                abc=null;
-                already_uploaded=false;
-
-                if (textview.getVisibility() == View.INVISIBLE)
-                    textview.setVisibility(View.VISIBLE);
-
-                btn.setVisibility(View.INVISIBLE);
-                btnUpload.setVisibility(View.INVISIBLE);
-                // failed to capture image
-                Toast.makeText(getApplicationContext(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
-
-
-
-                // new Handler().postDelayed(new Runnable() {
-                //   @Override
-                //   public void run() {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
-                //      }
-                //  }, 500);
-
-                hide_editing_controls();
-
+                hide_logos();
             }
         } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
+
+                requested_logo_position();
 
                 flag=2;
                 already_uploaded=false;
@@ -1291,20 +1274,21 @@ public class CustomSocialSharing extends FragmentActivity {
                 previewVideo();
                 abc=fileUri.getPath();
 
-                // new Handler().postDelayed(new Runnable() {
-                //    @Override
-                //    public void run() {
-                //     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                //     }
-                // }, 500);
+                 new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                     FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                     }
+                 }, 10);
 
 
-                show_editing_controls();
 
-                findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+                //findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
 
             } else if (resultCode == RESULT_CANCELED) {
+
+                hide_logos();
 
                 abc=null;
                 flag=0;
@@ -1330,8 +1314,9 @@ public class CustomSocialSharing extends FragmentActivity {
                         "User cancelled video recording", Toast.LENGTH_SHORT)
                         .show();
 
-                hide_editing_controls();
             } else {
+
+                hide_logos();
 
                 flag=0;
                 already_uploaded=false;
@@ -1359,7 +1344,6 @@ public class CustomSocialSharing extends FragmentActivity {
                         "Sorry! Failed to record video", Toast.LENGTH_SHORT)
                         .show();
 
-                hide_editing_controls();
             }
         }
     }
@@ -1800,7 +1784,7 @@ public class CustomSocialSharing extends FragmentActivity {
         };
 
 
-        watermark = BitmapFactory.decodeResource(res, imageId[image_pos]);
+        watermark = BitmapFactory.decodeResource(res, imageId[logo_index]);
         // Scale the watermark to be approximately 10% of the source image height
         scale = (float) (((float) h * 0.1) / (float) watermark.getHeight());
 
@@ -1845,54 +1829,6 @@ public class CustomSocialSharing extends FragmentActivity {
         return bmp;
     }
 
-    public class CustomGrid extends BaseAdapter {
-        private Context mContext;
-        private final String[] web;
-        private final int[] Imageid;
 
-        public CustomGrid(Context c,String[] web,int[] Imageid ) {
-            mContext = c;
-            this.Imageid = Imageid;
-            this.web = web;
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return 5;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            View grid;
-            LayoutInflater inflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            if (convertView == null) {
-
-                grid = new View(mContext);
-                grid = inflater.inflate(R.layout.icon, null);
-                ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
-                imageView.setImageResource(Imageid[position]);
-            } else {
-                grid = (View) convertView;
-            }
-
-            return grid;
-        }
-    }
 
 }

@@ -444,7 +444,6 @@ public class SocialSharing extends FragmentActivity {
                 findViewById(R.id.queue).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
 
-                progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
                 findViewById(R.id.save).setVisibility(View.INVISIBLE);
                 captureImage();
