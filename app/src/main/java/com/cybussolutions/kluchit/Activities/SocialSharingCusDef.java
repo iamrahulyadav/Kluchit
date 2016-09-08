@@ -120,6 +120,7 @@ public class SocialSharingCusDef extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0)
+
                 {
                     SharedPreferences preferences = getApplicationContext().getSharedPreferences("CameraPref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
