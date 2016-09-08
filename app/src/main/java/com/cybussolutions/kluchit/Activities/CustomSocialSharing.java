@@ -95,7 +95,6 @@ import java.util.Map;
  */
 public class CustomSocialSharing extends FragmentActivity {
 
-
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
@@ -142,7 +141,7 @@ public class CustomSocialSharing extends FragmentActivity {
                 @Override
                 public void onResponse(String response) {
 
-                    Toast.makeText(CustomSocialSharing.this,response, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(SocialSharing.this,response, Toast.LENGTH_SHORT).show();
                     // ringProgressDialog.dismiss();
 
 
@@ -207,123 +206,6 @@ public class CustomSocialSharing extends FragmentActivity {
     };
 
 
-    void auto_save()
-    {
-        edited = true;
-        if (flag == 1) {
-            already_uploaded = false;
-            btnUpload.setVisibility(View.VISIBLE);
-            filePath = abc;
-
-            Bitmap bmp = BitmapFactory.decodeFile(filePath);
-            bmp = addWatermark(getResources(), bmp);
-
-            File file = new File(filePath);
-            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
-            byte[] b = byteArrayBitmapStream.toByteArray();
-
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(b);
-                fos.close();
-                Toast.makeText(CustomSocialSharing.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
-
-            } catch (FileNotFoundException e) {
-                //  Log.e(TAG, "File not found: " + e.getMessage());
-                e.getStackTrace();
-            } catch (IOException e) {
-                //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
-                e.getStackTrace();
-            }
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                }
-            }, 2000);
-            previewCapturedImage();
-
-        }
-        if (flag == 2) {
-            findViewById(R.id.save).setVisibility(View.INVISIBLE);
-
-
-
-            add_watermark();
-            add_watermark_vid();
-
-            final File file;
-            if (abc != null)
-                file = new File(abc);
-            else
-                file = new File(fileUri.getPath());
-
-            GeneralUtils.checkForPermissionsMAndAbove(CustomSocialSharing.this, true);
-            LoadJNI vk = new LoadJNI();
-            try {
-                String workFolder = getApplicationContext().getFilesDir().getAbsolutePath();
-                String filename = getFileName(fileUri);
-                String[] complexCommand = null;
-
-                //                    complexCommand = new String[] {"ffmpeg", "-y", "-i", imagepath, "-strict", "experimental", "-vf", "movie=/sdcard/Pictures/Kluchit/watermark.PNG [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "320x240", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/sdcard/Pictures/Kluchit/" + filename};
-
-
-                if (abc != null) {
-                    if (p == 0)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 1)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 2)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 3)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", abc, "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                } else {
-                    if (p == 0)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 1)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 2)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w-overlay_w-10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else if (p == 3)
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                    else
-                        complexCommand = new String[]{"ffmpeg", "-y", "-i", fileUri.getPath(), "-strict", "experimental", "-vf", "movie=/storage/emulated/0/Pictures/Kluchit Camera/watermark_vid.PNG , scale=80:80 [watermark]; [in][watermark] overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2 [out]", "-s", "1024x768", "-r", "30", "-b", "15496k", "-vcodec", "mpeg4", "-ab", "48000", "-ac", "2", "-ar", "22050", "/storage/emulated/0/Pictures/Kluchit Camera/k" + filename};
-                }
-                ringProgressDialog = ProgressDialog.show(CustomSocialSharing.this, "Please wait ...", "Editing Video ...", true);
-                ringProgressDialog.setCancelable(false);
-                ringProgressDialog.show();
-                vk.run(complexCommand, "/storage/emulated/0/Pictures/Kluchit Camera", getApplicationContext());
-                ringProgressDialog.dismiss();
-                Toast.makeText(CustomSocialSharing.this, String.format("Saved to: %s, size: %s", file.getAbsolutePath(), fileSize(file)), Toast.LENGTH_LONG).show();
-
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                //filepath = "/sdcard/Pictures/Kluchit/" + getFileName(data.getData());
-                videoPreview.pause();
-                File old_file = new File(abc);
-                file.delete();
-
-                abc = "/storage/emulated/0/Pictures/Kluchit Camera/" + "k" + filename;
-                File file_ = new File(abc);
-                fileUri = Uri.fromFile(file);
-                videoPreview.setVideoPath(abc);
-                // start playing
-                videoPreview.start();
-            } catch (Throwable e) {
-                Log.e("test", "vk run exception.", e);
-            }
-
-
-        }
-
-    }
-
 
 
     private void createInstagramIntent(String type, String mediaPath){
@@ -351,6 +233,31 @@ public class CustomSocialSharing extends FragmentActivity {
 
         tr.send(new HitBuilders.ScreenViewBuilder().build());
     }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+// Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 3;
+            final int halfWidth = width / 3;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+
+    }
+
+
+
 
 
     @Override
@@ -390,23 +297,48 @@ public class CustomSocialSharing extends FragmentActivity {
 
                 Bitmap bmp=null;
 
-                if (abc!=null)
+               // BitmapFactory.Options options = new BitmapFactory.Options();
+              //  options.inJustDecodeBounds = true;
+
+                if (abc!=null) {
                     bmp = BitmapFactory.decodeFile(abc);
+
+                  //  options.inSampleSize = calculateInSampleSize(options, imgPreview.getWidth(), imgPreview.getHeight());
+                    //options.inJustDecodeBounds = false;
+                  //  options.inPreferredConfig = Bitmap.Config.RGB_565;
+                   // options.inDither = true;
+                    bmp=BitmapFactory.decodeFile(abc);
+
+
+                }
                 else {
                     if (fileUri!=null)
-                        bmp = BitmapFactory.decodeFile(fileUri.getPath());
+                    {
+                       // bmp = BitmapFactory.decodeFile(fileUri.getPath(),options);
 
+                       // options.inSampleSize = calculateInSampleSize(options, imgPreview.getWidth(), imgPreview.getHeight());
+                       // options.inJustDecodeBounds = false;
+                      //  options.inPreferredConfig = Bitmap.Config.RGB_565;
+                      //  options.inDither = true;
+                        bmp=BitmapFactory.decodeFile(fileUri.getPath());
+
+                    }
                 }
                 if (bmp!=null) {
                     //Bitmap temp=bmp.createScaledBitmap(bmp,imgPreview.getMaxWidth(),imgPreview.getMaxHeight(),true);
                     //imgPreview.setImageBitmap(temp);
-                    imgPreview.setImageBitmap(bmp);
+
+                    previewCapturedImage();
+                   /* if (bmp != null) {
+                        bmp.recycle();
+                        bmp = null;
+                    }
+                    */
+
+
                 }
             }
-
         }
-
-
     }
 
 
@@ -480,16 +412,15 @@ public class CustomSocialSharing extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
                 // capture picture
                 edited=false;
-                p=-1;
-                logo_index=-1;
-                image_pos=-1;
 
                 findViewById(R.id.queue).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
 
-                progressBar.setProgress(0);
                 txtPercentage.setText("Press Button to start uploading...");
                 findViewById(R.id.save).setVisibility(View.INVISIBLE);
                 captureImage();
@@ -503,11 +434,12 @@ public class CustomSocialSharing extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+
                 // record video\\\
                 edited=false;
-                p=-1;
-                logo_index=-1;
-                image_pos=-1;
                 findViewById(R.id.queue).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnUpload).setVisibility(View.VISIBLE);
 
@@ -624,11 +556,6 @@ public class CustomSocialSharing extends FragmentActivity {
 
 
 
-
-
-
-
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.hide(getFragmentManager().findFragmentById(R.id.two));
         ft.commit();
@@ -675,7 +602,11 @@ public class CustomSocialSharing extends FragmentActivity {
 
 
 
-
+        SharedPreferences pref =getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = pref.edit();
+        editor.putString("logo_pos", String.valueOf(3));
+        // Saving string
+        editor.commit();
 
 
 
@@ -729,7 +660,6 @@ public class CustomSocialSharing extends FragmentActivity {
                     }
                     if (flag == 2) {
                         findViewById(R.id.save).setVisibility(View.INVISIBLE);
-
 
 
                         add_watermark();
@@ -810,7 +740,6 @@ public class CustomSocialSharing extends FragmentActivity {
 
 
 
-
         queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -827,117 +756,15 @@ public class CustomSocialSharing extends FragmentActivity {
 
         hide_logos();
 
-    }
 
 
 
-    void hide_logos()
-    {
-        findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
-        findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
-        findViewById(R.id.middle).setVisibility(View.INVISIBLE);
-
-    }
-
-
-    void requested_logo_position()
-    {
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("CameraPref", Context.MODE_PRIVATE);
-        String position=preferences.getString("position",null);
-        String logo_type=preferences.getString("color",null);
-
-        final int[] imageId = {
-                R.drawable.log_one_a,
-                R.drawable.log_two_a,
-                R.drawable.log_three_a,
-                R.drawable.log_four_a,
-                R.drawable.log_five_a,
-                R.drawable.log_six_a
-        };
-
-
-        if (logo_type.equals("1"))
-        {
-
-            findViewById(R.id.t_left).setBackgroundResource(imageId[0]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[0]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[0]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[0]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[0]);
-        }
-        else if (logo_type.equals("2"))
-        {
-            findViewById(R.id.t_left).setBackgroundResource(imageId[1]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[1]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[1]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[1]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[1]);
-        }
-        else if (logo_type.equals("3"))
-        {
-            findViewById(R.id.t_left).setBackgroundResource(imageId[2]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[2]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[2]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[2]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[2]);
-        }
-        else if (logo_type.equals("4"))
-        {
-            findViewById(R.id.t_left).setBackgroundResource(imageId[3]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[3]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[3]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[3]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[3]);
-        }
-        else if (logo_type.equals("5"))
-        {
-            findViewById(R.id.t_left).setBackgroundResource(imageId[4]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[4]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[4]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[4]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[4]);
-        }
-        else
-        {
-            findViewById(R.id.t_left).setBackgroundResource(imageId[5]);
-            findViewById(R.id.t_right).setBackgroundResource(imageId[5]);
-            findViewById(R.id.b_left).setBackgroundResource(imageId[5]);
-            findViewById(R.id.b_right).setBackgroundResource(imageId[5]);
-            findViewById(R.id.middle).setBackgroundResource(imageId[5]);
-        }
-
-        if (position.equals("1"))
-        {
-            findViewById(R.id.t_left).setVisibility(View.VISIBLE);
-        }
-        else if (position.equals("2"))
-        {
-            findViewById(R.id.t_right).setVisibility(View.VISIBLE);
-        }
-        else if (position.equals("3"))
-        {
-            findViewById(R.id.b_left).setVisibility(View.VISIBLE);
-        }
-        else if (position.equals("4"))
-        {
-            findViewById(R.id.b_right).setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            findViewById(R.id.middle).setVisibility(View.VISIBLE);
-        }
-
-
-        p=Integer.valueOf(position);
-        p--;
+        SharedPreferences preferences=getApplicationContext().getSharedPreferences("CameraPref",Context.MODE_PRIVATE);
+        logo_index=Integer.valueOf(preferences.getString("color",null));
+        p=Integer.valueOf(preferences.getString("position",null));
         image_pos=p;
-        logo_index=Integer.valueOf(logo_type);
         logo_index--;
 
-
-        hide_logos();
     }
 
 
@@ -1011,16 +838,6 @@ public class CustomSocialSharing extends FragmentActivity {
             else
                 outState.putInt("upload_fragment", 0);
 
-            if (findViewById(R.id.logo_window).getVisibility()==View.VISIBLE)
-                outState.putInt("logo_window", 1);
-            else
-                outState.putInt("logo_window", 0);
-
-            if (findViewById(R.id.filters).getVisibility()==View.VISIBLE)
-                outState.putInt("filters", 1);
-            else
-                outState.putInt("filters", 0);
-
         }
         if (flag==2) {
             //videoPreview.pause();
@@ -1044,20 +861,14 @@ public class CustomSocialSharing extends FragmentActivity {
         edited = savedInstanceState.getBoolean("edited");
 
 
-        p = -1;
-        logo_index = -1;
-        image_pos = -1;
+        p = savedInstanceState.getInt("p");
+        logo_index=savedInstanceState.getInt("logo_index");
+        image_pos=savedInstanceState.getInt("image_pos");
+
 
 
         int x;
-        if (savedInstanceState.containsKey("logo_window")) {
-            x = savedInstanceState.getInt("logo_window");
 
-        }
-
-        if (savedInstanceState.containsKey("filters")) {
-            x = savedInstanceState.getInt("filters");
-        }
 
 
         if (savedInstanceState.containsKey("upload_fragment")) {
@@ -1071,7 +882,6 @@ public class CustomSocialSharing extends FragmentActivity {
             }
         }
 
-
         if (flag == 2) {
             if (abc != null)
                 videoPreview.setVideoPath(abc);
@@ -1082,6 +892,7 @@ public class CustomSocialSharing extends FragmentActivity {
                 }
             }
         }
+
 
         int queue = savedInstanceState.getInt("queue");
         if (queue == 0) {
@@ -1211,9 +1022,6 @@ public class CustomSocialSharing extends FragmentActivity {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-
-                requested_logo_position();
-
                 flag=1;
 
                 findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
@@ -1224,12 +1032,18 @@ public class CustomSocialSharing extends FragmentActivity {
                 abc=fileUri.getPath();
 
 
+              /*  new Handler().postDelayed(new Runnable() {
+                    @
+                    public void run() {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                    }
+                }, 10);*/
+
                 auto_save();
 
 
             } else if (resultCode == RESULT_CANCELED) {
-
-                hide_logos();
 
                 flag=0;
                 abc=null;
@@ -1256,13 +1070,34 @@ public class CustomSocialSharing extends FragmentActivity {
 
             } else {
 
-                hide_logos();
+                flag=0;
+                abc=null;
+                already_uploaded=false;
+
+                if (textview.getVisibility() == View.INVISIBLE)
+                    textview.setVisibility(View.VISIBLE);
+
+                btn.setVisibility(View.INVISIBLE);
+                btnUpload.setVisibility(View.INVISIBLE);
+                // failed to capture image
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+
+
+
+                // new Handler().postDelayed(new Runnable() {
+                //   @Override
+                //   public void run() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+                //      }
+                //  }, 500);
+
             }
         } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-
-                requested_logo_position();
 
                 flag=2;
                 already_uploaded=false;
@@ -1274,21 +1109,19 @@ public class CustomSocialSharing extends FragmentActivity {
                 previewVideo();
                 abc=fileUri.getPath();
 
-                 new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
-                     }
-                 }, 10);
+                // new Handler().postDelayed(new Runnable() {
+                //    @Override
+                //    public void run() {
+                //     FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                //     }
+                // }, 500);
 
 
 
-                //findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+               // findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
 
             } else if (resultCode == RESULT_CANCELED) {
-
-                hide_logos();
 
                 abc=null;
                 flag=0;
@@ -1315,8 +1148,6 @@ public class CustomSocialSharing extends FragmentActivity {
                         .show();
 
             } else {
-
-                hide_logos();
 
                 flag=0;
                 already_uploaded=false;
@@ -1347,6 +1178,52 @@ public class CustomSocialSharing extends FragmentActivity {
             }
         }
     }
+
+    void auto_save()
+    {
+        edited = true;
+        if (flag == 1) {
+            already_uploaded = false;
+            btnUpload.setVisibility(View.VISIBLE);
+            filePath = abc;
+
+            Bitmap bmp=BitmapFactory.decodeFile(abc);
+
+
+            bmp = addWatermark(getResources(), bmp);
+
+            File file = new File(filePath);
+            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+            byte[] b = byteArrayBitmapStream.toByteArray();
+
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(b);
+                fos.close();
+                Toast.makeText(CustomSocialSharing.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
+
+            } catch (FileNotFoundException e) {
+                //  Log.e(TAG, "File not found: " + e.getMessage());
+                e.getStackTrace();
+            } catch (IOException e) {
+                //  Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                e.getStackTrace();
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).show(getFragmentManager().findFragmentById(R.id.two)).commit();
+                }
+            }, 0);
+            previewCapturedImage();
+
+        }
+    }
+
+
     private String readableFileSize(long size) {
         if (size <= 0) return size + " B";
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
@@ -1703,7 +1580,7 @@ public class CustomSocialSharing extends FragmentActivity {
             Log.e(TAG, "Response from server: " + result);
 
             // showing the server response in an alert dialog
-            showAlert(result);
+            showAlert("Image Uploaded successfully");
             CustomSocialSharing.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
             super.onPostExecute(result);
@@ -1784,6 +1661,7 @@ public class CustomSocialSharing extends FragmentActivity {
         };
 
 
+
         watermark = BitmapFactory.decodeResource(res, imageId[logo_index]);
         // Scale the watermark to be approximately 10% of the source image height
         scale = (float) (((float) h * 0.1) / (float) watermark.getHeight());
@@ -1798,20 +1676,20 @@ public class CustomSocialSharing extends FragmentActivity {
 
 
 
-        if (p==0)//wrong
+        if (p==1)//wrong
             matrix.postTranslate(w-r.width(),0);
             // Move the watermark to the top left corner
-        else if (p==1)
+        else if (p==2)
             // Move the watermark to the top right corner
             matrix.postTranslate(0,0);
 
-        else if (p==2)//wrong
+        else if (p==3)//wrong
             // Move the watermark to the bottom left corner
             matrix.postTranslate(w - r.width(), h - r.height());
-        else if (p==3)
+        else if (p==4)
             // Move the watermark to the bottom right corner
             matrix.postTranslate(0, h - r.height());
-        else if (p==4)
+        else if (p==5)
             // Move the watermark to the middle
             matrix.postTranslate(w/2 - r.width()/2,h/2 - r.height()/2);
 
@@ -1824,11 +1702,169 @@ public class CustomSocialSharing extends FragmentActivity {
         // Draw the watermark
         c.drawBitmap(watermark, matrix, paint);
         // Free up the bitmap memory
-        watermark.recycle();
+       // watermark.recycle();
 
         return bmp;
     }
 
+    public class CustomGrid extends BaseAdapter {
+        private Context mContext;
+        private final String[] web;
+        private final int[] Imageid;
 
+        public CustomGrid(Context c,String[] web,int[] Imageid ) {
+            mContext = c;
+            this.Imageid = Imageid;
+            this.web = web;
+        }
+
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return 5;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+            View grid;
+            LayoutInflater inflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            if (convertView == null) {
+
+                grid = new View(mContext);
+                grid = inflater.inflate(R.layout.icon, null);
+                ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+                imageView.setImageResource(Imageid[position]);
+            } else {
+                grid = (View) convertView;
+            }
+
+            return grid;
+        }
+    }
+
+
+    void hide_logos()
+    {
+        findViewById(R.id.t_left).setVisibility(View.INVISIBLE);
+        findViewById(R.id.t_right).setVisibility(View.INVISIBLE);
+        findViewById(R.id.b_left).setVisibility(View.INVISIBLE);
+        findViewById(R.id.b_right).setVisibility(View.INVISIBLE);
+        findViewById(R.id.middle).setVisibility(View.INVISIBLE);
+
+    }
+
+
+    void requested_logo_position()
+    {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("CameraPref", Context.MODE_PRIVATE);
+        String position=preferences.getString("position",null);
+        String logo_type=preferences.getString("color",null);
+
+        final int[] imageId = {
+                R.drawable.log_one_a,
+                R.drawable.log_two_a,
+                R.drawable.log_three_a,
+                R.drawable.log_four_a,
+                R.drawable.log_five_a,
+                R.drawable.log_six_a
+        };
+
+
+        if (logo_type.equals("1"))
+        {
+
+            findViewById(R.id.t_left).setBackgroundResource(imageId[0]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[0]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[0]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[0]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[0]);
+        }
+        else if (logo_type.equals("2"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[1]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[1]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[1]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[1]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[1]);
+        }
+        else if (logo_type.equals("3"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[2]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[2]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[2]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[2]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[2]);
+        }
+        else if (logo_type.equals("4"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[3]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[3]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[3]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[3]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[3]);
+        }
+        else if (logo_type.equals("5"))
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[4]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[4]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[4]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[4]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[4]);
+        }
+        else
+        {
+            findViewById(R.id.t_left).setBackgroundResource(imageId[5]);
+            findViewById(R.id.t_right).setBackgroundResource(imageId[5]);
+            findViewById(R.id.b_left).setBackgroundResource(imageId[5]);
+            findViewById(R.id.b_right).setBackgroundResource(imageId[5]);
+            findViewById(R.id.middle).setBackgroundResource(imageId[5]);
+        }
+
+        if (position.equals("1"))
+        {
+            findViewById(R.id.t_left).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("2"))
+        {
+            findViewById(R.id.t_right).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("3"))
+        {
+            findViewById(R.id.b_left).setVisibility(View.VISIBLE);
+        }
+        else if (position.equals("4"))
+        {
+            findViewById(R.id.b_right).setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            findViewById(R.id.middle).setVisibility(View.VISIBLE);
+        }
+
+
+        p=Integer.valueOf(position);
+        p--;
+        image_pos=p;
+        logo_index=Integer.valueOf(logo_type);
+        logo_index--;
+
+
+        hide_logos();
+    }
 
 }

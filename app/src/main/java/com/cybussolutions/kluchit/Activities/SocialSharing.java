@@ -435,6 +435,11 @@ public class SocialSharing extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
+
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+
                 // capture picture
                 edited=false;
                 p=-1;
@@ -457,6 +462,10 @@ public class SocialSharing extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.fragment_slide_left_enter, R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter, R.animator.fragment_slide_right_exit).hide(getFragmentManager().findFragmentById(R.id.two)).commit();
+
                 // record video\\\
                 edited=false;
                 p=-1;
@@ -540,7 +549,7 @@ public class SocialSharing extends FragmentActivity {
 
                 findViewById(R.id.btnUpload).setVisibility(View.INVISIBLE);
                 findViewById(R.id.queue).setVisibility(View.INVISIBLE);
-              /*  Intent mServiceIntent = new Intent(SocialSharing.this, UploaderService.class);
+              /*  Intent mServiceIntent = necapw Intent(SocialSharing.this, UploaderService.class);
                 mServiceIntent.setData(Uri.parse(fileUri.getPath()));
                 startService(mServiceIntent);*/
 
@@ -778,8 +787,6 @@ public class SocialSharing extends FragmentActivity {
                         filePath = abc;
 
                         Bitmap bmp = BitmapFactory.decodeFile(filePath);
-                        bmp = addWatermark(getResources(), bmp);
-
                         File file = new File(filePath);
                         ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
                         bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
@@ -1016,9 +1023,10 @@ public class SocialSharing extends FragmentActivity {
         edited = savedInstanceState.getBoolean("edited");
 
 
-        p = -1;
-        logo_index = -1;
-        image_pos = -1;
+        p = savedInstanceState.getInt("p");
+        logo_index=savedInstanceState.getInt("logo_index");
+        image_pos=savedInstanceState.getInt("image_pos");
+
 
 
         int x;

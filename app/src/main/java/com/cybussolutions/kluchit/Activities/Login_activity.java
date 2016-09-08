@@ -712,7 +712,6 @@ public class Login_activity extends AppCompatActivity{
                     editor.putString("user_name",fb_name);
                     editor.commit();
 
-
                     new AlertDialog.Builder(Login_activity.this)
                             .setTitle("Signup Confirmation Dialog:")
                             .setMessage("You have successfully registered with (Email: " + fb_email + "). Thank You!")
