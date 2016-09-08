@@ -122,6 +122,7 @@ public class User_profile extends AppCompatActivity {
                 String job_id = ((TextView) view.findViewById(R.id.job_id)).getText().toString();
                 Intent intent = new Intent(User_profile.this, Job_detail.class);
                 intent.putExtra("job_id", job_id);
+                finish();
                 startActivity(intent);
             }
         });

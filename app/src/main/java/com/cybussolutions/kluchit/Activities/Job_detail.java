@@ -114,6 +114,9 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
                                     Closejob();
 
+                                    Intent intent1 = new Intent(Job_detail.this,User_profile.class);
+                                    startActivity(intent1);
+
                                     finish();
                                 }
 

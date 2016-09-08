@@ -2,13 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:background="@color/com_facebook_button_background_color_disabled">
+    android:weightSum="1">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+
+    </include>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title"
+        android:layout_marginTop="10dp"
         android:text="Camera Editing Default/Custom Chooser"
         android:textSize="25dp"
         android:layout_gravity="center_horizontal"
@@ -21,7 +27,7 @@
         android:textAlignment="center"/>
 
     <RadioGroup
-        android:layout_width="123dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radioGroup"
         android:layout_marginTop="30dp"
@@ -44,6 +50,7 @@
             android:textSize="20dp"
             android:textColor="#584595"
             android:typeface="serif"
+            android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:padding="5dp"
             android:layout_alignTop="@+id/radioGroup"
@@ -66,7 +73,7 @@
             android:layout_below="@+id/title"
             android:layout_alignLeft="@+id/position"
             android:layout_alignStart="@+id/position"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="50dp"
 
             />
 
@@ -91,7 +98,7 @@
         android:layout_below="@+id/position"
         android:layout_alignLeft="@+id/position"
         android:layout_alignStart="@+id/position"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="30dp"
         android:spinnerMode="dropdown" />
 
     <ImageButton
