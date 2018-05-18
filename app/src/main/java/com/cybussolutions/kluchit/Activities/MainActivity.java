@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         public void onResponse(String response) {
 
            // Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
-            if (response.toString().contains("not")) {
+            if (response.contains("not")) {
               //  ringProgressDialog.dismiss();
                 Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
             }
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
+                    ringProgressDialog.dismiss();
 
                     String res = response;
 

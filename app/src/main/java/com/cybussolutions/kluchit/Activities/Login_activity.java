@@ -114,7 +114,7 @@ public class Login_activity extends AppCompatActivity{
     Bitmap fb_image;
 
 
-    String postuser = EndPoints.BASE_URL + "/common_controller/saveNewUserBySocial";
+    String postuser = EndPoints.BASE_URL + "/common_controller/reg_k";
 
     String upload = EndPoints.BASE_URL + "upload_profile.php";
 
@@ -153,7 +153,7 @@ public class Login_activity extends AppCompatActivity{
 
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -217,7 +217,7 @@ public class Login_activity extends AppCompatActivity{
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email");
+                parameters.putString("fields", "id,name,email,gender,birthday,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -685,7 +685,7 @@ public class Login_activity extends AppCompatActivity{
         final StringRequest sr = new StringRequest(Request.Method.POST, postuser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
+                //Toast.makeText(Login_activity.this,response,Toast.LENGTH_LONG).show();
 
                     LoginManager.getInstance().logOut();
 

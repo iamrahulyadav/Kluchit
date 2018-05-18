@@ -231,7 +231,7 @@ public class UploaderService extends Service {
 
             else
             {
-                Toast.makeText(getApplicationContext(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
             }
         }

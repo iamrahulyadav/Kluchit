@@ -127,7 +127,7 @@ public class User_profile extends AppCompatActivity {
             }
         });
 
-        String url = EndPoints.FB_PROFILE_PIC_PATH+profile;
+       /* String url = EndPoints.FB_PROFILE_PIC_PATH+profile;
         imageLoader.get(url, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate)
@@ -150,7 +150,7 @@ public class User_profile extends AppCompatActivity {
                 Log.e("IMAGE ERROR","LOADING IMAGE ERROR");
 
             }
-        });
+        });*/
 
 
 
@@ -280,20 +280,20 @@ public class User_profile extends AppCompatActivity {
                         String catagory;
                         JSONObject object = null;
 
-                        try {
-                            object = new JSONObject(response);
+                       // try {
+                            /*object = new JSONObject(response);
                             catagory = object.getString("result");
 
                             JSONObject obj = new JSONObject(catagory);
                             String currentvalue  = obj.getString("current");
-                            String totalvalue = obj.getString("total");
+                            String totalvalue = obj.getString("total");*/
 
-                            total.setText(totalvalue);
-                            current.setText(currentvalue);
+                            total.setText(response);
+                           // current.setText(currentvalue);
 
-                        } catch (JSONException e) {
+                       /* } catch (JSONException e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
                     }
                 },
