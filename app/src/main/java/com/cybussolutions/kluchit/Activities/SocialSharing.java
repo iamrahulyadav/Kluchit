@@ -21,12 +21,14 @@ import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.FileProvider;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,6 +89,8 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.cybussolutions.kluchit.Network.Application.getContext;
+
 /**
  * Created by Abdullah Manzoor Dar on 7/13/2016.
  */
@@ -141,7 +145,7 @@ public class SocialSharing extends FragmentActivity {
                 public void onResponse(String response) {
 
                    // Toast.makeText(SocialSharing.this,response, Toast.LENGTH_SHORT).show();
-                    // ringProgressDialog.dismiss();
+                   //  ringProgressDialog.dismiss();
 
 
 
@@ -942,8 +946,12 @@ public class SocialSharing extends FragmentActivity {
     private void captureImage() {
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(getContext(), "com.cybussolutions.kluchit.fileProvider", newFile);
+        }else {*/
+            fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+       // }
 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 

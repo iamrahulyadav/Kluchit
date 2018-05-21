@@ -91,7 +91,7 @@ public class History_details extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         userId = pref.getString("user_id", null);
-        house = pref.getString("house",null);
+        house = pref.getString("house","1");
     }
 
 
@@ -183,14 +183,15 @@ public class History_details extends AppCompatActivity {
                             {
 
                                 if(house.equals("1"))
-                            {
+                                {
                                 amount.setText("In-House");
                                 status.setText("");
-                            }
+                                }
                                 else {
 
-                                status.setText("Not Verified");
-                                amount.setText("0000");}
+                                 status.setText("Not Verified");
+                                 amount.setText("0000");
+                                }
                             }
 
 

@@ -308,7 +308,7 @@ public class Job_detail extends AppCompatActivity implements View.OnClickListene
 
                 JSONObject Information = Array.getJSONObject(i);
 
-                String job_id = Information.getString("job_id");
+                String job_id = Information.getString("id");
                 String name = Information.getString("job_heading");
                 String discription = Information.getString("job_description");
                 String venue = Information.getString("job_venue");
