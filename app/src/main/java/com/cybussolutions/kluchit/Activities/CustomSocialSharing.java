@@ -1580,7 +1580,11 @@ public class CustomSocialSharing extends FragmentActivity {
             Log.e(TAG, "Response from server: " + result);
 
             // showing the server response in an alert dialog
-            showAlert("Image Uploaded successfully");
+            if(result.equals("file saved success")) {
+                showAlert("Image Uploaded successfully");
+            }else {
+                Toast.makeText(CustomSocialSharing.this, "file not saved, please try again", Toast.LENGTH_SHORT).show();
+            }
             CustomSocialSharing.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
             super.onPostExecute(result);
